@@ -25,7 +25,6 @@ const RadarChart = dynamic(() => import('@/components/RadarChart'), {
 
 export default function Result() {
   const [userData, setUserData] = useState<UserData | null>(null);
-  const [isSaving, setIsSaving] = useState(false);
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'success' | 'error'>('idle');
   const router = useRouter();
 
@@ -85,7 +84,6 @@ export default function Result() {
 
   const handleSaveData = async (data: UserData) => {
     setSaveStatus('saving');
-    setIsSaving(true);
 
     const success = await saveUserData(data);
 
@@ -94,8 +92,6 @@ export default function Result() {
     } else {
       setSaveStatus('error');
     }
-
-    setIsSaving(false);
   };
 
   const handleFinish = () => {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { TIMER_DURATION } from '@/lib/constants';
@@ -14,21 +14,7 @@ export default function Problem1() {
   });
   const router = useRouter();
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev <= 1) {
-          handleSubmit();
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
-
-  const handleSubmit = () => {
+  const handleSubmit = useCallback(() => {
     // 回答をローカルストレージに保存
     const problem1Answers = {
       star: parseInt(answers.star) || 0,
@@ -41,7 +27,21 @@ export default function Problem1() {
 
     // 問題2ページに遷移
     router.push('/problem2');
-  };
+  }, [answers.star, answers.heart, answers.triangle, router]);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          handleSubmit();
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [handleSubmit]);
 
   const handleInputChange = (symbol: 'star' | 'heart' | 'triangle', value: string) => {
     // 1-3の数字のみ許可

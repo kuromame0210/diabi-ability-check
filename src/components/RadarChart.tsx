@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import React from 'react';
 import {
   Chart as ChartJS,
   RadialLinearScale,
@@ -9,6 +9,7 @@ import {
   Filler,
   Tooltip,
   Legend,
+  TooltipItem,
 } from 'chart.js';
 import { Radar } from 'react-chartjs-2';
 import { UserData } from '@/types';
@@ -90,8 +91,8 @@ export default function RadarChart({ abilities }: RadarChartProps) {
         titleColor: '#fff',
         bodyColor: '#fff',
         callbacks: {
-          label: function(context: any) {
-            return `${context.label}: ${context.raw.toFixed(1)}`;
+          label: function(tooltipItem: TooltipItem<'radar'>) {
+            return `${tooltipItem.label}: ${(tooltipItem.raw as number).toFixed(1)}`;
           },
         },
       },

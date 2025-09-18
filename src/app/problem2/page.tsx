@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { TIMER_DURATION, PROBLEM2_PATTERNS } from '@/lib/constants';
 
@@ -8,6 +8,21 @@ export default function Problem2() {
   const [timeLeft, setTimeLeft] = useState(TIMER_DURATION);
   const [answers, setAnswers] = useState<string[]>(['', '', '', '', '']);
   const router = useRouter();
+
+  const handleSubmit = useCallback(() => {
+    const numericAnswers = answers.map(answer => parseInt(answer) || 0);
+
+    // 回答をローカルストレージに保存
+    localStorage.setItem('problem2Answers', JSON.stringify(numericAnswers));
+    localStorage.setItem('problem2Time', new Date().toISOString());
+
+    // 結果ページに遷移
+    router.push('/result');
+  }, [answers, router]);
+
+  const handleFinish = useCallback(() => {
+    handleSubmit();
+  }, [handleSubmit]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -21,22 +36,7 @@ export default function Problem2() {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, []);
-
-  const handleSubmit = () => {
-    const numericAnswers = answers.map(answer => parseInt(answer) || 0);
-
-    // 回答をローカルストレージに保存
-    localStorage.setItem('problem2Answers', JSON.stringify(numericAnswers));
-    localStorage.setItem('problem2Time', new Date().toISOString());
-
-    // 結果ページに遷移
-    router.push('/result');
-  };
-
-  const handleFinish = () => {
-    handleSubmit();
-  };
+  }, [handleFinish]);
 
   const handleInputChange = (index: number, value: string) => {
     // 0-9の数字のみ許可
