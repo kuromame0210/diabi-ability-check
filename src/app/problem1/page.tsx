@@ -44,13 +44,10 @@ export default function Problem1() {
   }, [handleSubmit]);
 
   const handleInputChange = (symbol: 'star' | 'heart' | 'triangle', value: string) => {
-    // 1-3の数字のみ許可
-    if (value === '' || (/^[1-3]$/.test(value))) {
-      setAnswers(prev => ({
-        ...prev,
-        [symbol]: value
-      }));
-    }
+    setAnswers(prev => ({
+      ...prev,
+      [symbol]: value
+    }));
   };
 
   const isAnswerComplete = answers.star && answers.heart && answers.triangle;
@@ -88,19 +85,22 @@ export default function Problem1() {
             </div>
 
             {/* 右: 回答エリア */}
-            <div className="space-y-4 max-w-sm mx-auto lg:mx-0">
+            <div className="space-y-4 max-w-sm mx-auto lg:mx-0 border-2 border-gray-400 p-6 rounded-xl bg-gray-50">
               <div className="flex items-center justify-between p-4 border-2 border-gray-300 mb-4">
                 <div className="flex items-center space-x-3">
                   <span className="text-3xl drop-shadow-lg">⭐</span>
                   <span className="text-lg font-bold text-gray-800">のこたえ:</span>
                 </div>
-                <input
-                  type="text"
+                <select
                   value={answers.star}
                   onChange={(e) => handleInputChange('star', e.target.value)}
-                  className="w-12 h-12 text-xl text-center border-2 border-gray-400 rounded-2xl focus:outline-none focus:border-gray-600 focus:ring-2 focus:ring-yellow-200 transition-all bg-white font-bold shadow-inner"
-                  maxLength={1}
-                />
+                  className="w-16 h-12 text-xl text-center border-2 border-gray-400 rounded-2xl focus:outline-none focus:border-gray-600 focus:ring-2 focus:ring-yellow-200 transition-all bg-white font-bold shadow-inner"
+                >
+                  <option value="">?</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                </select>
               </div>
 
               <div className="flex items-center justify-between p-4 border-2 border-gray-300 mb-4">
@@ -108,13 +108,16 @@ export default function Problem1() {
                   <span className="text-3xl drop-shadow-lg">💕</span>
                   <span className="text-lg font-bold text-gray-800">のこたえ:</span>
                 </div>
-                <input
-                  type="text"
+                <select
                   value={answers.heart}
                   onChange={(e) => handleInputChange('heart', e.target.value)}
-                  className="w-12 h-12 text-xl text-center border-2 border-gray-400 rounded-2xl focus:outline-none focus:border-gray-600 focus:ring-2 focus:ring-yellow-200 transition-all bg-white font-bold shadow-inner"
-                  maxLength={1}
-                />
+                  className="w-16 h-12 text-xl text-center border-2 border-gray-400 rounded-2xl focus:outline-none focus:border-gray-600 focus:ring-2 focus:ring-yellow-200 transition-all bg-white font-bold shadow-inner"
+                >
+                  <option value="">?</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                </select>
               </div>
 
               <div className="flex items-center justify-between p-4 border-2 border-gray-300 mb-4">
@@ -122,13 +125,16 @@ export default function Problem1() {
                   <span className="text-3xl drop-shadow-lg">🔺</span>
                   <span className="text-lg font-bold text-gray-800">のこたえ:</span>
                 </div>
-                <input
-                  type="text"
+                <select
                   value={answers.triangle}
                   onChange={(e) => handleInputChange('triangle', e.target.value)}
-                  className="w-12 h-12 text-xl text-center border-2 border-gray-400 rounded-2xl focus:outline-none focus:border-gray-600 focus:ring-2 focus:ring-yellow-200 transition-all bg-white font-bold shadow-inner"
-                  maxLength={1}
-                />
+                  className="w-16 h-12 text-xl text-center border-2 border-gray-400 rounded-2xl focus:outline-none focus:border-gray-600 focus:ring-2 focus:ring-yellow-200 transition-all bg-white font-bold shadow-inner"
+                >
+                  <option value="">?</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                </select>
               </div>
 
               {/* 送信ボタン */}

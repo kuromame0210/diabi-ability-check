@@ -9,11 +9,11 @@ export const PROBLEM1_ANSWERS = {
 
 // 問題2のパターン（5問分）
 export const PROBLEM2_PATTERNS: Problem2Pattern[] = [
-  { numbers: [0, 1, 2, 3, 4, 6, 7, 8, 9], answer: 5 },
   { numbers: [0, 1, 3, 4, 5, 6, 7, 8, 9], answer: 2 },
-  { numbers: [1, 2, 3, 4, 5, 6, 7, 8, 9], answer: 0 },
-  { numbers: [0, 1, 2, 3, 4, 5, 6, 8, 9], answer: 7 },
-  { numbers: [0, 1, 2, 3, 5, 6, 7, 8, 9], answer: 4 }
+  { numbers: [8, 1, 6, 9, 2, 4, 3, 0, 5], answer: 7 },
+  { numbers: [5, 0, 9, 4, 1, 6, 7, 2, 8], answer: 3 },
+  { numbers: [7, 2, 5, 8, 4, 6, 9, 1, 3], answer: 0 },
+  { numbers: [2, 8, 4, 9, 3, 6, 0, 7, 5], answer: 1 }
 ];
 
 // タイマー設定（秒）

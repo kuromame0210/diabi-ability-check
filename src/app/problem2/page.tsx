@@ -39,12 +39,9 @@ export default function Problem2() {
   }, [handleFinish]);
 
   const handleInputChange = (index: number, value: string) => {
-    // 0-9の数字のみ許可
-    if (value === '' || (/^[0-9]$/.test(value))) {
-      const newAnswers = [...answers];
-      newAnswers[index] = value;
-      setAnswers(newAnswers);
-    }
+    const newAnswers = [...answers];
+    newAnswers[index] = value;
+    setAnswers(newAnswers);
   };
 
   const isAllAnswered = answers.every(answer => answer.trim() !== '');
@@ -92,13 +89,23 @@ export default function Problem2() {
                   {/* 回答エリア */}
                   <div className="flex items-center justify-center space-x-3">
                     <label className="text-lg font-bold text-gray-800">こたえ:</label>
-                    <input
-                      type="text"
+                    <select
                       value={answers[index]}
                       onChange={(e) => handleInputChange(index, e.target.value)}
-                      className="w-12 h-12 text-2xl text-center border-3 border-yellow-300 rounded-2xl focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition-all font-bold bg-white shadow-inner"
-                      maxLength={1}
-                    />
+                      className="w-16 h-12 text-2xl text-center border-3 border-yellow-300 rounded-2xl focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition-all font-bold bg-white shadow-inner"
+                    >
+                      <option value="">?</option>
+                      <option value="0">0</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
+                      <option value="7">7</option>
+                      <option value="8">8</option>
+                      <option value="9">9</option>
+                    </select>
                   </div>
                 </div>
               </div>
