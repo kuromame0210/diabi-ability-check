@@ -9,25 +9,39 @@ export default function Home() {
   const [name, setName] = useState('');
   const router = useRouter();
 
+  // ROUTING LOGIC - START:
+  // アプリケーション全体のエントリーポイント
+  // - 入力チェック → データ保存 → 例題ページへ遷移
   const handleStart = () => {
+    // VALIDATION: 名前入力必須
     if (!name.trim()) {
       alert('なまえをいれてください');
       return;
     }
 
-    // 名前をローカルストレージに保存
+    // INITIAL DATA PERSISTENCE:
+    // - ユーザー名: 結果ページで表示
+    // - 開始時刻: 全体の所要時間計算用
     localStorage.setItem('userName', name);
     localStorage.setItem('testStartTime', new Date().toISOString());
 
-    // 例題ページに遷移
+    // ROUTING TO FIRST STAGE:
+    // 問題1の例題ページへ遷移（2段階構成の1段階目）
+    // ※問題2は3段階構成だが、問題1は2段階構成
     router.push('/example');
   };
 
+  // ROUTING LOGIC - RESET:
+  // 全データクリア機能
+  // - フォーム状態 + localStorage を完全初期化
   const handleReset = () => {
-    // フォームをリセット
+    // UI STATE RESET:
     setName('');
 
-    // ローカルストレージをクリア
+    // COMPLETE DATA CLEANUP:
+    // - 基本データ: ユーザー名、開始時刻
+    // - 回答データ: 問題1（オブジェクト形式）、問題2（配列形式）
+    // - 時刻データ: 各問題の完了時刻
     localStorage.removeItem('userName');
     localStorage.removeItem('problem1Answers');
     localStorage.removeItem('problem2Answers');

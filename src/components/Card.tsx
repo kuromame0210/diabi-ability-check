@@ -10,10 +10,10 @@ export default function Card({ children, className = '' }: CardProps) {
     <div 
       className={`text-center relative z-10 ${className}`} 
       style={{
-        width: '80vw', 
-        height: '80vh', 
-        minWidth: '1000px', 
-        minHeight: '750px', 
+        width: '85vw', 
+        height: '85vh', 
+        minWidth: '1100px', 
+        minHeight: '820px', 
         backgroundImage: 'url(/image/card_bg.png)', 
         backgroundSize: '100% 100%', 
         backgroundRepeat: 'no-repeat', 
