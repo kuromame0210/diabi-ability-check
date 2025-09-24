@@ -125,10 +125,6 @@ export default function Problem1() {
   return (
     <div className="min-h-screen bg-white flex items-center justify-center p-4 relative" style={{backgroundImage: 'url(/image/main_bg.png)', backgroundSize: 'cover', backgroundPosition: 'center'}}>
       <div className="absolute inset-0 opacity-20" style={{backgroundColor: '#A3A3A3'}}></div>
-      {/* タイマー */}
-      <div className="fixed top-4 right-4 bg-red-500 text-white px-4 py-2 rounded-full font-bold text-base shadow-lg z-30">
-        のこり: {timeLeft}秒
-      </div>
 
       <Card>
         <div className="overflow-y-auto h-full">
@@ -149,6 +145,7 @@ export default function Problem1() {
           <ProblemTitle
             title="もんだい１"
             instruction="きごうから めだけでせんをたどったさきのすうじをせんたくしてください"
+            additionalInfo={`のこり: ${timeLeft}びょう`}
           />
 
           {/* 画像と回答エリアを横並び */}

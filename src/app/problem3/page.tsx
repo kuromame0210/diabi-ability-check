@@ -168,17 +168,17 @@ export default function Problem3() {
     localStorage.setItem('problem3_correct_count', result.correctCount.toString());
     localStorage.setItem('problem3_total_questions', result.totalQuestions.toString());
     
-    // 結果ページへ遷移
-    router.push('/result');
+    // 問題4説明ページへ遷移
+    router.push('/problem4-explanation');
   };
 
   // GRID RENDERING HELPER:
   // 9マスグリッドの表示
   const renderGrid = (pattern: string[], isDisplayMode = false) => {
     // 見本表示の場合はサイズを大きく
-    const gridSize = isDisplayMode ? 'w-80' : 'w-72';
-    const cellSize = isDisplayMode ? 'w-24 h-24' : 'w-20 h-20';
-    const fontSize = isDisplayMode ? 'text-3xl' : 'text-2xl';
+    const gridSize = isDisplayMode ? 'w-96' : 'w-72';
+    const cellSize = isDisplayMode ? 'w-28 h-28' : 'w-20 h-20';
+    const fontSize = isDisplayMode ? 'text-4xl' : 'text-2xl';
     
     return (
       <div className={`grid grid-cols-3 gap-2 ${gridSize} mx-auto`}>

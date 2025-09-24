@@ -138,9 +138,9 @@ export default function Problem3Example() {
   // 9マスグリッドの表示
   const renderGrid = (pattern: string[], isDisplayMode = false) => {
     // 見本表示の場合はサイズを大きく、でも横並び対応のため適度なサイズに
-    const gridSize = isDisplayMode ? 'w-80' : 'w-72';
-    const cellSize = isDisplayMode ? 'w-24 h-24' : 'w-20 h-20';
-    const fontSize = isDisplayMode ? 'text-3xl' : 'text-2xl';
+    const gridSize = isDisplayMode ? 'w-96' : 'w-72';
+    const cellSize = isDisplayMode ? 'w-28 h-28' : 'w-20 h-20';
+    const fontSize = isDisplayMode ? 'text-4xl' : 'text-2xl';
     
     return (
       <div className={`grid grid-cols-3 gap-2 ${gridSize} mx-auto`}>

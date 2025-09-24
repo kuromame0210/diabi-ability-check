@@ -2,62 +2,66 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { TIMER_DURATION, PROBLEM2_PATTERNS } from '@/lib/constants';
+import Image from 'next/image';
 import Card from '../../components/Card';
 import ProblemTitle from '../../components/ProblemTitle';
 
 /**
- * Problem 2 Page (もんだい２)
+ * Problem4 Main Problem Page (もんだい４)
  * 
  * SYSTEM ARCHITECTURE NOTES:
- * - 問題2の本問（3段階構成の3段階目）
- * - 説明→例題で学習した後の実際のテスト問題
- * - 5問セットで30秒の制限時間
+ * - 問題4の本問ページ（3段階構成の3段階目）
+ * - ドット数カウント問題・5問セット・30秒制限
+ * - 問題2と同じタイマー制御パターン
  * 
- * PROBLEM TYPE: Number Search (数字探し問題)
- * - PROBLEM2_PATTERNS: 定数ファイルで5問のパターンを管理
- * - 各問題で0-9の数字から1つだけ欠けている数字を見つける
- * - 問題1の3択と異なり、10択セレクトボックス使用
+ * PROBLEM TYPE: Dot Counting Main Problem (ドット数カウント本問)
+ * - 画像5枚: mondai1.png ～ mondai5.png
+ * - 各画像のドット数を入力
+ * - 制限時間: 30秒
  * 
  * TIMER IMPLEMENTATION:
- * - 制限時間: 30秒（TIMER_DURATION定数）
+ * - 制限時間: 30秒（問題2と同じ）
  * - 5問全体で30秒（1問あたり6秒計算）
  * - 時間切れ時は自動送信
  * 
  * DATA STRUCTURE:
  * - answers: 配列形式（['','','','','']）
- * - 問題1はオブジェクト形式（{star:'', heart:'', triangle:''}）
- * - この違いは問題形式の違いによるもの
+ * - 問題2と同じ形式で統一
+ * - 数値入力（文字列で管理、送信時に数値変換）
  * 
  * UI/UX DESIGN:
  * - Card + Background統一パターン
  * - ProblemTitle左寄せ統一
  * - 5問同時表示（スクロール対応）
  * - 各問題にナンバリング表示
+ * - 数値入力フィールド使用
  * 
  * DATA PERSISTENCE:
- * - localStorage['problem2Answers']: 配列形式でJSON保存
- * - localStorage['problem2Time']: タイムスタンプ保存
+ * - localStorage['problem4Answers']: 配列形式でJSON保存
+ * - localStorage['problem4Time']: タイムスタンプ保存
  * - 結果ページで使用される
  * 
  * ROUTING FLOW:
- * - 前: problem2-example（問題2例題）
- * - 次: result（結果ページ）
+ * - 前: problem4-example（問題4例題）
+ * - 次: result（結果ページ）※暫定、後で問題5に変更予定
  * 
  * DESIGN CONSISTENCY NOTES:
- * - タイマー表示: 問題1と同じスタイル（右上、赤背景）
- * - セレクトボックス: 統一スタイル（border-3 border-yellow-300）
+ * - タイマー表示: 問題1・2と同じスタイル（右上、赤背景）
+ * - 入力フィールド: 数値入力専用
  * - ボタン: 統一スタイル（完答時のみ有効化）
  * 
- * FUTURE EXPANSION NOTES:
- * - 5問パターンはPROBLEM2_PATTERNS配列で管理
- * - 新しい問題パターンは配列に追加で対応可能
- * - 制限時間もTIMER_DURATION定数で柔軟に変更可能
+ * SCORING NOTES:
+ * - 正解数による段階的採点を想定
+ * - 5問満点、3問以上で部分点のパターン予想
+ * - 具体的な採点ロジックは後で実装
  */
-export default function Problem2() {
+
+// 制限時間（秒）
+const TIMER_DURATION = 30;
+
+export default function Problem4() {
   // TIMER STATE:
-  // - 問題2は30秒制限（問題1とは異なる制限時間）
-  // - 5問セットで30秒のためスピード重視
+  // - 問題4は30秒制限（問題2と同じ制限時間）
   const [timeLeft, setTimeLeft] = useState(TIMER_DURATION);
   
   // ANSWER STATE:
@@ -65,6 +69,15 @@ export default function Problem2() {
   // - 初期値: 空文字列5つの配列
   const [answers, setAnswers] = useState<string[]>(['', '', '', '', '']);
   const router = useRouter();
+
+  // 問題画像のパス配列
+  const problemImages = [
+    '/image/4/mondai1.png',
+    '/image/4/mondai2.png',
+    '/image/4/mondai3.png',
+    '/image/4/mondai4.png',
+    '/image/4/mondai5.png'
+  ];
 
   // DATA SUBMISSION HANDLER:
   // - 配列形式の回答データを数値配列に変換
@@ -76,25 +89,23 @@ export default function Problem2() {
     const numericAnswers = answers.map(answer => parseInt(answer) || 0);
 
     // LOCAL STORAGE PERSISTENCE:
-    // - JSON配列形式で保存（問題1はオブジェクト形式）
+    // - JSON配列形式で保存
     // - タイムスタンプも同時保存
-    localStorage.setItem('problem2Answers', JSON.stringify(numericAnswers));
-    localStorage.setItem('problem2Time', new Date().toISOString());
+    localStorage.setItem('problem4Answers', JSON.stringify(numericAnswers));
+    localStorage.setItem('problem4Time', new Date().toISOString());
 
-    // ROUTING TO PROBLEM3:
-    // 問題2完了後は問題3説明ページへ
-    router.push('/problem3-explanation');
+    // ROUTING TO PROBLEM5:
+    // 問題4完了後は問題5説明ページへ
+    router.push('/problem5-explanation');
   }, [answers, router]);
 
   // TIMER CALLBACK WRAPPER:
-  // - handleSubmitのラッパー（useEffect依存関係のため）
   const handleFinish = useCallback(() => {
     handleSubmit();
   }, [handleSubmit]);
 
   // TIMER EFFECT:
-  // - 問題1と同じパターン
-  // - ただし制限時間が異なる（30秒 vs 問題1の時間）
+  // - 問題2と同じパターン
   useEffect(() => {
     const timer = setInterval(() => {
       setTimeLeft((prev) => {
@@ -113,7 +124,7 @@ export default function Problem2() {
 
   // INPUT CHANGE HANDLER:
   // - 配列インデックスベースの更新
-  // - 問題1の記号ベース更新とは異なる
+  // - セレクトボックス形式（1-8の範囲）
   const handleInputChange = (index: number, value: string) => {
     const newAnswers = [...answers];
     newAnswers[index] = value;
@@ -132,50 +143,50 @@ export default function Problem2() {
       <Card>
         <div className="overflow-y-auto h-full">
           {/* 
-            COMPONENTIZATION NOTE - PROBLEM2 PAGE:
+            COMPONENTIZATION NOTE - PROBLEM4 PAGE:
             ProblemTitleコンポーネントを使用してタイトル部分を共通化
-            他の問題ページと同じパターンで統一性を保持
-            デザインを既存のCard/Backgroundパターンに合わせて更新
+            問題2・3と同じパターンで統一性を保持
           */}
           <ProblemTitle
-            title="もんだい２"
-            instruction="０からきゅうまでのすうじのうち、ひとつだけたりないすうじをみつけてください"
+            title="もんだい４"
+            instruction="ドット（●＝くろまる）のかずをこたえてください"
             additionalInfo={`のこり: ${timeLeft}びょう`}
           />
 
-          <p className="text-lg text-red-600 mb-6 text-center font-bold py-2">
-            ※ゆびですうじをなぞらずめだけでみつけてください
-          </p>
-
-          {/* 5問を同時表示 */}
-          <div className="space-y-3">
-            {PROBLEM2_PATTERNS.map((pattern, index) => (
-              <div key={index} className="border-2 border-gray-300 p-4 mb-4">
-                <div className="flex gap-4 items-center">
+          {/* 5問を横並び表示（2行×3列レイアウト） */}
+          <div className="grid grid-cols-3 gap-4 max-w-6xl mx-auto">
+            {problemImages.map((imagePath, index) => (
+              <div key={index} className="border-2 border-gray-300 p-3 bg-white rounded-lg">
+                <div className="flex flex-col items-center space-y-3">
                   {/* 問題番号 */}
-                  <div className="text-center flex-shrink-0">
-                    <h3 className="text-xl font-bold text-gray-800 mb-1">
+                  <div className="text-center">
+                    <h3 className="text-lg font-bold text-gray-800">
                       {index + 1}
                     </h3>
                   </div>
 
-                  {/* 数字表示エリア */}
-                  <div className="border-2 border-gray-400 p-4 text-center flex-grow">
-                    <div className="text-2xl font-bold tracking-wider text-gray-800 font-mono whitespace-nowrap">
-                      {pattern.numbers.join('  ')}
+                  {/* 画像表示エリア */}
+                  <div className="flex justify-center">
+                    <div className="border-2 border-gray-400 p-2 bg-white rounded-lg">
+                      <Image
+                        src={imagePath}
+                        alt={`問題${index + 1}`}
+                        width={150}
+                        height={150}
+                        className="object-contain rounded-lg"
+                      />
                     </div>
                   </div>
 
                   {/* 回答エリア */}
-                  <div className="flex items-center space-x-3 flex-shrink-0">
-                    <label className="text-lg font-bold text-gray-800">こたえ:</label>
+                  <div className="flex flex-col items-center space-y-2">
+                    <label className="text-sm font-bold text-gray-800">ドットのかず</label>
                     <select
                       value={answers[index]}
                       onChange={(e) => handleInputChange(index, e.target.value)}
-                      className="w-16 h-12 text-2xl text-center border-3 border-yellow-300 rounded-2xl focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition-all font-bold bg-white shadow-inner"
+                      className="w-16 h-10 text-xl text-center border-3 border-yellow-300 rounded-2xl focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition-all font-bold bg-white shadow-inner"
                     >
                       <option value="">?</option>
-                      <option value="0">0</option>
                       <option value="1">1</option>
                       <option value="2">2</option>
                       <option value="3">3</option>
@@ -184,7 +195,6 @@ export default function Problem2() {
                       <option value="6">6</option>
                       <option value="7">7</option>
                       <option value="8">8</option>
-                      <option value="9">9</option>
                     </select>
                   </div>
                 </div>

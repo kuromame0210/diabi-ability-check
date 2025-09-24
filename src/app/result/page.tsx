@@ -7,6 +7,11 @@ import {
   scoreProblem1,
   scoreProblem2,
   scoreProblem3,
+  scoreProblem4,
+  scoreProblem5,
+  scoreProblem6,
+  scoreProblem7,
+  scoreProblem8,
   calculateAbilities,
   analyzeAbilities,
   getCurrentDateTime,
@@ -36,10 +41,20 @@ export default function Result() {
     const problem2Answers = JSON.parse(localStorage.getItem('problem2Answers') || '[]');
     const problem3Score = parseFloat(localStorage.getItem('problem3_score') || '0');
     const problem3Answers = JSON.parse(localStorage.getItem('problem3_answers') || '[]');
+    const problem4Answers = JSON.parse(localStorage.getItem('problem4Answers') || '[]');
+    const problem5Answer = localStorage.getItem('problem5Answer') || '';
+    const problem6Answer = parseInt(localStorage.getItem('problem6Answer') || '0');
+    const problem7Answers = JSON.parse(localStorage.getItem('problem7Answers') || '{}');
+    const problem8Answers = JSON.parse(localStorage.getItem('problem8Answers') || '{}');
     const startTime = localStorage.getItem('testStartTime') || '';
     const problem1Time = localStorage.getItem('problem1Time') || '';
     const problem2Time = localStorage.getItem('problem2Time') || '';
     const problem3Time = localStorage.getItem('problem3_time') || '';
+    const problem4Time = localStorage.getItem('problem4Time') || '';
+    const problem5Time = localStorage.getItem('problem5Time') || '';
+    const problem6Time = localStorage.getItem('problem6Time') || '';
+    const problem7Time = localStorage.getItem('problem7Time') || '';
+    const problem8Time = localStorage.getItem('problem8Time') || '';
 
     if (!name) {
       router.push('/');
@@ -52,10 +67,15 @@ export default function Result() {
     const problem1Score = scoreProblem1(problem1Answers);
     const problem2Score = scoreProblem2(problem2Answers);
     const problem3ScoreValue = scoreProblem3(problem3Score);
-    const totalScore = problem1Score + problem2Score + problem3ScoreValue;
+    const problem4Score = scoreProblem4(problem4Answers);
+    const problem5Score = scoreProblem5(problem5Answer);
+    const problem6Score = scoreProblem6(problem6Answer);
+    const problem7Score = scoreProblem7(problem7Answers);
+    const problem8Score = scoreProblem8(problem8Answers);
+    const totalScore = problem1Score + problem2Score + problem3ScoreValue + problem4Score + problem5Score + problem6Score + problem7Score + problem8Score;
 
     // アビリティ計算
-    const abilities = calculateAbilities(problem1Score, problem2Score, problem3ScoreValue);
+    const abilities = calculateAbilities(problem1Score, problem2Score, problem3ScoreValue, problem4Score, problem5Score, problem6Score, problem7Score, problem8Score);
     const analysis = analyzeAbilities(abilities);
 
     const userData: UserData = {
@@ -66,11 +86,21 @@ export default function Result() {
         problem1: problem1Answers,
         problem2: problem2Answers,
         problem3: problem3Answers,
+        problem4: problem4Answers,
+        problem5: problem5Answer,
+        problem6: problem6Answer,
+        problem7: problem7Answers,
+        problem8: problem8Answers,
       },
       scores: {
         problem1: problem1Score,
         problem2: problem2Score,
         problem3: problem3ScoreValue,
+        problem4: problem4Score,
+        problem5: problem5Score,
+        problem6: problem6Score,
+        problem7: problem7Score,
+        problem8: problem8Score,
         total: totalScore,
       },
       abilities,
@@ -80,6 +110,11 @@ export default function Result() {
         problem1: problem1Time,
         problem2: problem2Time,
         problem3: problem3Time,
+        problem4: problem4Time,
+        problem5: problem5Time,
+        problem6: problem6Time,
+        problem7: problem7Time,
+        problem8: problem8Time,
         end: endTime.full,
       },
     };
@@ -110,6 +145,16 @@ export default function Result() {
     localStorage.removeItem('problem3_answers');
     localStorage.removeItem('problem3_score');
     localStorage.removeItem('problem3_time');
+    localStorage.removeItem('problem4Answers');
+    localStorage.removeItem('problem4Time');
+    localStorage.removeItem('problem5Answer');
+    localStorage.removeItem('problem5Time');
+    localStorage.removeItem('problem6Answer');
+    localStorage.removeItem('problem6Time');
+    localStorage.removeItem('problem7Answers');
+    localStorage.removeItem('problem7Time');
+    localStorage.removeItem('problem8Answers');
+    localStorage.removeItem('problem8Time');
     localStorage.removeItem('testStartTime');
     localStorage.removeItem('problem1Time');
     localStorage.removeItem('problem2Time');
@@ -126,6 +171,16 @@ export default function Result() {
     localStorage.removeItem('problem3_answers');
     localStorage.removeItem('problem3_score');
     localStorage.removeItem('problem3_time');
+    localStorage.removeItem('problem4Answers');
+    localStorage.removeItem('problem4Time');
+    localStorage.removeItem('problem5Answer');
+    localStorage.removeItem('problem5Time');
+    localStorage.removeItem('problem6Answer');
+    localStorage.removeItem('problem6Time');
+    localStorage.removeItem('problem7Answers');
+    localStorage.removeItem('problem7Time');
+    localStorage.removeItem('problem8Answers');
+    localStorage.removeItem('problem8Time');
     localStorage.removeItem('testStartTime');
     localStorage.removeItem('problem1Time');
     localStorage.removeItem('problem2Time');
@@ -160,45 +215,100 @@ export default function Result() {
                   👤 なまえ: {userData.name}
                 </div>
                 <div className="text-2xl font-bold text-blue-600 py-2">
-                  とくてん: {userData.scores.total}/7.5点
+                  とくてん: {userData.scores.total}/20点
                 </div>
               </div>
 
               {/* 問題別結果 */}
               <div className="space-y-3">
                 <h3 className="text-xl font-bold text-gray-800 text-center">📊 もんだいべつけっか</h3>
-                <div className="grid grid-cols-3 gap-3">
-                  <div className="border border-gray-300 p-3 text-center">
-                    <h4 className="text-lg font-bold text-gray-800 mb-2">もんだい１</h4>
-                    <div className={`text-3xl font-bold ${
+                <div className="grid grid-cols-4 gap-2">
+                  <div className="border border-gray-300 p-2 text-center">
+                    <h4 className="text-sm font-bold text-gray-800 mb-1">もんだい１</h4>
+                    <div className={`text-2xl font-bold ${
                       userData.scores.problem1 > 0 ? 'text-green-500' : 'text-red-500'
                     }`}>
                       {userData.scores.problem1 > 0 ? '😊' : '😢'}
                     </div>
-                    <div className="text-base font-bold text-gray-700 mt-1">
+                    <div className="text-xs font-bold text-gray-700 mt-1">
                       {userData.scores.problem1}/2.5点
                     </div>
                   </div>
-                  <div className="border border-gray-300 p-3 text-center">
-                    <h4 className="text-lg font-bold text-gray-800 mb-2">もんだい２</h4>
-                    <div className={`text-3xl font-bold ${
+                  <div className="border border-gray-300 p-2 text-center">
+                    <h4 className="text-sm font-bold text-gray-800 mb-1">もんだい２</h4>
+                    <div className={`text-2xl font-bold ${
                       userData.scores.problem2 > 0 ? 'text-green-500' : 'text-red-500'
                     }`}>
                       {userData.scores.problem2 > 0 ? '😊' : '😢'}
                     </div>
-                    <div className="text-base font-bold text-gray-700 mt-1">
+                    <div className="text-xs font-bold text-gray-700 mt-1">
                       {userData.scores.problem2}/2.5点
                     </div>
                   </div>
-                  <div className="border border-gray-300 p-3 text-center">
-                    <h4 className="text-lg font-bold text-gray-800 mb-2">もんだい３</h4>
-                    <div className={`text-3xl font-bold ${
+                  <div className="border border-gray-300 p-2 text-center">
+                    <h4 className="text-sm font-bold text-gray-800 mb-1">もんだい３</h4>
+                    <div className={`text-2xl font-bold ${
                       userData.scores.problem3 > 0 ? 'text-green-500' : 'text-red-500'
                     }`}>
                       {userData.scores.problem3 > 0 ? '😊' : '😢'}
                     </div>
-                    <div className="text-base font-bold text-gray-700 mt-1">
+                    <div className="text-xs font-bold text-gray-700 mt-1">
                       {userData.scores.problem3}/2.5点
+                    </div>
+                  </div>
+                  <div className="border border-gray-300 p-2 text-center">
+                    <h4 className="text-sm font-bold text-gray-800 mb-1">もんだい４</h4>
+                    <div className={`text-2xl font-bold ${
+                      userData.scores.problem4 > 0 ? 'text-green-500' : 'text-red-500'
+                    }`}>
+                      {userData.scores.problem4 > 0 ? '😊' : '😢'}
+                    </div>
+                    <div className="text-xs font-bold text-gray-700 mt-1">
+                      {userData.scores.problem4}/2.5点
+                    </div>
+                  </div>
+                  <div className="border border-gray-300 p-2 text-center">
+                    <h4 className="text-sm font-bold text-gray-800 mb-1">もんだい５</h4>
+                    <div className={`text-2xl font-bold ${
+                      userData.scores.problem5 > 0 ? 'text-green-500' : 'text-red-500'
+                    }`}>
+                      {userData.scores.problem5 > 0 ? '😊' : '😢'}
+                    </div>
+                    <div className="text-xs font-bold text-gray-700 mt-1">
+                      {userData.scores.problem5}/2.5点
+                    </div>
+                  </div>
+                  <div className="border border-gray-300 p-2 text-center">
+                    <h4 className="text-sm font-bold text-gray-800 mb-1">もんだい６</h4>
+                    <div className={`text-2xl font-bold ${
+                      userData.scores.problem6 > 0 ? 'text-green-500' : 'text-red-500'
+                    }`}>
+                      {userData.scores.problem6 > 0 ? '😊' : '😢'}
+                    </div>
+                    <div className="text-xs font-bold text-gray-700 mt-1">
+                      {userData.scores.problem6}/2.5点
+                    </div>
+                  </div>
+                  <div className="border border-gray-300 p-2 text-center">
+                    <h4 className="text-sm font-bold text-gray-800 mb-1">もんだい７</h4>
+                    <div className={`text-2xl font-bold ${
+                      userData.scores.problem7 > 0 ? 'text-green-500' : 'text-red-500'
+                    }`}>
+                      {userData.scores.problem7 > 0 ? '😊' : '😢'}
+                    </div>
+                    <div className="text-xs font-bold text-gray-700 mt-1">
+                      {userData.scores.problem7}/2.5点
+                    </div>
+                  </div>
+                  <div className="border border-gray-300 p-2 text-center">
+                    <h4 className="text-sm font-bold text-gray-800 mb-1">もんだい８</h4>
+                    <div className={`text-2xl font-bold ${
+                      userData.scores.problem8 > 0 ? 'text-green-500' : 'text-red-500'
+                    }`}>
+                      {userData.scores.problem8 > 0 ? '😊' : '😢'}
+                    </div>
+                    <div className="text-xs font-bold text-gray-700 mt-1">
+                      {userData.scores.problem8}/2.5点
                     </div>
                   </div>
                 </div>
