@@ -133,7 +133,7 @@ export default function Result() {
       <div className="max-w-7xl mx-auto">
         <div className="bg-white rounded-xl shadow-lg border-2 border-gray-200 p-6">
           <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">
-            🎉 けっか 🎉
+            けっか
           </h2>
 
           {/* メインレイアウト: 左にコメント・右にグラフ */}
@@ -146,7 +146,7 @@ export default function Result() {
                   👤 なまえ: {userData.name}
                 </div>
                 <div className="text-2xl font-bold text-blue-600 py-2">
-                  ⭐ とくてん: {userData.scores.total}/5点
+                  とくてん: {userData.scores.total}/5点
                 </div>
               </div>
 
@@ -155,7 +155,7 @@ export default function Result() {
                 <h3 className="text-xl font-bold text-gray-800 text-center">📊 もんだいべつけっか</h3>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="border border-gray-300 p-3 text-center">
-                    <h4 className="text-lg font-bold text-gray-800 mb-2">🔍 もんだい１</h4>
+                    <h4 className="text-lg font-bold text-gray-800 mb-2">もんだい１</h4>
                     <div className={`text-3xl font-bold ${
                       userData.scores.problem1 > 0 ? 'text-green-500' : 'text-red-500'
                     }`}>
@@ -166,7 +166,7 @@ export default function Result() {
                     </div>
                   </div>
                   <div className="border border-gray-300 p-3 text-center">
-                    <h4 className="text-lg font-bold text-gray-800 mb-2">🔢 もんだい２</h4>
+                    <h4 className="text-lg font-bold text-gray-800 mb-2">もんだい２</h4>
                     <div className={`text-3xl font-bold ${
                       userData.scores.problem2 > 0 ? 'text-green-500' : 'text-red-500'
                     }`}>
@@ -181,7 +181,7 @@ export default function Result() {
 
               {/* アビリティ分析 */}
               <div className="space-y-3">
-                <h3 className="text-xl font-bold text-gray-800 text-center">✨ きみのとくちょう</h3>
+                <h3 className="text-xl font-bold text-gray-800 text-center">きみのとくちょう</h3>
                 <div className="space-y-3">
                   <div className="border border-gray-300 p-3 text-center">
                     <h4 className="text-lg font-bold text-gray-800 mb-2">🌟 とくい分野</h4>
@@ -190,7 +190,7 @@ export default function Result() {
                     </p>
                   </div>
                   <div className="border border-gray-300 p-3 text-center">
-                    <h4 className="text-lg font-bold text-gray-800 mb-2">🚀 のびしろ</h4>
+                    <h4 className="text-lg font-bold text-gray-800 mb-2">のびしろ</h4>
                     <p className="text-lg font-bold text-blue-600">
                       {userData.analysis.weakest}
                     </p>
@@ -225,7 +225,7 @@ export default function Result() {
             )}
             {saveStatus === 'error' && (
               <div className="text-red-700 font-bold py-2 px-4 text-sm">
-                ⚠️ データの保存に失敗しました
+                データの保存に失敗しました
               </div>
             )}
           </div>
@@ -237,7 +237,7 @@ export default function Result() {
                 onClick={handleReset}
                 className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-4 px-8 rounded-lg text-xl transition-colors shadow-md"
               >
-                🔄 さいしょから
+                さいしょから
               </button>
               <button
                 onClick={handleFinish}

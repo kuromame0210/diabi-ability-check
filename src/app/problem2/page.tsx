@@ -56,15 +56,15 @@ export default function Problem2() {
 
         <div className="bg-white rounded-xl shadow-lg border-2 border-gray-200 p-6 mt-12">
           <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">
-            🔢 もんだい２ 🔢
+            もんだい２
           </h2>
 
           <p className="text-xl text-gray-800 mb-4 text-center font-bold py-2">
-            ０から９までの数字がならんでいます。ひとつだけ足りない数字を答えてください ✨
+            ０から９までの数字がならんでいます。ひとつだけ足りない数字を答えてください
           </p>
 
           <p className="text-lg text-red-600 mb-6 text-center font-bold py-2">
-            ⚠️ 指で数字をなぞらず目だけで見つけてください 👀
+            指で数字をなぞらず目だけで見つけてください
           </p>
 
           {/* 5問を同時表示 */}
@@ -75,7 +75,7 @@ export default function Problem2() {
                   {/* 問題番号 */}
                   <div className="text-center">
                     <h3 className="text-xl font-bold text-gray-800 mb-1">
-                      🎯 {index + 1}
+                      {index + 1}
                     </h3>
                   </div>
 
@@ -123,7 +123,7 @@ export default function Problem2() {
                   : 'bg-gray-300 text-gray-500 cursor-not-allowed'
               }`}
             >
-              🎉 かいとうする！
+              かいとうする！
             </button>
           </div>
 

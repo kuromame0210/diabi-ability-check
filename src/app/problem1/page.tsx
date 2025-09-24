@@ -69,7 +69,7 @@ export default function Problem1() {
           <img src="/image/border-line.png" alt="区切り線" className="w-full h-auto mb-6" />
 
           <p className="text-2xl text-gray-800 mb-6 text-center font-bold py-2">
-            きごうから めだけでせんをたどったさきのすうじをかいてください ✨
+            きごうから めだけでせんをたどったさきのすうじをせんたくしてください
           </p>
 
           {/* 画像と回答エリアを横並び */}
@@ -78,7 +78,7 @@ export default function Problem1() {
             <div className="flex justify-center h-full">
               <div className="border-gray-400 p-4 h-full">
                 <Image
-                  src="/docs/アビリティチェックもんだい１.png"
+                  src="/image/mondai1.png"
                   alt="線つなぎ問題"
                   width={400}
                   height={600}
@@ -152,7 +152,7 @@ export default function Problem1() {
                       : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                   }`}
                 >
-                  🎯 かいとうする！
+                  かいとうする！
                 </button>
               </div>
               </div>

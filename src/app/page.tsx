@@ -19,8 +19,8 @@ export default function Home() {
     localStorage.setItem('userName', name);
     localStorage.setItem('testStartTime', new Date().toISOString());
 
-    // 問題1ページに遷移
-    router.push('/problem1');
+    // 例題ページに遷移
+    router.push('/example');
   };
 
   const handleReset = () => {
@@ -76,14 +76,14 @@ export default function Home() {
               onClick={handleStart}
               className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-4 px-8 rounded-lg text-xl transition-colors shadow-md"
             >
-              🚀 はじめる！
+              はじめる！
             </button>
 
             <button
               onClick={handleReset}
               className="w-full bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg text-lg transition-colors shadow-md"
             >
-              🔄 リセット
+              リセット
             </button>
           </div>
 
