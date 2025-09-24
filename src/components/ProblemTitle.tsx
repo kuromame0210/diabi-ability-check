@@ -80,7 +80,7 @@ export default function ProblemTitle({ title, instruction, additionalInfo }: Pro
         
         {/* 追加情報（例題の時間制限なし等） */}
         {additionalInfo && (
-          <div className="text-lg text-black absolute right-0">
+          <div className="text-3xl text-black absolute right-0 font-bold">
             {additionalInfo}
           </div>
         )}

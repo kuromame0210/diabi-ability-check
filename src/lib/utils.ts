@@ -24,16 +24,24 @@ export function scoreProblem2(answers: number[]): number {
   return 0;
 }
 
-// アビリティスコア計算（ダミーロジック）
-export function calculateAbilities(problem1Score: number, problem2Score: number) {
+// 問題3の採点
+export function scoreProblem3(score: number): number {
+  // 問題3の採点は既にproblem3ページで実行済み
+  // localStorageから採点済みスコアを取得して返す
+  return score;
+}
+
+// アビリティスコア計算（3問題対応）
+export function calculateAbilities(problem1Score: number, problem2Score: number, problem3Score: number = 0) {
   const base1 = problem1Score / 2.5;
   const base2 = problem2Score / 2.5;
+  const base3 = problem3Score / 2.5;
 
   return {
-    reading: Math.min(5, Math.max(0, (base1 * 0.6 + base2 * 0.4) * 5 + (Math.random() - 0.5))),
-    attention: Math.min(5, Math.max(0, (base2 * 0.8 + base1 * 0.2) * 5 + (Math.random() - 0.5))),
-    memory: Math.min(5, Math.max(0, (base1 * 0.4 + base2 * 0.6) * 5 + (Math.random() - 0.5))),
-    cognition: Math.min(5, Math.max(0, (base1 * 0.8 + base2 * 0.2) * 5 + (Math.random() - 0.5)))
+    reading: Math.min(5, Math.max(0, (base1 * 0.6 + base2 * 0.3 + base3 * 0.1) * 5 + (Math.random() - 0.5))),
+    attention: Math.min(5, Math.max(0, (base2 * 0.6 + base1 * 0.2 + base3 * 0.2) * 5 + (Math.random() - 0.5))),
+    memory: Math.min(5, Math.max(0, (base3 * 0.8 + base1 * 0.1 + base2 * 0.1) * 5 + (Math.random() - 0.5))),
+    cognition: Math.min(5, Math.max(0, (base1 * 0.4 + base2 * 0.3 + base3 * 0.3) * 5 + (Math.random() - 0.5)))
   };
 }
 

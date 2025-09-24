@@ -81,9 +81,9 @@ export default function Problem2() {
     localStorage.setItem('problem2Answers', JSON.stringify(numericAnswers));
     localStorage.setItem('problem2Time', new Date().toISOString());
 
-    // ROUTING TO RESULT:
-    // 問題2完了後は結果ページへ（全問題完了）
-    router.push('/result');
+    // ROUTING TO PROBLEM3:
+    // 問題2完了後は問題3説明ページへ
+    router.push('/problem3-explanation');
   }, [answers, router]);
 
   // TIMER CALLBACK WRAPPER:

@@ -6,6 +6,7 @@ import dynamic from 'next/dynamic';
 import {
   scoreProblem1,
   scoreProblem2,
+  scoreProblem3,
   calculateAbilities,
   analyzeAbilities,
   getCurrentDateTime,
@@ -33,9 +34,12 @@ export default function Result() {
     const name = localStorage.getItem('userName');
     const problem1Answers = JSON.parse(localStorage.getItem('problem1Answers') || '{}');
     const problem2Answers = JSON.parse(localStorage.getItem('problem2Answers') || '[]');
+    const problem3Score = parseFloat(localStorage.getItem('problem3_score') || '0');
+    const problem3Answers = JSON.parse(localStorage.getItem('problem3_answers') || '[]');
     const startTime = localStorage.getItem('testStartTime') || '';
     const problem1Time = localStorage.getItem('problem1Time') || '';
     const problem2Time = localStorage.getItem('problem2Time') || '';
+    const problem3Time = localStorage.getItem('problem3_time') || '';
 
     if (!name) {
       router.push('/');
@@ -47,10 +51,11 @@ export default function Result() {
     // 得点計算
     const problem1Score = scoreProblem1(problem1Answers);
     const problem2Score = scoreProblem2(problem2Answers);
-    const totalScore = problem1Score + problem2Score;
+    const problem3ScoreValue = scoreProblem3(problem3Score);
+    const totalScore = problem1Score + problem2Score + problem3ScoreValue;
 
     // アビリティ計算
-    const abilities = calculateAbilities(problem1Score, problem2Score);
+    const abilities = calculateAbilities(problem1Score, problem2Score, problem3ScoreValue);
     const analysis = analyzeAbilities(abilities);
 
     const userData: UserData = {
@@ -60,10 +65,12 @@ export default function Result() {
       answers: {
         problem1: problem1Answers,
         problem2: problem2Answers,
+        problem3: problem3Answers,
       },
       scores: {
         problem1: problem1Score,
         problem2: problem2Score,
+        problem3: problem3ScoreValue,
         total: totalScore,
       },
       abilities,
@@ -72,6 +79,7 @@ export default function Result() {
         start: startTime,
         problem1: problem1Time,
         problem2: problem2Time,
+        problem3: problem3Time,
         end: endTime.full,
       },
     };
@@ -99,6 +107,9 @@ export default function Result() {
     localStorage.removeItem('userName');
     localStorage.removeItem('problem1Answers');
     localStorage.removeItem('problem2Answers');
+    localStorage.removeItem('problem3_answers');
+    localStorage.removeItem('problem3_score');
+    localStorage.removeItem('problem3_time');
     localStorage.removeItem('testStartTime');
     localStorage.removeItem('problem1Time');
     localStorage.removeItem('problem2Time');
@@ -112,6 +123,9 @@ export default function Result() {
     localStorage.removeItem('userName');
     localStorage.removeItem('problem1Answers');
     localStorage.removeItem('problem2Answers');
+    localStorage.removeItem('problem3_answers');
+    localStorage.removeItem('problem3_score');
+    localStorage.removeItem('problem3_time');
     localStorage.removeItem('testStartTime');
     localStorage.removeItem('problem1Time');
     localStorage.removeItem('problem2Time');
@@ -146,14 +160,14 @@ export default function Result() {
                   👤 なまえ: {userData.name}
                 </div>
                 <div className="text-2xl font-bold text-blue-600 py-2">
-                  とくてん: {userData.scores.total}/5点
+                  とくてん: {userData.scores.total}/7.5点
                 </div>
               </div>
 
               {/* 問題別結果 */}
               <div className="space-y-3">
                 <h3 className="text-xl font-bold text-gray-800 text-center">📊 もんだいべつけっか</h3>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-3 gap-3">
                   <div className="border border-gray-300 p-3 text-center">
                     <h4 className="text-lg font-bold text-gray-800 mb-2">もんだい１</h4>
                     <div className={`text-3xl font-bold ${
@@ -174,6 +188,17 @@ export default function Result() {
                     </div>
                     <div className="text-base font-bold text-gray-700 mt-1">
                       {userData.scores.problem2}/2.5点
+                    </div>
+                  </div>
+                  <div className="border border-gray-300 p-3 text-center">
+                    <h4 className="text-lg font-bold text-gray-800 mb-2">もんだい３</h4>
+                    <div className={`text-3xl font-bold ${
+                      userData.scores.problem3 > 0 ? 'text-green-500' : 'text-red-500'
+                    }`}>
+                      {userData.scores.problem3 > 0 ? '😊' : '😢'}
+                    </div>
+                    <div className="text-base font-bold text-gray-700 mt-1">
+                      {userData.scores.problem3}/2.5点
                     </div>
                   </div>
                 </div>
