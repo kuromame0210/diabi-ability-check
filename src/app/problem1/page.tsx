@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { TIMER_DURATION } from '@/lib/constants';
+import Card from '../../components/Card';
 
 export default function Problem1() {
   const [timeLeft, setTimeLeft] = useState(TIMER_DURATION);
@@ -53,17 +54,19 @@ export default function Problem1() {
   const isAnswerComplete = answers.star && answers.heart && answers.triangle;
 
   return (
-    <div className="min-h-screen bg-white p-4 overflow-y-auto">
-      <div className="max-w-6xl mx-auto">
-        {/* タイマー */}
-        <div className="fixed top-4 right-4 bg-red-500 text-white px-4 py-2 rounded-full font-bold text-base shadow-lg z-10">
-          のこり: {timeLeft}秒
-        </div>
+    <div className="min-h-screen bg-white flex items-center justify-center p-4 relative" style={{backgroundImage: 'url(/image/main_bg.png)', backgroundSize: 'cover', backgroundPosition: 'center'}}>
+      <div className="absolute inset-0 opacity-20" style={{backgroundColor: '#A3A3A3'}}></div>
+      {/* タイマー */}
+      <div className="fixed top-4 right-4 bg-red-500 text-white px-4 py-2 rounded-full font-bold text-base shadow-lg z-30">
+        のこり: {timeLeft}秒
+      </div>
 
-        <div className="bg-gradient-to-br from-cyan-100 to-cyan-200 rounded-3xl shadow-xl p-4 mt-12">
+      <Card>
+        <div className="overflow-y-auto h-full">
           <h2 className="text-2xl font-bold text-cyan-700 mb-4 text-center drop-shadow-lg">
             🔍 もんだい１ 🔍
           </h2>
+          <img src="/image/border-line.png" alt="区切り線" className="w-full h-auto mb-6" />
 
           <p className="text-xl text-gray-800 mb-6 text-center font-bold py-2">
             きごうから めだけでせんをたどったさきのすうじをかいてください ✨
@@ -72,14 +75,14 @@ export default function Problem1() {
           {/* 画像と回答エリアを横並び */}
           <div className="grid lg:grid-cols-2 gap-6 items-start">
             {/* 左: 問題画像 */}
-            <div className="flex justify-center">
-              <div className="border-2 border-gray-400 p-4">
+            <div className="flex justify-center h-full">
+              <div className="border-2 border-gray-400 p-4 h-full">
                 <Image
                   src="/docs/アビリティチェックもんだい１.png"
                   alt="線つなぎ問題"
-                  width={300}
-                  height={450}
-                  className="max-w-full h-auto rounded-xl"
+                  width={400}
+                  height={600}
+                  className="w-full h-full object-contain rounded-xl"
                 />
               </div>
             </div>
@@ -154,7 +157,7 @@ export default function Problem1() {
             </div>
           </div>
         </div>
-      </div>
+      </Card>
     </div>
   );
 }

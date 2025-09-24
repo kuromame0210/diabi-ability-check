@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Background from '../components/Background';
 
 export default function Home() {
   const [name, setName] = useState('');
@@ -35,18 +36,26 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center p-4">
-      <div className="bg-white rounded-xl shadow-lg border-2 border-gray-200 p-6 max-w-md w-full text-center">
-        <h1 className="text-3xl font-bold text-gray-800 mb-6">
-          🌟 アビリティチェック 🌟
-        </h1>
+    <Background>
+      <div className="bg-white rounded-xl shadow-lg border-2 border-gray-200 p-6 w-auto text-center relative z-10">
+        <div className="mb-6 grid items-center gap-0" style={{gridTemplateColumns: 'auto 2fr auto'}}>
+          <div className="text-right">
+            <img src="/image/teacher.png" alt="アイコン" className="w-24 h-28" />
+          </div>
+          <div className="text-center whitespace-nowrap">
+            <h1 className="text-3xl font-bold text-gray-800 mb-3">
+              アビリティチェック
+            </h1>
+            <label htmlFor="name-input" className="block text-xl text-gray-800 mb-3 font-bold">
+              なまえをいれてください 📝
+              <br />
+              <span className="text-base text-gray-600 font-normal">（漢字で入力）</span>
+            </label>
+          </div>
+          <div className="w-24"></div>
+        </div>
 
         <div className="mb-6">
-          <label htmlFor="name-input" className="block text-xl text-gray-800 mb-3 font-bold">
-            なまえをいれてください 📝
-            <br />
-            <span className="text-base text-gray-600 font-normal">（漢字で入力）</span>
-          </label>
           <input
             id="name-input"
             type="text"
@@ -75,9 +84,11 @@ export default function Home() {
         </div>
 
         <div className="mt-4 text-sm text-pink-600 font-semibold rounded-full py-2 px-4">
-          ⏰ テストは約5分で完了します
+          テストはぜんぶで８もんです
+          <br />
+          （やく５ふん）
         </div>
       </div>
-    </div>
+    </Background>
   );
 }
