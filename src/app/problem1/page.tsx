@@ -63,20 +63,20 @@ export default function Problem1() {
 
       <Card>
         <div className="overflow-y-auto h-full">
-          <h2 className="text-2xl font-bold text-cyan-700 mb-4 text-center drop-shadow-lg">
-            🔍 もんだい１ 🔍
+          <h2 className="text-4xl font-bold text-gray-800 mb-4 text-center">
+            もんだい１
           </h2>
           <img src="/image/border-line.png" alt="区切り線" className="w-full h-auto mb-6" />
 
-          <p className="text-xl text-gray-800 mb-6 text-center font-bold py-2">
+          <p className="text-2xl text-gray-800 mb-6 text-center font-bold py-2">
             きごうから めだけでせんをたどったさきのすうじをかいてください ✨
           </p>
 
           {/* 画像と回答エリアを横並び */}
-          <div className="grid lg:grid-cols-2 gap-6 items-start">
+          <div className="grid lg:grid-cols-2 gap-6 items-start" style={{height: '70%'}}>
             {/* 左: 問題画像 */}
             <div className="flex justify-center h-full">
-              <div className="border-2 border-gray-400 p-4 h-full">
+              <div className="border-gray-400 p-4 h-full">
                 <Image
                   src="/docs/アビリティチェックもんだい１.png"
                   alt="線つなぎ問題"
@@ -88,10 +88,11 @@ export default function Problem1() {
             </div>
 
             {/* 右: 回答エリア */}
-            <div className="space-y-4 max-w-sm mx-auto lg:mx-0 border-2 border-gray-400 p-6 rounded-xl bg-gray-50">
+            <div className="h-full flex flex-col justify-end">
+              <div className="space-y-4 max-w-sm mx-auto lg:mx-0 border-gray-400 px-6 rounded-xl bg-gray-50">
               <div className="flex items-center justify-between p-4 border-2 border-gray-300 mb-4">
                 <div className="flex items-center space-x-3">
-                  <span className="text-3xl drop-shadow-lg">⭐</span>
+                  <span className="text-3xl drop-shadow-lg">★</span>
                   <span className="text-lg font-bold text-gray-800">のこたえ:</span>
                 </div>
                 <select
@@ -108,7 +109,7 @@ export default function Problem1() {
 
               <div className="flex items-center justify-between p-4 border-2 border-gray-300 mb-4">
                 <div className="flex items-center space-x-3">
-                  <span className="text-3xl drop-shadow-lg">💕</span>
+                  <span className="pl-1 text-4xl drop-shadow-lg">♥</span>
                   <span className="text-lg font-bold text-gray-800">のこたえ:</span>
                 </div>
                 <select
@@ -125,7 +126,7 @@ export default function Problem1() {
 
               <div className="flex items-center justify-between p-4 border-2 border-gray-300 mb-4">
                 <div className="flex items-center space-x-3">
-                  <span className="text-3xl drop-shadow-lg">🔺</span>
+                  <span className="text-3xl drop-shadow-lg">▲</span>
                   <span className="text-lg font-bold text-gray-800">のこたえ:</span>
                 </div>
                 <select
@@ -153,6 +154,7 @@ export default function Problem1() {
                 >
                   🎯 かいとうする！
                 </button>
+              </div>
               </div>
             </div>
           </div>

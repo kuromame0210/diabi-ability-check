@@ -34,7 +34,7 @@ export default function Card({ children, className = '' }: CardProps) {
         }}
       ></div>
       <div 
-        className="absolute z-20 p-6" 
+        className="absolute z-20 px-6" 
         style={{
           top: '60px', 
           left: '60px', 
