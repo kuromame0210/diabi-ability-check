@@ -230,12 +230,12 @@ export default function Problem3Example() {
                 {/* 入力候補 */}
                 <div className="text-center">
                   <div className="text-lg font-bold text-gray-800 mb-4">にゅうりょくこうほ</div>
-                  <div className="grid grid-cols-4 gap-3 w-80 mx-auto">
+                  <div className="flex gap-2 justify-center items-center flex-nowrap overflow-x-auto pb-2">
                     {INPUT_CANDIDATES.map((candidate, index) => (
                       <button
                         key={index}
                         onClick={() => handleCandidateClick(candidate)}
-                        className="w-16 h-16 border-2 border-gray-400 rounded-lg bg-white hover:bg-gray-100 text-xl font-bold transition-colors"
+                        className="w-14 h-14 border-2 border-gray-400 rounded-lg bg-white hover:bg-gray-100 text-lg font-bold transition-colors flex-shrink-0"
                       >
                         {candidate}
                       </button>

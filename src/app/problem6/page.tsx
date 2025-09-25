@@ -108,14 +108,10 @@ export default function Problem6() {
     return () => clearInterval(timer);
   }, [handleFinish]);
 
-  // INPUT CHANGE HANDLER:
-  // - 数値入力の更新（1-20の範囲想定）
-  const handleInputChange = (value: string) => {
-    // 数値のみ許可
-    const numValue = value.replace(/[^0-9]/g, '');
-    if (numValue === '' || (parseInt(numValue) >= 0 && parseInt(numValue) <= 20)) {
-      setAnswer(numValue);
-    }
+  // SELECTION CHANGE HANDLER:
+  // - 選択式の更新（1-9の範囲）
+  const handleSelectionChange = (value: string) => {
+    setAnswer(value);
   };
 
   // COMPLETION VALIDATION:
@@ -156,22 +152,40 @@ export default function Problem6() {
               </div>
             </div>
 
-            {/* 回答入力エリア */}
+            {/* 回答選択エリア */}
             <div className="flex flex-col items-center space-y-4 pb-4">
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-4 mb-4">
                 <label className="text-2xl font-bold text-gray-800">ずけいのかず:</label>
-                <input
-                  type="text"
-                  value={answer}
-                  onChange={(e) => handleInputChange(e.target.value)}
-                  placeholder="?"
-                  className="w-24 h-16 text-3xl text-center border-3 border-yellow-300 rounded-2xl focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition-all font-bold bg-white shadow-inner"
-                />
+                <div className={`w-24 h-16 text-3xl text-center border-3 border-yellow-300 rounded-2xl flex items-center justify-center font-bold transition-all ${
+                  answer ? 'bg-yellow-100' : 'bg-white'
+                }`}>
+                  {answer || '?'}
+                </div>
                 <span className="text-xl font-bold text-gray-800">こ</span>
               </div>
 
+              {/* 数字選択ボタン（1-9） */}
+              <div className="grid grid-cols-3 gap-3">
+                {Array.from({length: 9}, (_, i) => {
+                  const number = (i + 1).toString();
+                  return (
+                    <button
+                      key={number}
+                      onClick={() => handleSelectionChange(number)}
+                      className={`w-16 h-16 text-2xl font-bold rounded-lg transition-colors ${
+                        answer === number
+                          ? 'bg-yellow-500 text-white'
+                          : 'bg-gray-100 hover:bg-gray-200'
+                      }`}
+                    >
+                      {number}
+                    </button>
+                  );
+                })}
+              </div>
+
               {/* 送信ボタン */}
-              <div className="text-center">
+              <div className="text-center mt-4">
                 <button
                   onClick={handleSubmit}
                   disabled={!isAnswered}
