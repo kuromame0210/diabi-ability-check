@@ -139,6 +139,13 @@ export default function Problem8() {
     <div className="min-h-screen bg-white flex items-center justify-center p-4 relative" style={{backgroundImage: 'url(/image/main_bg.png)', backgroundSize: 'cover', backgroundPosition: 'center'}}>
       <div className="absolute inset-0 opacity-20" style={{backgroundColor: '#A3A3A3'}}></div>
 
+      {/* 固定タイマー表示 */}
+      <div className="fixed top-4 right-4 z-50 bg-white border-2 border-gray-400 rounded-lg px-4 py-2 shadow-lg">
+        <div className="text-lg font-bold text-red-600">
+          のこり: {timeLeft}びょう
+        </div>
+      </div>
+
       <Card>
         <div className="overflow-y-auto h-full">
           {/* 
@@ -149,7 +156,6 @@ export default function Problem8() {
           <ProblemTitle
             title="もんだい８"
             instruction="４つの へんに いくつずつ ボールが はいったかを こたえてください"
-            additionalInfo={`のこり: ${timeLeft}びょう`}
           />
 
           {/* メインコンテンツエリア */}
@@ -164,7 +170,6 @@ export default function Problem8() {
                   height={400}
                   controls
                   autoPlay
-                  loop
                   className="object-contain rounded-lg"
                 >
                   お使いのブラウザは動画の再生に対応していません。
@@ -174,11 +179,14 @@ export default function Problem8() {
 
             {/* 回答入力エリア */}
             <div className="flex justify-center">
-              <div className="grid grid-cols-2 gap-6 max-w-4xl">
+              <div className="grid grid-cols-4 gap-4 max-w-6xl">
                 {/* 黄色パレットの入力 */}
                 <div className="border-2 border-gray-300 p-4 rounded-lg" style={{backgroundColor: '#FFF59D'}}>
                   <div className="text-center space-y-3">
-                    <div className="text-2xl font-bold mb-2 text-gray-800">きいろ</div>
+                    <div className="flex items-center justify-center space-x-2 mb-2">
+                      <span className="text-xl font-bold text-gray-800">A</span>
+                      <span className="text-lg font-bold text-gray-800">きいろ</span>
+                    </div>
                     <div className="flex items-center justify-center space-x-2">
                       <input
                         type="text"
@@ -195,7 +203,10 @@ export default function Problem8() {
                 {/* 緑パレットの入力 */}
                 <div className="border-2 border-gray-300 p-4 rounded-lg" style={{backgroundColor: '#C8E6C9'}}>
                   <div className="text-center space-y-3">
-                    <div className="text-2xl font-bold mb-2 text-gray-800">みどり</div>
+                    <div className="flex items-center justify-center space-x-2 mb-2">
+                      <span className="text-xl font-bold text-gray-800">B</span>
+                      <span className="text-lg font-bold text-gray-800">みどり</span>
+                    </div>
                     <div className="flex items-center justify-center space-x-2">
                       <input
                         type="text"
@@ -212,7 +223,10 @@ export default function Problem8() {
                 {/* 青パレットの入力 */}
                 <div className="border-2 border-gray-300 p-4 rounded-lg" style={{backgroundColor: '#BBDEFB'}}>
                   <div className="text-center space-y-3">
-                    <div className="text-2xl font-bold mb-2 text-gray-800">あお</div>
+                    <div className="flex items-center justify-center space-x-2 mb-2">
+                      <span className="text-xl font-bold text-gray-800">C</span>
+                      <span className="text-lg font-bold text-gray-800">あお</span>
+                    </div>
                     <div className="flex items-center justify-center space-x-2">
                       <input
                         type="text"
@@ -229,7 +243,10 @@ export default function Problem8() {
                 {/* 水色パレットの入力 */}
                 <div className="border-2 border-gray-300 p-4 rounded-lg" style={{backgroundColor: '#B2EBF2'}}>
                   <div className="text-center space-y-3">
-                    <div className="text-2xl font-bold mb-2 text-gray-800">みずいろ</div>
+                    <div className="flex items-center justify-center space-x-2 mb-2">
+                      <span className="text-xl font-bold text-gray-800">D</span>
+                      <span className="text-lg font-bold text-gray-800">みずいろ</span>
+                    </div>
                     <div className="flex items-center justify-center space-x-2">
                       <input
                         type="text"

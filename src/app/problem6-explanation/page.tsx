@@ -68,10 +68,6 @@ export default function Problem6Explanation() {
             <div className="max-w-4xl">
               <div className="space-y-8 text-left">
                 <div className="text-3xl font-bold text-gray-800 leading-relaxed">
-                  だい6もん
-                </div>
-                
-                <div className="text-3xl font-bold text-gray-800 leading-relaxed">
                   おなじかたちで おなじおおきさの
                   <br />
                   ずけいが いくつあるか

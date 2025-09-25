@@ -68,9 +68,6 @@ export default function Problem3Explanation() {
           <div className="flex items-center justify-center h-3/4">
             <div className="max-w-4xl">
               <div className="space-y-8 text-left">
-                <div className="text-3xl font-bold text-gray-800 leading-relaxed">
-                  だい3もん
-                </div>
                 
                 <div className="text-3xl font-bold text-gray-800 leading-relaxed">
                   ひょうにかいてあるもじやきごうを

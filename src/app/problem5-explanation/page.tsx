@@ -68,10 +68,6 @@ export default function Problem5Explanation() {
             <div className="max-w-4xl">
               <div className="space-y-8 text-left">
                 <div className="text-3xl font-bold text-gray-800 leading-relaxed">
-                  だい5もん
-                </div>
-                
-                <div className="text-3xl font-bold text-gray-800 leading-relaxed">
                   なんというもじがかいてあるかを
                   <br />
                   こたえてください

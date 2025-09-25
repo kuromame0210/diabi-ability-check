@@ -268,7 +268,7 @@ export default function Problem3() {
                 {/* 入力候補 */}
                 <div className="text-center">
                   <div className="text-lg font-bold text-gray-800 mb-4">にゅうりょくこうほ</div>
-                  <div className="grid grid-cols-4 gap-3 w-80 mx-auto">
+                  <div className="flex gap-3 justify-center">
                     {INPUT_CANDIDATES.map((candidate, index) => (
                       <button
                         key={index}

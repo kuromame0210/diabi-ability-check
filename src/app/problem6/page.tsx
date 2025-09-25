@@ -141,10 +141,10 @@ export default function Problem6() {
           />
 
           {/* メインコンテンツエリア */}
-          <div className="flex flex-col items-center justify-center space-y-8" style={{height: '70%'}}>
+          <div className="flex flex-col items-center space-y-6" style={{height: '75%'}}>
             
             {/* 問題画像エリア */}
-            <div className="flex justify-center">
+            <div className="flex justify-center flex-1 items-center">
               <div className="border-4 border-gray-400 p-4 bg-white rounded-xl shadow-lg">
                 <Image
                   src="/image/mondai6.png"
@@ -157,7 +157,7 @@ export default function Problem6() {
             </div>
 
             {/* 回答入力エリア */}
-            <div className="flex flex-col items-center space-y-6">
+            <div className="flex flex-col items-center space-y-4 pb-4">
               <div className="flex items-center space-x-4">
                 <label className="text-2xl font-bold text-gray-800">ずけいのかず:</label>
                 <input

@@ -116,17 +116,13 @@ export default function Problem7() {
     return () => clearInterval(timer);
   }, [handleFinish]);
 
-  // INPUT CHANGE HANDLER:
-  // - オブジェクトキーベースの更新
-  const handleInputChange = (markType: keyof typeof answers, value: string) => {
-    // 数値のみ許可（1-20の範囲想定）
-    const numValue = value.replace(/[^0-9]/g, '');
-    if (numValue === '' || (parseInt(numValue) >= 0 && parseInt(numValue) <= 20)) {
-      setAnswers(prev => ({
-        ...prev,
-        [markType]: numValue
-      }));
-    }
+  // SELECTION CHANGE HANDLER:
+  // - オブジェクトキーベースの更新（選択式）
+  const handleSelectionChange = (markType: keyof typeof answers, value: string) => {
+    setAnswers(prev => ({
+      ...prev,
+      [markType]: value
+    }));
   };
 
   // COMPLETION VALIDATION:
@@ -167,56 +163,95 @@ export default function Problem7() {
               </div>
             </div>
 
-            {/* 回答入力エリア */}
+            {/* 回答選択エリア */}
             <div className="flex justify-center">
               <div className="grid grid-cols-3 gap-6 max-w-4xl">
-                {/* ○（白丸）の入力 */}
+                {/* ○（白丸）の選択 */}
                 <div className="border-2 border-gray-300 p-4 rounded-lg bg-white">
                   <div className="text-center space-y-3">
                     <div className="text-4xl font-bold mb-2">○</div>
-                    <div className="flex items-center justify-center space-x-2">
-                      <input
-                        type="text"
-                        value={answers.circle}
-                        onChange={(e) => handleInputChange('circle', e.target.value)}
-                        placeholder="?"
-                        className="w-16 h-12 text-2xl text-center border-3 border-yellow-300 rounded-2xl focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition-all font-bold bg-white shadow-inner"
-                      />
+                    <div className="flex items-center justify-center space-x-2 mb-3">
+                      <div className={`w-16 h-12 text-2xl text-center border-3 border-yellow-300 rounded-2xl flex items-center justify-center font-bold ${
+                        answers.circle ? 'bg-yellow-100' : 'bg-white'
+                      }`}>
+                        {answers.circle || '?'}
+                      </div>
                       <span className="text-lg font-bold text-gray-800">こ</span>
+                    </div>
+                    <div className="grid grid-cols-5 gap-1">
+                      {Array.from({length: 21}, (_, i) => (
+                        <button
+                          key={i}
+                          onClick={() => handleSelectionChange('circle', i.toString())}
+                          className={`w-8 h-8 text-sm font-bold rounded transition-colors ${
+                            answers.circle === i.toString()
+                              ? 'bg-yellow-500 text-white'
+                              : 'bg-gray-100 hover:bg-gray-200'
+                          }`}
+                        >
+                          {i}
+                        </button>
+                      ))}
                     </div>
                   </div>
                 </div>
 
-                {/* ◎（二重丸）の入力 */}
+                {/* ◎（二重丸）の選択 */}
                 <div className="border-2 border-gray-300 p-4 rounded-lg bg-white">
                   <div className="text-center space-y-3">
                     <div className="text-4xl font-bold mb-2">◎</div>
-                    <div className="flex items-center justify-center space-x-2">
-                      <input
-                        type="text"
-                        value={answers.doubleCircle}
-                        onChange={(e) => handleInputChange('doubleCircle', e.target.value)}
-                        placeholder="?"
-                        className="w-16 h-12 text-2xl text-center border-3 border-yellow-300 rounded-2xl focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition-all font-bold bg-white shadow-inner"
-                      />
+                    <div className="flex items-center justify-center space-x-2 mb-3">
+                      <div className={`w-16 h-12 text-2xl text-center border-3 border-yellow-300 rounded-2xl flex items-center justify-center font-bold ${
+                        answers.doubleCircle ? 'bg-yellow-100' : 'bg-white'
+                      }`}>
+                        {answers.doubleCircle || '?'}
+                      </div>
                       <span className="text-lg font-bold text-gray-800">こ</span>
+                    </div>
+                    <div className="grid grid-cols-5 gap-1">
+                      {Array.from({length: 21}, (_, i) => (
+                        <button
+                          key={i}
+                          onClick={() => handleSelectionChange('doubleCircle', i.toString())}
+                          className={`w-8 h-8 text-sm font-bold rounded transition-colors ${
+                            answers.doubleCircle === i.toString()
+                              ? 'bg-yellow-500 text-white'
+                              : 'bg-gray-100 hover:bg-gray-200'
+                          }`}
+                        >
+                          {i}
+                        </button>
+                      ))}
                     </div>
                   </div>
                 </div>
 
-                {/* ●（黒丸）の入力 */}
+                {/* ●（黒丸）の選択 */}
                 <div className="border-2 border-gray-300 p-4 rounded-lg bg-white">
                   <div className="text-center space-y-3">
                     <div className="text-4xl font-bold mb-2">●</div>
-                    <div className="flex items-center justify-center space-x-2">
-                      <input
-                        type="text"
-                        value={answers.filledCircle}
-                        onChange={(e) => handleInputChange('filledCircle', e.target.value)}
-                        placeholder="?"
-                        className="w-16 h-12 text-2xl text-center border-3 border-yellow-300 rounded-2xl focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition-all font-bold bg-white shadow-inner"
-                      />
+                    <div className="flex items-center justify-center space-x-2 mb-3">
+                      <div className={`w-16 h-12 text-2xl text-center border-3 border-yellow-300 rounded-2xl flex items-center justify-center font-bold ${
+                        answers.filledCircle ? 'bg-yellow-100' : 'bg-white'
+                      }`}>
+                        {answers.filledCircle || '?'}
+                      </div>
                       <span className="text-lg font-bold text-gray-800">こ</span>
+                    </div>
+                    <div className="grid grid-cols-5 gap-1">
+                      {Array.from({length: 21}, (_, i) => (
+                        <button
+                          key={i}
+                          onClick={() => handleSelectionChange('filledCircle', i.toString())}
+                          className={`w-8 h-8 text-sm font-bold rounded transition-colors ${
+                            answers.filledCircle === i.toString()
+                              ? 'bg-yellow-500 text-white'
+                              : 'bg-gray-100 hover:bg-gray-200'
+                          }`}
+                        >
+                          {i}
+                        </button>
+                      ))}
                     </div>
                   </div>
                 </div>
