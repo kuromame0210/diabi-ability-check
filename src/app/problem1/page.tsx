@@ -59,6 +59,7 @@ export default function Problem1() {
     heart: '',
     triangle: ''
   });
+
   const router = useRouter();
 
   // DATA SUBMISSION HANDLER:

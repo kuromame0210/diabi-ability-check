@@ -101,7 +101,7 @@ export default function Example() {
   // COMPLETION CHECK:
   // 全ての記号に回答が入力されているかチェック
   // - 現在は使用していないが、将来的に完答チェックに使用可能
-  const isAnswerComplete = answers.star && answers.heart && answers.triangle;
+  // const isAnswerComplete = answers.star && answers.heart && answers.triangle;
 
   return (
     <div className="min-h-screen bg-white flex items-center justify-center p-4 relative" style={{backgroundImage: 'url(/image/main_bg.png)', backgroundSize: 'cover', backgroundPosition: 'center'}}>

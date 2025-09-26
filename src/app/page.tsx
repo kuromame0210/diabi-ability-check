@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Background from '../components/Background';
-import SimpleCard from '../components/SimpleCard';
 
 export default function Home() {
   const [name, setName] = useState('');
@@ -40,14 +39,36 @@ export default function Home() {
 
     // COMPLETE DATA CLEANUP:
     // - 基本データ: ユーザー名、開始時刻
-    // - 回答データ: 問題1（オブジェクト形式）、問題2（配列形式）
+    // - 回答データ: 問題1-8の全ての回答データ
     // - 時刻データ: 各問題の完了時刻
+    // - 採点データ: 問題3の採点結果など
     localStorage.removeItem('userName');
-    localStorage.removeItem('problem1Answers');
-    localStorage.removeItem('problem2Answers');
     localStorage.removeItem('testStartTime');
+
+    // 問題1-2（既存）
+    localStorage.removeItem('problem1Answers');
     localStorage.removeItem('problem1Time');
+    localStorage.removeItem('problem2Answers');
     localStorage.removeItem('problem2Time');
+
+    // 問題3（記憶テスト）
+    localStorage.removeItem('problem3_answers');
+    localStorage.removeItem('problem3_score');
+    localStorage.removeItem('problem3_time');
+    localStorage.removeItem('problem3_correct_count');
+    localStorage.removeItem('problem3_total_questions');
+
+    // 問題4-8
+    localStorage.removeItem('problem4Answers');
+    localStorage.removeItem('problem4Time');
+    localStorage.removeItem('problem5Answer');
+    localStorage.removeItem('problem5Time');
+    localStorage.removeItem('problem6Answer');
+    localStorage.removeItem('problem6Time');
+    localStorage.removeItem('problem7Answers');
+    localStorage.removeItem('problem7Time');
+    localStorage.removeItem('problem8Answers');
+    localStorage.removeItem('problem8Time');
   };
 
   return (
