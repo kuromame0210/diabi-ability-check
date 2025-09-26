@@ -121,6 +121,17 @@ export default function Problem3Example() {
     }
   };
 
+  // CANCEL HANDLER:
+  // 選択中のマスの入力を削除
+  const handleCancel = () => {
+    if (selectedCell >= 0) {
+      const newAnswers = [...answers];
+      newAnswers[selectedCell] = '';
+      setAnswers(newAnswers);
+      setSelectedCell(-1); // 選択解除
+    }
+  };
+
   // ANSWER REVEAL FUNCTIONALITY:
   // 例題のため正解を表示
   const handleShowAnswers = () => {
@@ -223,6 +234,12 @@ export default function Problem3Example() {
                 <div className="text-center mb-6">
                   <div className="text-lg font-bold text-gray-800 mb-4">
                     ますをせんたくしてから、もじをせんたくしてください
+                    <br />
+                    <span className="text-sm font-normal text-red-600">
+                      ※まちがえたときは、わくをえらんで
+                      <img src="/image/torikeshi.png" alt="とりけしボタン" className="w-8 h-8 inline mx-1" />
+                      をおします
+                    </span>
                   </div>
                   {renderGrid(answers)}
                 </div>
@@ -240,6 +257,18 @@ export default function Problem3Example() {
                         {candidate}
                       </button>
                     ))}
+                    {/* 取り消しボタン */}
+                    <button
+                      onClick={handleCancel}
+                      disabled={selectedCell < 0}
+                      className="transition-transform hover:scale-105 flex-shrink-0"
+                    >
+                      <img
+                        src="/image/torikeshi.png"
+                        alt="とりけし"
+                        className={`w-12 h-12 ${selectedCell >= 0 ? 'opacity-100' : 'opacity-50'} ${selectedCell < 0 ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+                      />
+                    </button>
                   </div>
                 </div>
 

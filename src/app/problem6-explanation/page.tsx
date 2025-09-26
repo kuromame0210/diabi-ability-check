@@ -74,6 +74,17 @@ export default function Problem6Explanation() {
                   <br />
                   こたえてください
                 </div>
+
+                {/* 時間制限に関する説明 */}
+                <div className="mt-8 p-4 bg-red-50 border-2 border-red-200 rounded-lg">
+                  <div className="text-center">
+                    <h3 className="text-lg font-bold text-red-600 mb-2">⏰ じかんせいげん: 15びょう</h3>
+                    <div className="text-sm text-gray-700 space-y-1">
+                      <p>• このもんだいはじかんがみじかいです</p>
+                      <p>• じかんがきれてもとちゅうまでのこたえはきろくされます</p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
