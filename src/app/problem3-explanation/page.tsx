@@ -104,9 +104,9 @@ export default function Problem3Explanation() {
           <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
             <button
               onClick={handleNext}
-              className="px-10 py-4 rounded-lg text-xl font-bold transition-colors shadow-md bg-blue-500 hover:bg-blue-600 text-white"
+              className="transition-transform hover:scale-105"
             >
-              れいだいへ
+              <img src="/image/next.png" alt="れいだいへ" className="h-16 w-auto" />
             </button>
           </div>
         </div>

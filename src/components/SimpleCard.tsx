@@ -8,16 +8,16 @@ interface SimpleCardProps {
 export default function SimpleCard({ children, className = '' }: SimpleCardProps) {
   return (
     <div 
-      className={`bg-white rounded-xl shadow-lg border-2 border-gray-200 p-6 w-auto text-center relative z-10 ${className}`} 
+      className={`bg-white rounded-xl shadow-lg border-2 border-gray-200 p-4 w-auto text-center relative z-10 ${className}`} 
       style={{
-        width: '80vw', 
-        height: '80vh', 
-        minWidth: '1000px', 
-        minHeight: '750px'
+        width: '70vw',
+        height: '70vh',
+        minWidth: '800px',
+        minHeight: '600px'
       }}
     >
       <div 
-        className="p-6 h-full overflow-y-auto" 
+        className="p-4 h-full overflow-y-auto" 
       >
         {children}
       </div>

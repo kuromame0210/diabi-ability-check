@@ -26,3 +26,11 @@ export const ABILITY_NAMES = {
   memory: '記憶',
   cognition: '認知'
 } as const;
+
+// アビリティアイコンのマッピング
+export const ABILITY_ICONS = {
+  reading: '/image/ability/reading.png',
+  attention: '/image/ability/attention.png',
+  memory: '/image/ability/memory.png',
+  cognition: '/image/ability/cognition.png'
+} as const;

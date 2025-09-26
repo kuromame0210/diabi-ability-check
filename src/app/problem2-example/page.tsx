@@ -164,9 +164,9 @@ export default function Problem2Example() {
                     <div className="flex items-center">
                       <button
                         onClick={handleNext}
-                        className="px-8 py-4 rounded-lg text-2xl font-bold transition-colors shadow-md bg-blue-500 hover:bg-blue-600 text-white border-2 border-blue-600"
+                        className="transition-transform hover:scale-105"
                       >
-                        つぎへ
+                        <img src="/image/next.png" alt="つぎへ" className="h-16 w-auto" />
                       </button>
                     </div>
                   </div>

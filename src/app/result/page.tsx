@@ -18,6 +18,8 @@ import {
   saveUserData
 } from '@/lib/utils';
 import { UserData } from '@/types';
+import Background from '@/components/Background';
+import Card from '@/components/Card';
 
 // Chart.js を動的インポート（SSR対応）
 const RadarChart = dynamic(() => import('@/components/RadarChart'), {
@@ -31,7 +33,10 @@ const RadarChart = dynamic(() => import('@/components/RadarChart'), {
 
 export default function Result() {
   const [userData, setUserData] = useState<UserData | null>(null);
-  const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'success' | 'error'>('idle');
+  const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'success' | 'error' | 'retrying'>('idle');
+  const [isDataReady, setIsDataReady] = useState<boolean>(false);
+  const [retryCount, setRetryCount] = useState<number>(0);
+  const [backgroundSaveActive, setBackgroundSaveActive] = useState<boolean>(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -119,22 +124,65 @@ export default function Result() {
       },
     };
 
-    setUserData(userData);
-
-    // Google Sheets に保存
-    handleSaveData(userData);
+    // Google Sheets に保存完了後に結果表示
+    handleSaveDataAndShow(userData);
   }, [router]);
 
-  const handleSaveData = async (data: UserData) => {
+  const handleSaveDataAndShow = async (data: UserData) => {
     setSaveStatus('saving');
 
-    const success = await saveUserData(data);
+    try {
+      const success = await saveUserData(data);
 
-    if (success) {
-      setSaveStatus('success');
-    } else {
+      if (success) {
+        setSaveStatus('success');
+        setUserData(data);
+        setIsDataReady(true);
+      } else {
+        // 保存失敗時は結果表示しつつ裏でリトライ
+        setSaveStatus('error');
+        setUserData(data);
+        setIsDataReady(true);
+        startBackgroundRetry(data);
+      }
+    } catch (error) {
+      console.error('Save error:', error);
+      // エラー時も結果表示しつつ裏でリトライ
       setSaveStatus('error');
+      setUserData(data);
+      setIsDataReady(true);
+      startBackgroundRetry(data);
     }
+  };
+
+  const startBackgroundRetry = async (data: UserData) => {
+    setBackgroundSaveActive(true);
+    const maxRetries = 3;
+    const retryDelay = 5000; // 5秒間隔
+
+    for (let i = 1; i <= maxRetries; i++) {
+      setRetryCount(i);
+      setSaveStatus('retrying');
+
+      // 遅延
+      await new Promise(resolve => setTimeout(resolve, retryDelay));
+
+      try {
+        const success = await saveUserData(data);
+
+        if (success) {
+          setSaveStatus('success');
+          setBackgroundSaveActive(false);
+          return;
+        }
+      } catch (error) {
+        console.error(`Retry ${i} failed:`, error);
+      }
+    }
+
+    // 全てのリトライが失敗
+    setSaveStatus('error');
+    setBackgroundSaveActive(false);
   };
 
   const handleFinish = () => {
@@ -189,18 +237,76 @@ export default function Result() {
     router.push('/');
   };
 
-  if (!userData) {
+  if (!isDataReady || !userData) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="text-gray-800 text-xl">結果を計算中...</div>
-      </div>
+      <Background>
+        <Card>
+          <div className="h-full flex flex-col items-center justify-center">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-gray-800 mb-4">
+                {saveStatus === 'saving' && '📊 結果を保存中...'}
+                {saveStatus === 'success' && '✅ 保存完了！結果を表示中...'}
+                {saveStatus === 'error' && '⚠️ 保存エラーが発生しましたが、結果を表示します...'}
+                {saveStatus === 'idle' && '📋 結果を計算中...'}
+              </div>
+
+              {/* ローディングアニメーション */}
+              <div className="flex justify-center items-center">
+                <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-500"></div>
+              </div>
+
+              {/* 保存状態の詳細表示 */}
+              <div className="mt-4 text-sm text-gray-600">
+                {saveStatus === 'saving' && 'スプレッドシートにデータを保存しています...'}
+                {saveStatus === 'success' && '結果がスプレッドシートに保存されました！'}
+                {saveStatus === 'error' && 'スプレッドシートへの保存に失敗しましたが、結果は表示できます。'}
+                {saveStatus === 'idle' && 'テスト結果を準備しています...'}
+              </div>
+            </div>
+          </div>
+        </Card>
+      </Background>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white p-4 overflow-y-auto">
-      <div className="max-w-7xl mx-auto">
-        <div className="bg-white rounded-xl shadow-lg border-2 border-gray-200 p-6">
+    <Background>
+      <Card>
+        <div className="h-full flex flex-col">
+          {/* リトライ状態通知バー */}
+          {backgroundSaveActive && (
+            <div className="mb-4 p-3 bg-blue-50 border-l-4 border-blue-500 rounded">
+              <div className="flex items-center">
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500 mr-3"></div>
+                <span className="text-sm font-medium text-blue-700">
+                  {saveStatus === 'retrying' && `データ保存を再試行中... (${retryCount}/3)`}
+                </span>
+              </div>
+            </div>
+          )}
+
+          {/* 保存成功通知 */}
+          {saveStatus === 'success' && !backgroundSaveActive && (
+            <div className="mb-4 p-3 bg-green-50 border-l-4 border-green-500 rounded">
+              <div className="flex items-center">
+                <span className="text-sm font-medium text-green-700">
+                  ✅ データがスプレッドシートに保存されました！
+                </span>
+              </div>
+            </div>
+          )}
+
+          {/* 最終保存失敗通知 */}
+          {saveStatus === 'error' && !backgroundSaveActive && (
+            <div className="mb-4 p-3 bg-red-50 border-l-4 border-red-500 rounded">
+              <div className="flex items-center">
+                <span className="text-sm font-medium text-red-700">
+                  ⚠️ データの保存に失敗しました。結果は表示されています。
+                </span>
+              </div>
+            </div>
+          )}
+
           <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">
             けっか
           </h2>
@@ -219,116 +325,34 @@ export default function Result() {
                 </div>
               </div>
 
-              {/* 問題別結果 */}
-              <div className="space-y-3">
-                <h3 className="text-xl font-bold text-gray-800 text-center">📊 もんだいべつけっか</h3>
-                <div className="grid grid-cols-4 gap-2">
-                  <div className="border border-gray-300 p-2 text-center">
-                    <h4 className="text-sm font-bold text-gray-800 mb-1">もんだい１</h4>
-                    <div className={`text-2xl font-bold ${
-                      userData.scores.problem1 > 0 ? 'text-green-500' : 'text-red-500'
-                    }`}>
-                      {userData.scores.problem1 > 0 ? '😊' : '😢'}
-                    </div>
-                    <div className="text-xs font-bold text-gray-700 mt-1">
-                      {userData.scores.problem1}/2.5点
-                    </div>
-                  </div>
-                  <div className="border border-gray-300 p-2 text-center">
-                    <h4 className="text-sm font-bold text-gray-800 mb-1">もんだい２</h4>
-                    <div className={`text-2xl font-bold ${
-                      userData.scores.problem2 > 0 ? 'text-green-500' : 'text-red-500'
-                    }`}>
-                      {userData.scores.problem2 > 0 ? '😊' : '😢'}
-                    </div>
-                    <div className="text-xs font-bold text-gray-700 mt-1">
-                      {userData.scores.problem2}/2.5点
-                    </div>
-                  </div>
-                  <div className="border border-gray-300 p-2 text-center">
-                    <h4 className="text-sm font-bold text-gray-800 mb-1">もんだい３</h4>
-                    <div className={`text-2xl font-bold ${
-                      userData.scores.problem3 > 0 ? 'text-green-500' : 'text-red-500'
-                    }`}>
-                      {userData.scores.problem3 > 0 ? '😊' : '😢'}
-                    </div>
-                    <div className="text-xs font-bold text-gray-700 mt-1">
-                      {userData.scores.problem3}/2.5点
-                    </div>
-                  </div>
-                  <div className="border border-gray-300 p-2 text-center">
-                    <h4 className="text-sm font-bold text-gray-800 mb-1">もんだい４</h4>
-                    <div className={`text-2xl font-bold ${
-                      userData.scores.problem4 > 0 ? 'text-green-500' : 'text-red-500'
-                    }`}>
-                      {userData.scores.problem4 > 0 ? '😊' : '😢'}
-                    </div>
-                    <div className="text-xs font-bold text-gray-700 mt-1">
-                      {userData.scores.problem4}/2.5点
-                    </div>
-                  </div>
-                  <div className="border border-gray-300 p-2 text-center">
-                    <h4 className="text-sm font-bold text-gray-800 mb-1">もんだい５</h4>
-                    <div className={`text-2xl font-bold ${
-                      userData.scores.problem5 > 0 ? 'text-green-500' : 'text-red-500'
-                    }`}>
-                      {userData.scores.problem5 > 0 ? '😊' : '😢'}
-                    </div>
-                    <div className="text-xs font-bold text-gray-700 mt-1">
-                      {userData.scores.problem5}/2.5点
-                    </div>
-                  </div>
-                  <div className="border border-gray-300 p-2 text-center">
-                    <h4 className="text-sm font-bold text-gray-800 mb-1">もんだい６</h4>
-                    <div className={`text-2xl font-bold ${
-                      userData.scores.problem6 > 0 ? 'text-green-500' : 'text-red-500'
-                    }`}>
-                      {userData.scores.problem6 > 0 ? '😊' : '😢'}
-                    </div>
-                    <div className="text-xs font-bold text-gray-700 mt-1">
-                      {userData.scores.problem6}/2.5点
-                    </div>
-                  </div>
-                  <div className="border border-gray-300 p-2 text-center">
-                    <h4 className="text-sm font-bold text-gray-800 mb-1">もんだい７</h4>
-                    <div className={`text-2xl font-bold ${
-                      userData.scores.problem7 > 0 ? 'text-green-500' : 'text-red-500'
-                    }`}>
-                      {userData.scores.problem7 > 0 ? '😊' : '😢'}
-                    </div>
-                    <div className="text-xs font-bold text-gray-700 mt-1">
-                      {userData.scores.problem7}/2.5点
-                    </div>
-                  </div>
-                  <div className="border border-gray-300 p-2 text-center">
-                    <h4 className="text-sm font-bold text-gray-800 mb-1">もんだい８</h4>
-                    <div className={`text-2xl font-bold ${
-                      userData.scores.problem8 > 0 ? 'text-green-500' : 'text-red-500'
-                    }`}>
-                      {userData.scores.problem8 > 0 ? '😊' : '😢'}
-                    </div>
-                    <div className="text-xs font-bold text-gray-700 mt-1">
-                      {userData.scores.problem8}/2.5点
-                    </div>
-                  </div>
-                </div>
-              </div>
 
               {/* アビリティ分析 */}
               <div className="space-y-3">
                 <h3 className="text-xl font-bold text-gray-800 text-center">きみのとくちょう</h3>
                 <div className="space-y-3">
                   <div className="border border-gray-300 p-3 text-center">
-                    <h4 className="text-lg font-bold text-gray-800 mb-2">🌟 とくい分野</h4>
-                    <p className="text-lg font-bold text-green-600">
-                      {userData.analysis.strongest}
-                    </p>
+                    <h4 className="text-lg font-bold text-gray-800 mb-2">とくい分野</h4>
+                    <div className="text-lg font-bold text-green-600">
+                      {userData.analysis.strongest.length === 4 ? (
+                        <div className="flex items-center justify-center gap-2">
+                          <span>すべての分野が得意です！</span>
+                        </div>
+                      ) : (
+                        userData.analysis.strongest.map((field, index) => (
+                          <div key={index} className="flex items-center justify-center gap-2 mb-1">
+                            <img src={field.icon} alt={field.name} className="w-6 h-6" />
+                            <span>{field.name}が得意です！</span>
+                          </div>
+                        ))
+                      )}
+                    </div>
                   </div>
                   <div className="border border-gray-300 p-3 text-center">
                     <h4 className="text-lg font-bold text-gray-800 mb-2">のびしろ</h4>
-                    <p className="text-lg font-bold text-blue-600">
-                      {userData.analysis.weakest}
-                    </p>
+                    <div className="text-lg font-bold text-blue-600 flex items-center justify-center gap-2">
+                      <img src={userData.analysis.weakest.icon} alt="のびしろ" className="w-6 h-6" />
+                      <span>{userData.analysis.weakest.name}をもっと伸ばしましょう</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -339,51 +363,27 @@ export default function Result() {
               <h3 className="text-xl font-bold text-gray-800 pb-4 mb-4 border-b border-gray-200 text-center">
                 📈 アビリティグラフ
               </h3>
-              <div className="h-80 mt-2">
+              <div className="mt-2">
                 <RadarChart abilities={userData.abilities} />
               </div>
             </div>
           </div>
 
 
-          {/* 保存状態表示 */}
-          <div className="text-center mb-4 mt-4">
-            {saveStatus === 'saving' && (
-              <div className="text-blue-700 font-bold py-2 px-4 text-sm">
-                💾 データを保存しています...
-              </div>
-            )}
-            {saveStatus === 'success' && (
-              <div className="text-green-700 font-bold py-2 px-4 text-sm">
-                ✅ データが保存されました！
-              </div>
-            )}
-            {saveStatus === 'error' && (
-              <div className="text-red-700 font-bold py-2 px-4 text-sm">
-                データの保存に失敗しました
-              </div>
-            )}
-          </div>
 
           {/* ボタンエリア */}
           <div className="text-center">
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <div className="flex flex-col sm:flex-row gap-3 justify-center pt-4">
               <button
                 onClick={handleReset}
                 className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-4 px-8 rounded-lg text-xl transition-colors shadow-md"
               >
                 さいしょから
               </button>
-              <button
-                onClick={handleFinish}
-                className="bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-10 rounded-lg text-xl transition-colors shadow-md"
-              >
-                🏁 おわり
-              </button>
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </Card>
+    </Background>
   );
 }

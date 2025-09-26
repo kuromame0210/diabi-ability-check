@@ -10,36 +10,36 @@ export default function Card({ children, className = '' }: CardProps) {
     <div 
       className={`text-center relative z-10 ${className}`} 
       style={{
-        width: '85vw', 
-        height: '85vh', 
-        minWidth: '1100px', 
-        minHeight: '820px', 
-        backgroundImage: 'url(/image/card_bg.png)', 
-        backgroundSize: '100% 100%', 
-        backgroundRepeat: 'no-repeat', 
+        width: '85vw',
+        height: '90vh',
+        minWidth: '1000px',
+        minHeight: '800px',
+        backgroundImage: 'url(/image/card_bg.png)',
+        backgroundSize: '100% 100%',
+        backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center'
       }}
     >
       <div 
         className="absolute" 
         style={{
-          top: '30px', 
-          left: '30px', 
-          right: '30px', 
-          bottom: '30px', 
-          backgroundImage: 'url(/image/border-orange.png)', 
-          backgroundSize: '100% 100%', 
-          backgroundRepeat: 'no-repeat', 
+          top: '20px',
+          left: '20px',
+          right: '20px',
+          bottom: '20px',
+          backgroundImage: 'url(/image/border-orange.png)',
+          backgroundSize: '100% 100%',
+          backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center'
         }}
       ></div>
-      <div 
-        className="absolute z-20 px-6" 
+      <div
+        className="absolute z-20 px-6 overflow-y-auto"
         style={{
-          top: '60px', 
-          left: '60px', 
-          right: '60px', 
-          bottom: '60px'
+          top: '40px',
+          left: '40px',
+          right: '40px',
+          bottom: '40px'
         }}
       >
         {children}

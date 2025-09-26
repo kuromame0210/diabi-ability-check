@@ -13,6 +13,7 @@ import {
 } from 'chart.js';
 import { Radar } from 'react-chartjs-2';
 import { UserData } from '@/types';
+import { ABILITY_NAMES, ABILITY_ICONS } from '@/lib/constants';
 
 ChartJS.register(
   RadialLinearScale,
@@ -28,8 +29,10 @@ interface RadarChartProps {
 }
 
 export default function RadarChart({ abilities }: RadarChartProps) {
+  const abilityKeys = ['reading', 'attention', 'memory', 'cognition'] as const;
+
   const data = {
-    labels: ['読解', '集中・注意', '記憶', '認知'],
+    labels: ['', '', '', ''], // ラベルを空にしてアイコンを外に配置
     datasets: [
       {
         label: 'アビリティスコア',
@@ -54,6 +57,14 @@ export default function RadarChart({ abilities }: RadarChartProps) {
   const options = {
     responsive: true,
     maintainAspectRatio: false,
+    layout: {
+      padding: {
+        top: 40,
+        right: 40,
+        bottom: 40,
+        left: 40
+      }
+    },
     scales: {
       r: {
         angleLines: {
@@ -63,11 +74,7 @@ export default function RadarChart({ abilities }: RadarChartProps) {
         suggestedMin: 0,
         suggestedMax: 5,
         pointLabels: {
-          font: {
-            size: 16,
-            weight: 'bold' as const,
-          },
-          color: '#374151',
+          display: false, // ラベルを非表示
         },
         ticks: {
           display: true,
@@ -92,7 +99,9 @@ export default function RadarChart({ abilities }: RadarChartProps) {
         bodyColor: '#fff',
         callbacks: {
           label: function(tooltipItem: TooltipItem<'radar'>) {
-            return `${tooltipItem.label}: ${(tooltipItem.raw as number).toFixed(1)}`;
+            const abilityKey = abilityKeys[tooltipItem.dataIndex];
+            const abilityName = ABILITY_NAMES[abilityKey];
+            return `${abilityName}: ${(tooltipItem.raw as number).toFixed(1)}`;
           },
         },
       },
@@ -105,8 +114,38 @@ export default function RadarChart({ abilities }: RadarChartProps) {
   };
 
   return (
-    <div className="w-full h-80 md:h-96">
-      <Radar data={data} options={options} />
+    <div className="w-full h-96 md:h-[450px] relative">
+      {/* レーダーチャート */}
+      <div className="w-full h-full">
+        <Radar data={data} options={options} />
+      </div>
+
+      {/* カスタムラベル（アイコン付き） */}
+      <div className="absolute inset-0 pointer-events-none">
+        {/* 上（12時方向）: 読解 */}
+        <div className="absolute top-2 left-1/2 transform -translate-x-1/2 flex flex-col items-center">
+          <img src={ABILITY_ICONS.reading} alt="読解" className="w-8 h-8 mb-1" />
+          <span className="text-sm font-bold text-gray-700">読解</span>
+        </div>
+
+        {/* 右（3時方向）: 集中・注意 */}
+        <div className="absolute top-1/2 right-2 transform -translate-y-1/2 flex flex-col items-center">
+          <img src={ABILITY_ICONS.attention} alt="集中・注意" className="w-8 h-8 mb-1" />
+          <span className="text-xs font-bold text-gray-700">集中・注意</span>
+        </div>
+
+        {/* 下（6時方向）: 記憶 */}
+        <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex flex-col items-center">
+          <img src={ABILITY_ICONS.memory} alt="記憶" className="w-8 h-8 mb-1" />
+          <span className="text-sm font-bold text-gray-700">記憶</span>
+        </div>
+
+        {/* 左（9時方向）: 認知 */}
+        <div className="absolute top-1/2 left-2 transform -translate-y-1/2 flex flex-col items-center">
+          <img src={ABILITY_ICONS.cognition} alt="認知" className="w-8 h-8 mb-1" />
+          <span className="text-sm font-bold text-gray-700">認知</span>
+        </div>
+      </div>
     </div>
   );
 }

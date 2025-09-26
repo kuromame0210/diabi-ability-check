@@ -1,4 +1,4 @@
-import { ABILITY_NAMES, PROBLEM1_ANSWERS, PROBLEM2_PATTERNS } from './constants';
+import { ABILITY_NAMES, ABILITY_ICONS, PROBLEM1_ANSWERS, PROBLEM2_PATTERNS } from './constants';
 import { AbilityAnalysis, UserData } from '@/types';
 
 // 問題1の採点
@@ -137,12 +137,32 @@ export function calculateAbilities(problem1Score: number, problem2Score: number,
 // アビリティ分析
 export function analyzeAbilities(abilities: UserData['abilities']): AbilityAnalysis {
   const entries = Object.entries(abilities);
-  const strongest = entries.reduce((a, b) => a[1] > b[1] ? a : b);
-  const weakest = entries.reduce((a, b) => a[1] < b[1] ? a : b);
+  const maxValue = Math.max(...entries.map(([, value]) => value));
+  const minValue = Math.min(...entries.map(([, value]) => value));
+
+  // 最高値と同じ値を持つ全ての分野を取得
+  const strongestEntries = entries.filter(([, value]) => Math.abs(value - maxValue) < 0.1);
+  const weakestEntry = entries.find(([, value]) => Math.abs(value - minValue) < 0.1);
+
+  // 全問正解の場合（全分野が4.5以上）は全分野を得意とする
+  const allHigh = entries.every(([, value]) => value >= 4.5);
+
+  const strongestNames = allHigh
+    ? entries.map(([key]) => ({
+        name: ABILITY_NAMES[key as keyof typeof ABILITY_NAMES],
+        icon: ABILITY_ICONS[key as keyof typeof ABILITY_ICONS]
+      }))
+    : strongestEntries.map(([key]) => ({
+        name: ABILITY_NAMES[key as keyof typeof ABILITY_NAMES],
+        icon: ABILITY_ICONS[key as keyof typeof ABILITY_ICONS]
+      }));
 
   return {
-    strongest: `${ABILITY_NAMES[strongest[0] as keyof typeof ABILITY_NAMES]}が得意です！`,
-    weakest: `${ABILITY_NAMES[weakest[0] as keyof typeof ABILITY_NAMES]}をもっと伸ばしましょう`
+    strongest: strongestNames,
+    weakest: {
+      name: ABILITY_NAMES[weakestEntry![0] as keyof typeof ABILITY_NAMES],
+      icon: ABILITY_ICONS[weakestEntry![0] as keyof typeof ABILITY_ICONS]
+    }
   };
 }
 

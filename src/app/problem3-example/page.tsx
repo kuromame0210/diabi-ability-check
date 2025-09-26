@@ -295,9 +295,9 @@ export default function Problem3Example() {
                       </div>
                       <button
                         onClick={handleNext}
-                        className="px-8 py-4 rounded-lg text-xl font-bold transition-colors shadow-md bg-blue-500 hover:bg-blue-600 text-white"
+                        className="transition-transform hover:scale-105"
                       >
-                        つぎへ
+                        <img src="/image/next.png" alt="つぎへ" className="h-16 w-auto" />
                       </button>
                     </div>
                   )}
