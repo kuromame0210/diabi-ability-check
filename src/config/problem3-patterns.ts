@@ -52,7 +52,7 @@ export const PROBLEM3_TIMERS = {
 // 採点設定
 export const PROBLEM3_SCORING = {
   TOTAL_SCORE: 2.5,    // 問題3の満点
-  REQUIRED_CORRECT: 3   // 満点に必要な正解数
+  REQUIRED_CORRECT: 5   // 満点に必要な正解数（5つ全て正解）
 };
 
 /**

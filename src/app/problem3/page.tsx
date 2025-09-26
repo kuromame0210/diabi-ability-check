@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Card from '../../components/Card';
 import ProblemTitle from '../../components/ProblemTitle';
@@ -70,6 +70,26 @@ export default function Problem3() {
   
   const router = useRouter();
 
+  // SUBMISSION HANDLER:
+  // 回答完了時の処理（手動完了 or 時間切れ）
+  const handleSubmit = useCallback(() => {
+    const endTime = Date.now();
+    const responseTime = startTime > 0 ? Math.round((endTime - startTime) / 1000) : PROBLEM3_TIMERS.INPUT_TIME;
+
+    // 採点処理
+    const result = calculateScore();
+
+    // localStorageに保存
+    localStorage.setItem('problem3_answers', JSON.stringify(result.answers));
+    localStorage.setItem('problem3_score', result.score.toString());
+    localStorage.setItem('problem3_time', responseTime.toString());
+    localStorage.setItem('problem3_correct_count', result.correctCount.toString());
+    localStorage.setItem('problem3_total_questions', result.totalQuestions.toString());
+
+    // 問題4説明ページへ遷移
+    router.push('/problem4-explanation');
+  }, [startTime, answers, router]);
+
   // TIMER EFFECT:
   // 各段階のタイマー制御
   useEffect(() => {
@@ -109,7 +129,7 @@ export default function Problem3() {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [stage]);
+  }, [stage, handleSubmit]);
 
   // CELL SELECTION HANDLER:
   // 9マスのうちどのマスを選択中かを管理
@@ -143,44 +163,32 @@ export default function Problem3() {
   // 回答を採点して結果をlocalStorageに保存
   const calculateScore = () => {
     let correctCount = 0;
-    
-    // 各位置の正解チェック
+
+    // 空白以外の位置のみを採点対象とする
     for (let i = 0; i < MAIN_PATTERN.length; i++) {
-      if (answers[i] === MAIN_PATTERN[i]) {
+      // 正解パターンが空白でない位置のみチェック
+      if (MAIN_PATTERN[i] !== '' && answers[i] === MAIN_PATTERN[i]) {
         correctCount++;
       }
     }
-    
-    // 3問以上正解で2.5点、それ以下は0点
-    const score = correctCount >= PROBLEM3_SCORING.REQUIRED_CORRECT ? PROBLEM3_SCORING.TOTAL_SCORE : 0;
-    
+
+    // 部分点システム：5つ全て正解で2.5点、3つ正解で1点、それ以下は0点
+    let score = 0;
+    if (correctCount === 5) {
+      score = 2.5;
+    } else if (correctCount === 3) {
+      score = 1;
+    } else {
+      score = 0;
+    }
+
     return {
       score,
       correctCount,
-      totalQuestions: MAIN_PATTERN.filter(item => item !== '').length,
+      totalQuestions: MAIN_PATTERN.filter(item => item !== '').length, // 空白以外の問題数（5つ）
       answers: [...answers],
       correctAnswers: [...MAIN_PATTERN]
     };
-  };
-
-  // SUBMISSION HANDLER:
-  // 回答完了時の処理（手動完了 or 時間切れ）
-  const handleSubmit = () => {
-    const endTime = Date.now();
-    const responseTime = startTime > 0 ? Math.round((endTime - startTime) / 1000) : PROBLEM3_TIMERS.INPUT_TIME;
-    
-    // 採点処理
-    const result = calculateScore();
-    
-    // localStorageに保存
-    localStorage.setItem('problem3_answers', JSON.stringify(result.answers));
-    localStorage.setItem('problem3_score', result.score.toString());
-    localStorage.setItem('problem3_time', responseTime.toString());
-    localStorage.setItem('problem3_correct_count', result.correctCount.toString());
-    localStorage.setItem('problem3_total_questions', result.totalQuestions.toString());
-    
-    // 問題4説明ページへ遷移
-    router.push('/problem4-explanation');
   };
 
   // GRID RENDERING HELPER:

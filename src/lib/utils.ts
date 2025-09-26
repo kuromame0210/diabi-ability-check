@@ -33,15 +33,15 @@ export function scoreProblem3(score: number): number {
 
 // 問題4の採点
 export function scoreProblem4(answers: number[]): number {
-  // 問題4の正解（1-8の範囲で仮設定 - 実際の画像に合わせて後で更新）
-  const correctAnswers = [4, 7, 3, 6, 5]; // mondai1.png ～ mondai5.png の正解（1-8範囲）
-  
+  // 問題4の正解（mondai1.png ～ mondai5.png の正解）
+  const correctAnswers = [3, 5, 4, 6, 7];
+
   const correctCount = answers.reduce((count, answer, index) => {
     return count + (answer === correctAnswers[index] ? 1 : 0);
   }, 0);
 
   if (correctCount === 5) return 2.5;
-  if (correctCount >= 3) return 1;
+  if (correctCount === 3) return 1;
   return 0;
 }
 
@@ -127,10 +127,17 @@ export function calculateAbilities(problem1Score: number, problem2Score: number,
   const base8 = problem8Score / 2.5;
 
   return {
-    reading: Math.min(5, Math.max(0, (base1 * 0.25 + base5 * 0.18 + base2 * 0.12 + base6 * 0.1 + base7 * 0.12 + base8 * 0.15 + base3 * 0.04 + base4 * 0.04) * 5 + (Math.random() - 0.5))),
-    attention: Math.min(5, Math.max(0, (base2 * 0.18 + base4 * 0.18 + base6 * 0.15 + base7 * 0.2 + base8 * 0.2 + base5 * 0.06 + base1 * 0.015 + base3 * 0.015) * 5 + (Math.random() - 0.5))),
-    memory: Math.min(5, Math.max(0, (base3 * 0.3 + base8 * 0.2 + base4 * 0.15 + base6 * 0.1 + base7 * 0.12 + base5 * 0.08 + base1 * 0.025 + base2 * 0.025) * 5 + (Math.random() - 0.5))),
-    cognition: Math.min(5, Math.max(0, (base1 * 0.12 + base5 * 0.12 + base6 * 0.12 + base7 * 0.15 + base8 * 0.25 + base2 * 0.1 + base3 * 0.09 + base4 * 0.05) * 5 + (Math.random() - 0.5)))
+    // 読解: 問題1,2が主体（各50%）
+    reading: Math.min(5, Math.max(0, (base1 * 0.5 + base2 * 0.5) * 5 + (Math.random() - 0.5) * 0.1)),
+
+    // 集中・注意: 問題7,8が主体（各50%）
+    attention: Math.min(5, Math.max(0, (base7 * 0.5 + base8 * 0.5) * 5 + (Math.random() - 0.5) * 0.1)),
+
+    // 記憶: 問題3,4が主体（各50%）
+    memory: Math.min(5, Math.max(0, (base3 * 0.5 + base4 * 0.5) * 5 + (Math.random() - 0.5) * 0.1)),
+
+    // 認知: 問題5,6が主体（各50%）
+    cognition: Math.min(5, Math.max(0, (base5 * 0.5 + base6 * 0.5) * 5 + (Math.random() - 0.5) * 0.1))
   };
 }
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import {
@@ -17,6 +17,7 @@ import {
   getCurrentDateTime,
   saveUserData
 } from '@/lib/utils';
+import { getAllProblemAbilities } from '@/lib/problem-abilities';
 import { UserData } from '@/types';
 import Background from '@/components/Background';
 import Card from '@/components/Card';
@@ -37,6 +38,7 @@ export default function Result() {
   const [isDataReady, setIsDataReady] = useState<boolean>(false);
   const [retryCount, setRetryCount] = useState<number>(0);
   const [backgroundSaveActive, setBackgroundSaveActive] = useState<boolean>(false);
+  const [showDebugInfo, setShowDebugInfo] = useState<boolean>(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -128,7 +130,7 @@ export default function Result() {
     handleSaveDataAndShow(userData);
   }, [router]);
 
-  const handleSaveDataAndShow = async (data: UserData) => {
+  const handleSaveDataAndShow = useCallback(async (data: UserData) => {
     setSaveStatus('saving');
 
     try {
@@ -153,7 +155,7 @@ export default function Result() {
       setIsDataReady(true);
       startBackgroundRetry(data);
     }
-  };
+  }, []);
 
   const startBackgroundRetry = async (data: UserData) => {
     setBackgroundSaveActive(true);
@@ -185,31 +187,31 @@ export default function Result() {
     setBackgroundSaveActive(false);
   };
 
-  const handleFinish = () => {
-    // ローカルストレージをクリア
-    localStorage.removeItem('userName');
-    localStorage.removeItem('problem1Answers');
-    localStorage.removeItem('problem2Answers');
-    localStorage.removeItem('problem3_answers');
-    localStorage.removeItem('problem3_score');
-    localStorage.removeItem('problem3_time');
-    localStorage.removeItem('problem4Answers');
-    localStorage.removeItem('problem4Time');
-    localStorage.removeItem('problem5Answer');
-    localStorage.removeItem('problem5Time');
-    localStorage.removeItem('problem6Answer');
-    localStorage.removeItem('problem6Time');
-    localStorage.removeItem('problem7Answers');
-    localStorage.removeItem('problem7Time');
-    localStorage.removeItem('problem8Answers');
-    localStorage.removeItem('problem8Time');
-    localStorage.removeItem('testStartTime');
-    localStorage.removeItem('problem1Time');
-    localStorage.removeItem('problem2Time');
+  // const handleFinish = () => {
+  //   // ローカルストレージをクリア
+  //   localStorage.removeItem('userName');
+  //   localStorage.removeItem('problem1Answers');
+  //   localStorage.removeItem('problem2Answers');
+  //   localStorage.removeItem('problem3_answers');
+  //   localStorage.removeItem('problem3_score');
+  //   localStorage.removeItem('problem3_time');
+  //   localStorage.removeItem('problem4Answers');
+  //   localStorage.removeItem('problem4Time');
+  //   localStorage.removeItem('problem5Answer');
+  //   localStorage.removeItem('problem5Time');
+  //   localStorage.removeItem('problem6Answer');
+  //   localStorage.removeItem('problem6Time');
+  //   localStorage.removeItem('problem7Answers');
+  //   localStorage.removeItem('problem7Time');
+  //   localStorage.removeItem('problem8Answers');
+  //   localStorage.removeItem('problem8Time');
+  //   localStorage.removeItem('testStartTime');
+  //   localStorage.removeItem('problem1Time');
+  //   localStorage.removeItem('problem2Time');
 
-    // トップページに戻る
-    router.push('/');
-  };
+  //   // トップページに戻る
+  //   router.push('/');
+  // };
 
   const handleReset = () => {
     // ローカルストレージをクリア（最初からやり直し）
@@ -326,6 +328,7 @@ export default function Result() {
               </div>
 
 
+
               {/* アビリティ分析 */}
               <div className="space-y-3">
                 <h3 className="text-xl font-bold text-gray-800 text-center">きみのとくちょう</h3>
@@ -369,7 +372,122 @@ export default function Result() {
             </div>
           </div>
 
+          {/* 問題別結果詳細 */}
+          {showDebugInfo && userData && (
+            <div className="mt-6 p-6 bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-xl shadow-lg">
+              <h3 className="text-2xl font-bold text-blue-800 mb-6 text-center flex items-center justify-center gap-2">
+                📊 問題別結果詳細
+              </h3>
 
+              {/* 問題別カード表示 */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                {Object.entries(userData.scores).filter(([key]) => key.startsWith('problem')).map(([key, score]) => {
+                  const problemNum = key.replace('problem', '');
+                  const abilities = getAllProblemAbilities();
+                  const problemAbilities = abilities[key];
+                  const answer = userData.answers[key as keyof typeof userData.answers];
+
+                  return (
+                    <div key={key} className="bg-white border-2 border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
+                      <div className="text-center mb-3">
+                        <h4 className="text-lg font-bold text-gray-800">問題{problemNum}</h4>
+                        <div className="text-2xl font-bold text-blue-600 my-2">
+                          {score}/2.5点
+                        </div>
+
+                        {/* アビリティ表示 */}
+                        {problemAbilities?.primary && (
+                          <div className="flex items-center justify-center gap-2 mb-2">
+                            <img src={problemAbilities.primary.icon} alt={problemAbilities.primary.name} className="w-5 h-5" />
+                            <span className="text-sm font-medium text-gray-600">{problemAbilities.primary.name}</span>
+                          </div>
+                        )}
+
+                        {/* 得点バー */}
+                        <div className="w-full bg-gray-200 rounded-full h-2 mb-3">
+                          <div
+                            className={`h-2 rounded-full transition-all ${
+                              score === 2.5 ? 'bg-green-500' :
+                              score === 1 ? 'bg-yellow-500' : 'bg-red-400'
+                            }`}
+                            style={{ width: `${(score / 2.5) * 100}%` }}
+                          ></div>
+                        </div>
+                      </div>
+
+                      {/* 回答データ */}
+                      <div className="bg-gray-50 rounded p-2">
+                        <div className="text-xs font-semibold text-gray-600 mb-1">回答:</div>
+                        <div className="text-xs font-mono text-gray-800 break-all">
+                          {typeof answer === 'object' ? JSON.stringify(answer, null, 1) : String(answer)}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* サマリー情報 */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* アビリティスコア */}
+                <div className="bg-white border-2 border-gray-200 rounded-lg p-4">
+                  <h4 className="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">
+                    🎯 アビリティスコア
+                  </h4>
+                  <div className="space-y-3">
+                    {Object.entries(userData.abilities).map(([ability, score]) => {
+                      const abilityNames = {
+                        reading: '読解',
+                        attention: '集中・注意',
+                        memory: '記憶',
+                        cognition: '認知'
+                      };
+                      const abilityName = abilityNames[ability as keyof typeof abilityNames];
+
+                      return (
+                        <div key={ability} className="flex items-center justify-between">
+                          <span className="font-medium text-gray-700">{abilityName}:</span>
+                          <div className="flex items-center gap-2">
+                            <div className="w-20 bg-gray-200 rounded-full h-2">
+                              <div
+                                className="bg-blue-500 h-2 rounded-full transition-all"
+                                style={{ width: `${(score / 5) * 100}%` }}
+                              ></div>
+                            </div>
+                            <span className="font-mono text-sm font-bold text-blue-600">
+                              {score.toFixed(2)}/5.0
+                            </span>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* 合計スコア */}
+                <div className="bg-white border-2 border-gray-200 rounded-lg p-4">
+                  <h4 className="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">
+                    📈 スコアサマリー
+                  </h4>
+                  <div className="text-center">
+                    <div className="text-4xl font-bold text-green-600 mb-2">
+                      {userData.scores.total}/20
+                    </div>
+                    <div className="text-lg text-gray-600 mb-4">合計得点</div>
+                    <div className="w-full bg-gray-200 rounded-full h-4">
+                      <div
+                        className="bg-gradient-to-r from-green-400 to-green-600 h-4 rounded-full transition-all"
+                        style={{ width: `${(userData.scores.total / 20) * 100}%` }}
+                      ></div>
+                    </div>
+                    <div className="text-sm text-gray-600 mt-2">
+                      正答率: {((userData.scores.total / 20) * 100).toFixed(1)}%
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* ボタンエリア */}
           <div className="text-center">
@@ -379,6 +497,13 @@ export default function Result() {
                 className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-4 px-8 rounded-lg text-xl transition-colors shadow-md"
               >
                 さいしょから
+              </button>
+              {/* 詳細結果切り替えボタン */}
+              <button
+                onClick={() => setShowDebugInfo(!showDebugInfo)}
+                className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg text-base transition-colors shadow-md"
+              >
+                {showDebugInfo ? '詳細を非表示' : '詳細結果を見る'}
               </button>
             </div>
           </div>
