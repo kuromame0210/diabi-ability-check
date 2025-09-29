@@ -143,14 +143,14 @@ export default function Problem2() {
             additionalInfo={`のこり: ${timeLeft}びょう`}
           />
 
-          <p className="text-lg text-red-600 mb-6 text-center font-bold py-2">
+          <p className="text-base text-red-600 mb-2 text-center font-bold py-1">
             ※ゆびですうじをなぞらずめだけでみつけてください
           </p>
 
           {/* 5問を同時表示 */}
-          <div className="space-y-3">
+          <div className="space-y-1">
             {PROBLEM2_PATTERNS.map((pattern, index) => (
-              <div key={index} className="border-2 border-gray-300 p-4 mb-4">
+              <div key={index} className="border-2 border-gray-300 p-2 mb-1">
                 <div className="flex gap-4 items-center">
                   {/* 問題番号 */}
                   <div className="text-center flex-shrink-0">
@@ -160,19 +160,19 @@ export default function Problem2() {
                   </div>
 
                   {/* 数字表示エリア */}
-                  <div className="border-2 border-gray-400 p-4 text-center flex-grow">
-                    <div className="text-2xl font-bold tracking-wider text-gray-800 font-mono whitespace-nowrap">
+                  <div className="border-2 border-gray-400 p-2 text-center flex-grow">
+                    <div className="text-xl font-bold tracking-wider text-gray-800 font-mono whitespace-nowrap">
                       {pattern.numbers.join('  ')}
                     </div>
                   </div>
 
                   {/* 回答エリア */}
                   <div className="flex items-center space-x-3 flex-shrink-0">
-                    <label className="text-lg font-bold text-gray-800">こたえ:</label>
+                    <label className="text-base font-bold text-gray-800">こたえ:</label>
                     <select
                       value={answers[index]}
                       onChange={(e) => handleInputChange(index, e.target.value)}
-                      className="w-16 h-12 text-2xl text-center border-3 border-yellow-300 rounded-2xl focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition-all font-bold bg-white shadow-inner"
+                      className="w-14 h-10 text-xl text-center border-3 border-yellow-300 rounded-2xl focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition-all font-bold bg-white shadow-inner"
                     >
                       <option value="">?</option>
                       <option value="0">0</option>
@@ -193,11 +193,11 @@ export default function Problem2() {
           </div>
 
           {/* 送信ボタン */}
-          <div className="text-center mt-6">
+          <div className="text-center mt-3">
             <button
               onClick={handleSubmit}
               disabled={!isAllAnswered}
-              className={`px-12 py-4 rounded-lg text-xl font-bold transition-colors shadow-md ${
+              className={`px-8 py-3 rounded-lg text-lg font-bold transition-colors shadow-md ${
                 isAllAnswered
                   ? 'bg-green-500 hover:bg-green-600 text-white'
                   : 'bg-gray-300 text-gray-500 cursor-not-allowed'

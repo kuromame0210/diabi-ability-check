@@ -149,8 +149,15 @@ export default function Problem1() {
             additionalInfo={`のこり: ${timeLeft}びょう`}
           />
 
+          {/* 制限時間表示 */}
+          <div className="text-center mb-4">
+            <p className="text-xl text-gray-700 font-bold">
+              （こたえるじかん：30びょう）
+            </p>
+          </div>
+
           {/* 画像と回答エリアを横並び */}
-          <div className="grid lg:grid-cols-2 gap-6 items-start" style={{height: '70%'}}>
+          <div className="grid lg:grid-cols-2 gap-6 items-start" style={{height: '70%', display: 'flex', justifyContent: 'center'}}>
             {/* 左: 問題画像 */}
             <div className="flex justify-center h-full">
               <div className="border-gray-400 p-4 h-full">
