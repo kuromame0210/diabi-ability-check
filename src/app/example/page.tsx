@@ -124,9 +124,8 @@ export default function Example() {
             - レイアウト詳細: 問題ごとにカスタマイズが必要な可能性
           */}
           <ProblemTitle
-            title="れいだい１"
+            title="れんしゅう１"
             instruction="きごうから めだけでせんをたどったさきのすうじをせんたくしてください"
-            additionalInfo="※じかんせいげんはありません"
           />
 
           {/* 画像と回答エリアを横並び */}
@@ -137,8 +136,8 @@ export default function Example() {
                 <Image
                   src="/image/reidai1.png"
                   alt="例題"
-                  width={400}
-                  height={600}
+                  width={500}
+                  height={700}
                   className="w-full h-full object-contain rounded-xl"
                 />
               </div>

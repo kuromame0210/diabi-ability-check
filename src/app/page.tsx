@@ -75,8 +75,10 @@ export default function Home() {
     <Background>
       <div className="bg-white rounded-3xl shadow-lg p-8 relative z-10" style={{width: '70vw', height: '70vh', minWidth: '800px', minHeight: '600px'}}>
         <div className="h-full flex items-center justify-center">
-          <div style={{width: '400px', height: '500px'}} className="flex flex-col justify-center p-6 border border-gray-300 rounded-lg relative">
-            <img src="/image/title_icon.png" alt="タイトル" className="absolute -top-6 left-1/2 transform -translate-x-1/2 h-24 w-auto z-10" />
+          <div style={{width: '400px', height: '500px'}} className="flex flex-col p-6 border border-gray-300 rounded-lg relative">
+            <div className="flex justify-center mb-4">
+              <img src="/image/title_icon.png" alt="タイトル" className="h-20 w-auto" />
+            </div>
             <div className="mb-6 grid items-center gap-0" style={{gridTemplateColumns: '1fr 2fr 1fr'}}>
             <div className="text-right">
               <img src="/image/teacher.png" alt="アイコン" className="w-full h-20 object-contain" />

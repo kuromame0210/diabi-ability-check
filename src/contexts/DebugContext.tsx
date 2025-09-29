@@ -12,7 +12,8 @@ interface DebugContextType {
 const DebugContext = createContext<DebugContextType | undefined>(undefined);
 
 export function DebugProvider({ children }: { children: ReactNode }) {
-  const [isVisible, setIsVisible] = useState(true);
+  // デバッグパネルを一時的に非表示に設定（開発時はtrueに変更）
+  const [isVisible, setIsVisible] = useState(false);
 
   const hideDebug = () => setIsVisible(false);
   const showDebug = () => setIsVisible(true);

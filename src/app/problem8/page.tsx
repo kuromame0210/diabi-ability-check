@@ -174,8 +174,8 @@ export default function Problem8() {
             </div>
 
             {/* 回答入力エリア */}
-            <div className="flex justify-center">
-              <div className="grid grid-cols-4 gap-4 max-w-6xl">
+            <div className="flex justify-center overflow-x-auto">
+              <div className="grid grid-cols-4 gap-3 min-w-fit px-2">
                 {/* 黄色パレットの選択 */}
                 <div className="border-2 border-gray-300 p-3 rounded-lg" style={{backgroundColor: '#FFF59D'}}>
                   <div className="text-center space-y-2">
@@ -196,7 +196,7 @@ export default function Problem8() {
                         <button
                           key={i}
                           onClick={() => handleSelectionChange('yellow', i.toString())}
-                          className={`w-6 h-6 text-xs font-bold rounded transition-colors ${
+                          className={`w-10 h-8 text-sm font-bold rounded transition-colors ${
                             answers.yellow === i.toString()
                               ? 'bg-yellow-600 text-white'
                               : 'bg-gray-100 hover:bg-gray-200'
@@ -229,7 +229,7 @@ export default function Problem8() {
                         <button
                           key={i}
                           onClick={() => handleSelectionChange('green', i.toString())}
-                          className={`w-6 h-6 text-xs font-bold rounded transition-colors ${
+                          className={`w-10 h-8 text-sm font-bold rounded transition-colors ${
                             answers.green === i.toString()
                               ? 'bg-green-600 text-white'
                               : 'bg-gray-100 hover:bg-gray-200'
@@ -262,7 +262,7 @@ export default function Problem8() {
                         <button
                           key={i}
                           onClick={() => handleSelectionChange('blue', i.toString())}
-                          className={`w-6 h-6 text-xs font-bold rounded transition-colors ${
+                          className={`w-10 h-8 text-sm font-bold rounded transition-colors ${
                             answers.blue === i.toString()
                               ? 'bg-blue-600 text-white'
                               : 'bg-gray-100 hover:bg-gray-200'
@@ -295,7 +295,7 @@ export default function Problem8() {
                         <button
                           key={i}
                           onClick={() => handleSelectionChange('cyan', i.toString())}
-                          className={`w-6 h-6 text-xs font-bold rounded transition-colors ${
+                          className={`w-10 h-8 text-sm font-bold rounded transition-colors ${
                             answers.cyan === i.toString()
                               ? 'bg-cyan-600 text-white'
                               : 'bg-gray-100 hover:bg-gray-200'

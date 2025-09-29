@@ -67,7 +67,7 @@ export default function Problem3Explanation() {
           {/* 説明内容エリア */}
           <div className="flex items-center justify-center h-3/4">
             <div className="max-w-4xl">
-              <div className="space-y-8 text-left">
+              <div className="space-y-8 text-center">
                 
                 <div className="text-3xl font-bold text-gray-800 leading-relaxed">
                   ひょうにかいてあるもじやきごうを
@@ -75,7 +75,7 @@ export default function Problem3Explanation() {
                   おぼえてかいとうらんのおなじばしょにかきます。
                 </div>
                 
-                <div className="mt-12 text-left">
+                <div className="mt-12 text-center">
                   <div className="text-xl font-bold text-blue-600 leading-relaxed">
                     みほんは10びょうひょうじされます。
                     <br />
@@ -83,7 +83,7 @@ export default function Problem3Explanation() {
                   </div>
                 </div>
                 
-                <div className="mt-8 text-left">
+                <div className="mt-8 text-center">
                   <div className="text-xl font-bold text-blue-600 leading-relaxed">
                     そのあと5びょうかうんとしたあと
                     <br />
@@ -91,7 +91,7 @@ export default function Problem3Explanation() {
                   </div>
                 </div>
                 
-                <div className="mt-8 text-left">
+                <div className="mt-8 text-center">
                   <div className="text-xl font-bold text-red-600 leading-relaxed">
                     かきこむじかんは30びょうです。
                   </div>

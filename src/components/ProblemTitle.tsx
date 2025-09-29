@@ -52,13 +52,13 @@ interface ProblemTitleProps {
  * 
  * DESIGN CONSISTENCY NOTES:
  * - 全問題ページで同じ見た目と構造を保証
- * - タイトルは中央寄せ、説明文は左寄せで統一
+ * - タイトルは中央寄せ、説明文は中央寄せで統一
  * - 区切り線画像は全ページ共通で使用(/image/border-line.png)
  * - additionalInfoは右上に絶対配置で表示（例：時間制限なし）
  * 
  * TEXT ALIGNMENT POLICY:
  * - タイトル: text-center（重要要素は中央配置）
- * - 説明文: text-left（読みやすさを優先して左寄せ）
+ * - 説明文: text-center（統一性と見た目の良さを優先して中央寄せ）
  * - この方針は全問題ページで統一
  * 
  * RESPONSIVE DESIGN:
@@ -91,7 +91,7 @@ export default function ProblemTitle({ title, instruction, additionalInfo }: Pro
       
       {/* 説明文 */}
       {instruction && (
-        <p className="text-2xl text-gray-800 mb-6 text-left font-bold py-2">
+        <p className="text-2xl text-gray-800 mb-6 text-center font-bold py-2">
           {instruction}
         </p>
       )}

@@ -276,57 +276,70 @@ export default function Problem3() {
               />
               
               <div className="flex-1 flex flex-col">
-                {/* 入力グリッド */}
-                <div className="text-center mb-6">
-                  <div className="text-lg font-bold text-gray-800 mb-4">
-                    ますをせんたくしてから、もじをせんたくしてください
-                    <br />
-                    <span className="text-sm font-normal text-red-600">
-                      ※まちがえたときは、わくをえらんで
-                      <img src="/image/torikeshi.png" alt="とりけしボタン" className="w-8 h-8 inline mx-1" />
-                      をおします
-                    </span>
+                  {/* 入力グリッド */}
+                  <div className="text-center mb-4">
+                    <div className="text-lg font-bold text-gray-800 mb-3">
+                      ますをせんたくしてから、もじをせんたくしてください
+                      <br />
+                      <span className="text-sm font-normal text-red-600">
+                        ※まちがえたときは、わくをえらんで
+                        <img src="/image/torikeshi.png" alt="とりけしボタン" className="w-8 h-8 inline mx-1" />
+                        をおします
+                      </span>
+                    </div>
+                    {renderGrid(answers)}
                   </div>
-                  {renderGrid(answers)}
-                </div>
 
-                {/* 入力候補 */}
-                <div className="text-center">
-                  <div className="text-lg font-bold text-gray-800 mb-4">にゅうりょくこうほ</div>
-                  <div className="flex gap-2 justify-center items-center flex-nowrap overflow-x-auto pb-2">
-                    {INPUT_CANDIDATES.map((candidate, index) => (
-                      <button
-                        key={index}
-                        onClick={() => handleCandidateClick(candidate)}
-                        className="w-14 h-14 border-2 border-gray-400 rounded-lg bg-white hover:bg-gray-100 text-lg font-bold transition-colors flex-shrink-0"
-                      >
-                        {candidate}
-                      </button>
-                    ))}
-                    {/* 取り消しボタン */}
-                    <button
-                      onClick={handleCancel}
-                      disabled={selectedCell < 0}
-                      className="transition-transform hover:scale-105 flex-shrink-0"
-                    >
-                      <img
-                        src="/image/torikeshi.png"
-                        alt="とりけし"
-                        className={`w-12 h-12 ${selectedCell >= 0 ? 'opacity-100' : 'opacity-50'} ${selectedCell < 0 ? 'cursor-not-allowed' : 'cursor-pointer'}`}
-                      />
-                    </button>
+                  {/* 入力候補 */}
+                  <div className="text-center">
+                    <div className="text-lg font-bold text-gray-800 mb-3">にゅうりょくこうほ</div>
+                    <div className="space-y-1">
+                      {/* 数字候補（1行目） */}
+                      <div className="flex gap-2 justify-center items-center">
+                        {INPUT_CANDIDATES.slice(0, 10).map((candidate, index) => (
+                          <button
+                            key={index}
+                            onClick={() => handleCandidateClick(candidate)}
+                            className="w-12 h-12 border-2 border-gray-400 rounded-lg bg-white hover:bg-gray-100 text-lg font-bold transition-colors"
+                          >
+                            {candidate}
+                          </button>
+                        ))}
+                      </div>
+                      {/* マーク候補（2行目） */}
+                      <div className="flex gap-2 justify-center items-center">
+                        {INPUT_CANDIDATES.slice(10, 20).map((candidate, index) => (
+                          <button
+                            key={index + 10}
+                            onClick={() => handleCandidateClick(candidate)}
+                            className="w-12 h-12 border-2 border-gray-400 rounded-lg bg-white hover:bg-gray-100 text-lg font-bold transition-colors"
+                          >
+                            {candidate}
+                          </button>
+                        ))}
+                      </div>
+                      {/* 取り消しボタンと回答ボタン */}
+                      <div className="flex justify-center items-center gap-6 mt-2">
+                        <button
+                          onClick={handleCancel}
+                          disabled={selectedCell < 0}
+                          className="transition-transform hover:scale-105"
+                        >
+                          <img
+                            src="/image/torikeshi.png"
+                            alt="とりけし"
+                            className={`w-12 h-12 ${selectedCell >= 0 ? 'opacity-100' : 'opacity-50'} ${selectedCell < 0 ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+                          />
+                        </button>
+                        <button
+                          onClick={handleSubmit}
+                          className="px-6 py-3 rounded-lg text-xl font-bold transition-colors shadow-md bg-orange-500 hover:bg-orange-600 text-white border-2 border-orange-600"
+                        >
+                          かいとう
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                </div>
-
-                {/* 完了ボタン */}
-                <div className="text-center mt-6">
-                  <button
-                    onClick={handleSubmit}
-                    className="px-8 py-4 rounded-lg text-xl font-bold transition-colors shadow-md bg-green-500 hover:bg-green-600 text-white"
-                  >
-                    かんりょう
-                  </button>
-                </div>
               </div>
             </>
           )}

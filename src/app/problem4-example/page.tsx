@@ -90,9 +90,8 @@ export default function Problem4Example() {
             問題1例題と同じパターンで統一性を保持
           */}
           <ProblemTitle
-            title="れいだい４"
+            title="れんしゅう４"
             instruction="ドット（●＝くろまる）のかずをこたえてください"
-            additionalInfo="※じかんせいげんはありません"
           />
 
           {/* 画像と回答エリアを横並び */}

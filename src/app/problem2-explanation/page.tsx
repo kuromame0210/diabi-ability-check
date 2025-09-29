@@ -73,30 +73,20 @@ export default function Problem2Explanation() {
           {/* 説明内容エリア */}
           <div className="flex items-center justify-center h-3/4">
             <div className="max-w-4xl">
-              <div className="space-y-8 text-left">
+              <div className="space-y-8 text-center">
                 <div className="text-3xl font-bold text-gray-800 leading-relaxed">0から9までの数字がならんでいます。
                   <br />
                   ひとつだけたりない数字をこたえてください
                 </div>
                 
-                <div className="mt-12 text-left">
+                <div className="mt-12 text-center">
                   <div className="text-base font-bold text-red-600 leading-relaxed">
                     ※ゆびですうじをなぞらずめだけでみつけてください
                   </div>
                 </div>
                 
-                {/* 時間制限に関する説明 */}
-                <div className="mt-8 p-4 bg-yellow-50 border-2 border-yellow-200 rounded-lg">
-                  <div className="text-center">
-                    <h3 className="text-lg font-bold text-red-600 mb-2">⏰ じかんせいげん: 30びょう</h3>
-                    <div className="text-sm text-gray-700 space-y-1">
-                      <p>• じかんがきれてもとちゅうまでのこたえはきろくされます</p>
-                      <p>• あせらずに、できるところまでちょうせんしてください</p>
-                    </div>
-                  </div>
-                </div>
 
-                <div className="mt-8 text-left">
+                <div className="mt-8 text-center">
                   <div className="text-xl font-bold text-blue-600 leading-relaxed">
                     せいげんじかんは5もんで30びょうかんです
                   </div>

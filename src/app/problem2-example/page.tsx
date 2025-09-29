@@ -106,9 +106,8 @@ export default function Problem2Example() {
             問題1例題ページと同じパターンで統一性を保持
           */}
           <ProblemTitle
-            title="れいだい"
+            title="れんしゅう２"
             instruction="０からきゅうまでのすうじのうち、ひとつだけたりないすうじをみつけてください"
-            additionalInfo="※じかんせいげんはありません"
           />
 
           {/* 問題と回答エリアを上下に配置 */}
@@ -127,7 +126,7 @@ export default function Problem2Example() {
 
             {/* 下: 回答エリア */}
             <div className="flex justify-center">
-              <div className="space-y-4 w-80 text-left">
+              <div className="space-y-4 w-80 text-center">
                 <div className="flex items-center justify-between p-4 mb-4">
                   <div className="flex items-center space-x-3">
                     <span className="text-2xl font-bold text-gray-800">たりないすうじ:</span>

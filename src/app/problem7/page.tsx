@@ -164,8 +164,8 @@ export default function Problem7() {
             </div>
 
             {/* 回答選択エリア */}
-            <div className="flex justify-center">
-              <div className="grid grid-cols-3 gap-6 max-w-4xl">
+            <div className="flex justify-center overflow-x-auto">
+              <div className="grid grid-cols-3 gap-4 min-w-fit px-2">
                 {/* ○（白丸）の選択 */}
                 <div className="border-2 border-gray-300 p-4 rounded-lg bg-white">
                   <div className="text-center space-y-3">
@@ -183,7 +183,7 @@ export default function Problem7() {
                         <button
                           key={i}
                           onClick={() => handleSelectionChange('circle', i.toString())}
-                          className={`w-8 h-8 text-sm font-bold rounded transition-colors ${
+                          className={`w-10 h-8 text-base font-bold rounded transition-colors ${
                             answers.circle === i.toString()
                               ? 'bg-yellow-500 text-white'
                               : 'bg-gray-100 hover:bg-gray-200'
@@ -213,7 +213,7 @@ export default function Problem7() {
                         <button
                           key={i}
                           onClick={() => handleSelectionChange('doubleCircle', i.toString())}
-                          className={`w-8 h-8 text-sm font-bold rounded transition-colors ${
+                          className={`w-10 h-8 text-base font-bold rounded transition-colors ${
                             answers.doubleCircle === i.toString()
                               ? 'bg-yellow-500 text-white'
                               : 'bg-gray-100 hover:bg-gray-200'
@@ -243,7 +243,7 @@ export default function Problem7() {
                         <button
                           key={i}
                           onClick={() => handleSelectionChange('filledCircle', i.toString())}
-                          className={`w-8 h-8 text-sm font-bold rounded transition-colors ${
+                          className={`w-10 h-8 text-base font-bold rounded transition-colors ${
                             answers.filledCircle === i.toString()
                               ? 'bg-yellow-500 text-white'
                               : 'bg-gray-100 hover:bg-gray-200'
