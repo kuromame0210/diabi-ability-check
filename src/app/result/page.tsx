@@ -274,7 +274,7 @@ export default function Result() {
   return (
     <Background>
       <Card>
-        <div className="h-full flex flex-col">
+        <div className="h-full flex flex-col overflow-y-auto">
           {/* リトライ状態通知バー */}
           {backgroundSaveActive && (
             <div className="mb-4 p-3 bg-blue-50 border-l-4 border-blue-500 rounded">
@@ -313,10 +313,10 @@ export default function Result() {
             けっか
           </h2>
 
-          {/* メインレイアウト: 左にコメント・右にグラフ */}
-          <div className="grid lg:grid-cols-2 gap-6">
+          {/* メインレイアウト: 左に基本情報・右にグラフ */}
+          <div className="flex flex-col lg:flex-row gap-6 flex-1 min-h-0">
             {/* 左側: 基本情報、問題結果、アビリティ分析 */}
-            <div className="space-y-4">
+            <div className="flex-1 space-y-4">
               {/* 基本情報 */}
               <div className="border-2 border-gray-300 p-4 text-center">
                 <div className="text-xl font-bold text-gray-800 mb-3">
@@ -362,7 +362,7 @@ export default function Result() {
             </div>
 
             {/* 右側: アビリティグラフ */}
-            <div className="border-2 border-gray-300 p-4">
+            <div className="flex-1 border-2 border-gray-300 p-4">
               <h3 className="text-xl font-bold text-gray-800 pb-4 mb-4 border-b border-gray-200 text-center">
                 📈 アビリティグラフ
               </h3>

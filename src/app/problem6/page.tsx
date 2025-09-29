@@ -137,7 +137,7 @@ export default function Problem6() {
           />
 
           {/* メインコンテンツエリア */}
-          <div className="flex flex-col items-center space-y-6" style={{height: '75%'}}>
+          <div className="flex flex-col items-center space-y-4" style={{height: '75%'}}>
             
             {/* 問題画像エリア */}
             <div className="flex justify-center flex-1 items-center">
@@ -145,34 +145,34 @@ export default function Problem6() {
                 <Image
                   src="/image/mondai6.png"
                   alt="問題6"
-                  width={500}
-                  height={400}
+                  width={350}
+                  height={250}
                   className="object-contain rounded-lg"
                 />
               </div>
             </div>
 
             {/* 回答選択エリア */}
-            <div className="flex flex-col items-center space-y-4 pb-4">
-              <div className="flex items-center space-x-4 mb-4">
-                <label className="text-2xl font-bold text-gray-800">ずけいのかず:</label>
-                <div className={`w-24 h-16 text-3xl text-center border-3 border-yellow-300 rounded-2xl flex items-center justify-center font-bold transition-all ${
+            <div className="flex flex-col items-center space-y-3 pb-2">
+              <div className="flex items-center space-x-4 mb-2">
+                <label className="text-xl font-bold text-gray-800">ずけいのかず:</label>
+                <div className={`w-20 h-12 text-2xl text-center border-3 border-yellow-300 rounded-2xl flex items-center justify-center font-bold transition-all ${
                   answer ? 'bg-yellow-100' : 'bg-white'
                 }`}>
                   {answer || '?'}
                 </div>
-                <span className="text-xl font-bold text-gray-800">こ</span>
+                <span className="text-lg font-bold text-gray-800">こ</span>
               </div>
 
-              {/* 数字選択ボタン（1-9） */}
-              <div className="grid grid-cols-3 gap-3">
+              {/* 数字選択ボタン（1-9） - 横一列 */}
+              <div className="flex gap-2 justify-center">
                 {Array.from({length: 9}, (_, i) => {
                   const number = (i + 1).toString();
                   return (
                     <button
                       key={number}
                       onClick={() => handleSelectionChange(number)}
-                      className={`w-16 h-16 text-2xl font-bold rounded-lg transition-colors ${
+                      className={`w-12 h-12 text-lg font-bold rounded-lg transition-colors ${
                         answer === number
                           ? 'bg-yellow-500 text-white'
                           : 'bg-gray-100 hover:bg-gray-200'
@@ -185,7 +185,7 @@ export default function Problem6() {
               </div>
 
               {/* 送信ボタン */}
-              <div className="text-center mt-4">
+              <div className="text-center mt-2">
                 <button
                   onClick={handleSubmit}
                   disabled={!isAnswered}

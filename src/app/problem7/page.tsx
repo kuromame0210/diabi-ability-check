@@ -156,16 +156,16 @@ export default function Problem7() {
                 <Image
                   src="/image/mondai7.png"
                   alt="問題7"
-                  width={600}
-                  height={400}
+                  width={400}
+                  height={280}
                   className="object-contain rounded-lg"
                 />
               </div>
             </div>
 
             {/* 回答選択エリア */}
-            <div className="flex justify-center overflow-x-auto">
-              <div className="grid grid-cols-3 gap-4 min-w-fit px-2">
+            <div className="flex justify-center">
+              <div className="grid grid-cols-3 gap-4 max-w-4xl w-full">
                 {/* ○（白丸）の選択 */}
                 <div className="border-2 border-gray-300 p-4 rounded-lg bg-white">
                   <div className="text-center space-y-3">
@@ -259,7 +259,7 @@ export default function Problem7() {
             </div>
 
             {/* 送信ボタン */}
-            <div className="text-center">
+            <div className="text-center mt-2">
               <button
                 onClick={handleSubmit}
                 disabled={!isAllAnswered}

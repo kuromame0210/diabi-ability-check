@@ -155,15 +155,15 @@ export default function Problem8() {
           />
 
           {/* メインコンテンツエリア */}
-          <div className="flex flex-col space-y-6" style={{height: '75%'}}>
+          <div className="flex flex-col space-y-3" style={{height: '75%'}}>
             
             {/* 動画エリア */}
             <div className="flex justify-center flex-1">
               <div className="border-4 border-gray-400 p-4 bg-white rounded-xl shadow-lg flex items-center">
                 <video
                   src="/image/media1.mp4"
-                  width={600}
-                  height={400}
+                  width={400}
+                  height={280}
                   controls
                   autoPlay
                   className="object-contain rounded-lg"
@@ -174,8 +174,8 @@ export default function Problem8() {
             </div>
 
             {/* 回答入力エリア */}
-            <div className="flex justify-center overflow-x-auto">
-              <div className="grid grid-cols-4 gap-3 min-w-fit px-2">
+            <div className="flex justify-center">
+              <div className="grid grid-cols-4 gap-3 max-w-4xl w-full">
                 {/* 黄色パレットの選択 */}
                 <div className="border-2 border-gray-300 p-3 rounded-lg" style={{backgroundColor: '#FFF59D'}}>
                   <div className="text-center space-y-2">
