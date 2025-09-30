@@ -151,7 +151,7 @@ export default function Problem8() {
           */}
           <ProblemTitle
             title="もんだい８"
-            instruction="４つの へんに いくつずつ ボールが はいったかを こたえてください"
+            instruction="４つのへんに ボールが いくつ はいったかを こたえてください。"
           />
 
           {/* メインコンテンツエリア */}

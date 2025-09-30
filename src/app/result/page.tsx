@@ -344,7 +344,12 @@ export default function Result() {
                         userData.analysis.strongest.map((field, index) => (
                           <div key={index} className="flex items-center justify-center gap-2 mb-1">
                             <img src={field.icon} alt={field.name} className="w-6 h-6" />
-                            <span>{field.name}が得意です！</span>
+                            <span>
+                              <ruby>
+                                {field.name}<rt style={{fontSize: '0.5em'}}>{field.nameHiragana}</rt>
+                              </ruby>
+                              が得意です！
+                            </span>
                           </div>
                         ))
                       )}
@@ -354,30 +359,64 @@ export default function Result() {
                     <h4 className="text-lg font-bold text-gray-800 mb-2">のびしろ</h4>
                     <div className="text-lg font-bold text-blue-600 flex items-center justify-center gap-2">
                       <img src={userData.analysis.weakest.icon} alt="のびしろ" className="w-6 h-6" />
-                      <span>{userData.analysis.weakest.name}をもっと伸ばしましょう</span>
+                      <span>
+                        <ruby>
+                          {userData.analysis.weakest.name}<rt style={{fontSize: '0.5em'}}>{userData.analysis.weakest.nameHiragana}</rt>
+                        </ruby>
+                        をもっと伸ばしましょう
+                      </span>
                     </div>
                   </div>
+                </div>
+              </div>
+
+              {/* ボタンエリア */}
+              <div className="text-center">
+                <div className="flex flex-col gap-3 justify-center items-center max-w-xs mx-auto">
+                  <button
+                    onClick={handleReset}
+                    className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg text-base transition-colors shadow-md"
+                  >
+                    さいしょから
+                  </button>
+                  {/* 詳細結果切り替えボタン */}
+                  <button
+                    onClick={() => setShowDebugInfo(!showDebugInfo)}
+                    className="w-full bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg text-base transition-colors shadow-md"
+                  >
+                    {showDebugInfo ? '詳細を非表示' : '詳細結果を見る'}
+                  </button>
                 </div>
               </div>
             </div>
 
             {/* 右側: アビリティグラフ */}
-            <div className="flex-1 border-2 border-gray-300 p-4">
+            <div className="flex-1 border-2 border-gray-300 p-4 min-h-[600px]">
               <h3 className="text-xl font-bold text-gray-800 pb-4 mb-4 border-b border-gray-200 text-center">
                 📈 アビリティグラフ
               </h3>
-              <div className="mt-2">
+              <div className="mt-2 h-[500px]">
                 <RadarChart abilities={userData.abilities} />
               </div>
             </div>
           </div>
 
-          {/* 問題別結果詳細 */}
+          {/* 問題別結果詳細（モーダル） */}
           {showDebugInfo && userData && (
-            <div className="mt-6 p-6 bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-xl shadow-lg">
-              <h3 className="text-2xl font-bold text-blue-800 mb-6 text-center flex items-center justify-center gap-2">
-                📊 問題別結果詳細
-              </h3>
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" onClick={() => setShowDebugInfo(false)}>
+              <div className="bg-white rounded-xl shadow-2xl max-w-6xl w-full max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+                <div className="sticky top-0 bg-white border-b-2 border-blue-200 p-6 flex items-center justify-between z-10">
+                  <h3 className="text-2xl font-bold text-blue-800 flex items-center gap-2">
+                    📊 問題別結果詳細
+                  </h3>
+                  <button
+                    onClick={() => setShowDebugInfo(false)}
+                    className="text-gray-500 hover:text-gray-700 text-3xl font-bold leading-none"
+                  >
+                    ×
+                  </button>
+                </div>
+                <div className="p-6">
 
               {/* 問題別カード表示 */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
@@ -390,9 +429,9 @@ export default function Result() {
                   return (
                     <div key={key} className="bg-white border-2 border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
                       <div className="text-center mb-3">
-                        <h4 className="text-lg font-bold text-gray-800">問題{problemNum}</h4>
+                        <h4 className="text-lg font-bold text-gray-800">もんだい{problemNum}</h4>
                         <div className="text-2xl font-bold text-blue-600 my-2">
-                          {score}/2.5点
+                          {score}/2.5てん
                         </div>
 
                         {/* アビリティ表示 */}
@@ -416,10 +455,52 @@ export default function Result() {
                       </div>
 
                       {/* 回答データ */}
-                      <div className="bg-gray-50 rounded p-2">
-                        <div className="text-xs font-semibold text-gray-600 mb-1">回答:</div>
-                        <div className="text-xs font-mono text-gray-800 break-all">
-                          {typeof answer === 'object' ? JSON.stringify(answer, null, 1) : String(answer)}
+                      <div className="bg-gray-50 rounded p-3">
+                        <div className="text-xs font-semibold text-gray-600 mb-2">こたえ:</div>
+                        <div className="text-sm text-gray-800">
+                          {typeof answer === 'object' ? (
+                            Array.isArray(answer) ? (
+                              // 配列の場合
+                              <div className="space-y-1">
+                                {answer.map((item, idx) => (
+                                  <div key={idx} className="flex gap-2">
+                                    <span className="font-semibold">{idx + 1}:</span>
+                                    <span>{item}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            ) : (
+                              // オブジェクトの場合
+                              <div className="space-y-1">
+                                {Object.entries(answer).map(([k, v]) => {
+                                  // キー名を日本語に変換
+                                  const keyMap: Record<string, string> = {
+                                    'star': '☆',
+                                    'heart': '♡',
+                                    'triangle': '△',
+                                    'circle': '○',
+                                    'doubleCircle': '◎',
+                                    'filledCircle': '●',
+                                    'yellow': 'きいろ',
+                                    'green': 'みどり',
+                                    'blue': 'あお',
+                                    'cyan': 'みずいろ'
+                                  };
+                                  const displayKey = keyMap[k] || k;
+
+                                  return (
+                                    <div key={k} className="flex gap-2">
+                                      <span className="font-semibold">{displayKey}:</span>
+                                      <span>{String(v)}</span>
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            )
+                          ) : (
+                            // 文字列・数値の場合
+                            <div className="font-semibold">{String(answer)}</div>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -442,11 +523,22 @@ export default function Result() {
                         memory: '記憶',
                         cognition: '認知'
                       };
+                      const abilityNamesHiragana = {
+                        reading: 'どっかい',
+                        attention: 'しゅうちゅう・ちゅうい',
+                        memory: 'きおく',
+                        cognition: 'にんち'
+                      };
                       const abilityName = abilityNames[ability as keyof typeof abilityNames];
+                      const abilityHiragana = abilityNamesHiragana[ability as keyof typeof abilityNamesHiragana];
 
                       return (
                         <div key={ability} className="flex items-center justify-between">
-                          <span className="font-medium text-gray-700">{abilityName}:</span>
+                          <span className="font-medium text-gray-700">
+                            <ruby>
+                              {abilityName}<rt style={{fontSize: '0.5em'}}>{abilityHiragana}</rt>
+                            </ruby>:
+                          </span>
                           <div className="flex items-center gap-2">
                             <div className="w-20 bg-gray-200 rounded-full h-2">
                               <div
@@ -473,7 +565,7 @@ export default function Result() {
                     <div className="text-4xl font-bold text-green-600 mb-2">
                       {userData.scores.total}/20
                     </div>
-                    <div className="text-lg text-gray-600 mb-4">合計得点</div>
+                    <div className="text-lg text-gray-600 mb-4">ごうけいとくてん</div>
                     <div className="w-full bg-gray-200 rounded-full h-4">
                       <div
                         className="bg-gradient-to-r from-green-400 to-green-600 h-4 rounded-full transition-all"
@@ -481,32 +573,16 @@ export default function Result() {
                       ></div>
                     </div>
                     <div className="text-sm text-gray-600 mt-2">
-                      正答率: {((userData.scores.total / 20) * 100).toFixed(1)}%
+                      せいとうりつ: {((userData.scores.total / 20) * 100).toFixed(1)}%
                     </div>
                   </div>
+                </div>
+              </div>
                 </div>
               </div>
             </div>
           )}
 
-          {/* ボタンエリア */}
-          <div className="text-center">
-            <div className="flex flex-col sm:flex-row gap-3 justify-center pt-4">
-              <button
-                onClick={handleReset}
-                className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-4 px-8 rounded-lg text-xl transition-colors shadow-md"
-              >
-                さいしょから
-              </button>
-              {/* 詳細結果切り替えボタン */}
-              <button
-                onClick={() => setShowDebugInfo(!showDebugInfo)}
-                className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg text-base transition-colors shadow-md"
-              >
-                {showDebugInfo ? '詳細を非表示' : '詳細結果を見る'}
-              </button>
-            </div>
-          </div>
         </div>
       </Card>
     </Background>

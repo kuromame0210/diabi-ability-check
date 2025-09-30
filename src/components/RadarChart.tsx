@@ -29,7 +29,7 @@ interface RadarChartProps {
 }
 
 export default function RadarChart({ abilities }: RadarChartProps) {
-  const abilityKeys = ['reading', 'attention', 'memory', 'cognition'] as const;
+  const abilityKeys = ['reading', 'memory', 'cognition', 'attention'] as const;
 
   const data = {
     labels: ['', '', '', ''], // ラベルを空にしてアイコンを外に配置
@@ -38,9 +38,9 @@ export default function RadarChart({ abilities }: RadarChartProps) {
         label: 'アビリティスコア',
         data: [
           abilities.reading,
-          abilities.attention,
           abilities.memory,
           abilities.cognition,
+          abilities.attention,
         ],
         backgroundColor: 'rgba(54, 162, 235, 0.2)',
         borderColor: 'rgba(54, 162, 235, 1)',
@@ -59,10 +59,10 @@ export default function RadarChart({ abilities }: RadarChartProps) {
     maintainAspectRatio: false,
     layout: {
       padding: {
-        top: 40,
-        right: 40,
-        bottom: 40,
-        left: 40
+        top: 50,
+        right: 50,
+        bottom: 80,
+        left: 50
       }
     },
     scales: {
@@ -114,7 +114,7 @@ export default function RadarChart({ abilities }: RadarChartProps) {
   };
 
   return (
-    <div className="w-full h-96 md:h-[450px] relative">
+    <div className="w-full h-[450px] md:h-[500px] relative">
       {/* レーダーチャート */}
       <div className="w-full h-full">
         <Radar data={data} options={options} />
@@ -125,25 +125,29 @@ export default function RadarChart({ abilities }: RadarChartProps) {
         {/* 上（12時方向）: 読解 */}
         <div className="absolute top-2 left-1/2 transform -translate-x-1/2 flex flex-col items-center">
           <img src={ABILITY_ICONS.reading} alt="読解" className="w-8 h-8 mb-1" />
-          <span className="text-sm font-bold text-gray-700">読解</span>
+          <span className="text-sm font-bold text-gray-700">どっかい</span>
+          <span className="text-xs text-gray-500">(読解)</span>
         </div>
 
-        {/* 右（3時方向）: 集中・注意 */}
+        {/* 右（3時方向）: 記憶 */}
         <div className="absolute top-1/2 right-2 transform -translate-y-1/2 flex flex-col items-center">
-          <img src={ABILITY_ICONS.attention} alt="集中・注意" className="w-8 h-8 mb-1" />
-          <span className="text-xs font-bold text-gray-700">集中・注意</span>
-        </div>
-
-        {/* 下（6時方向）: 記憶 */}
-        <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex flex-col items-center">
           <img src={ABILITY_ICONS.memory} alt="記憶" className="w-8 h-8 mb-1" />
-          <span className="text-sm font-bold text-gray-700">記憶</span>
+          <span className="text-sm font-bold text-gray-700">きおく</span>
+          <span className="text-xs text-gray-500">(記憶)</span>
         </div>
 
-        {/* 左（9時方向）: 認知 */}
-        <div className="absolute top-1/2 left-2 transform -translate-y-1/2 flex flex-col items-center">
+        {/* 下（6時方向）: 認知 */}
+        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex flex-col items-center">
           <img src={ABILITY_ICONS.cognition} alt="認知" className="w-8 h-8 mb-1" />
-          <span className="text-sm font-bold text-gray-700">認知</span>
+          <span className="text-sm font-bold text-gray-700">にんち</span>
+          <span className="text-xs text-gray-500">(認知)</span>
+        </div>
+
+        {/* 左（9時方向）: 集中・注意 */}
+        <div className="absolute top-1/2 left-2 transform -translate-y-1/2 flex flex-col items-center">
+          <img src={ABILITY_ICONS.attention} alt="集中・注意" className="w-8 h-8 mb-1" />
+          <span className="text-xs font-bold text-gray-700">しゅうちゅう</span>
+          <span className="text-xs text-gray-500">(集中・注意)</span>
         </div>
       </div>
     </div>

@@ -132,7 +132,7 @@ export default function Problem6() {
           */}
           <ProblemTitle
             title="もんだい６"
-            instruction="おなじかたちで おなじおおきさの ずけいが いくつあるか こたえてください"
+            instruction=""
             additionalInfo={`のこり: ${timeLeft}びょう`}
           />
 
@@ -145,43 +145,29 @@ export default function Problem6() {
                 <Image
                   src="/image/mondai6.png"
                   alt="問題6"
-                  width={350}
-                  height={250}
+                  width={450}
+                  height={320}
                   className="object-contain rounded-lg"
                 />
               </div>
             </div>
 
-            {/* 回答選択エリア */}
-            <div className="flex flex-col items-center space-y-3 pb-2">
-              <div className="flex items-center space-x-4 mb-2">
-                <label className="text-xl font-bold text-gray-800">ずけいのかず:</label>
-                <div className={`w-20 h-12 text-2xl text-center border-3 border-yellow-300 rounded-2xl flex items-center justify-center font-bold transition-all ${
-                  answer ? 'bg-yellow-100' : 'bg-white'
-                }`}>
-                  {answer || '?'}
-                </div>
-                <span className="text-lg font-bold text-gray-800">こ</span>
-              </div>
-
-              {/* 数字選択ボタン（1-9） - 横一列 */}
-              <div className="flex gap-2 justify-center">
-                {Array.from({length: 9}, (_, i) => {
-                  const number = (i + 1).toString();
-                  return (
-                    <button
-                      key={number}
-                      onClick={() => handleSelectionChange(number)}
-                      className={`w-12 h-12 text-lg font-bold rounded-lg transition-colors ${
-                        answer === number
-                          ? 'bg-yellow-500 text-white'
-                          : 'bg-gray-100 hover:bg-gray-200'
-                      }`}
-                    >
-                      {number}
-                    </button>
-                  );
-                })}
+            {/* 回答選択エリア - インライン形式 */}
+            <div className="flex flex-col items-center space-y-4 pb-2">
+              {/* インライン文章形式の回答欄 */}
+              <div className="flex items-center justify-center space-x-3 text-2xl font-bold text-gray-800">
+                <span>おなじかたちで おなじおおきさの ずけい</span>
+                <select
+                  value={answer}
+                  onChange={(e) => handleSelectionChange(e.target.value)}
+                  className="w-16 h-12 text-2xl text-center border-3 border-yellow-300 rounded-2xl focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition-all font-bold bg-white shadow-inner"
+                >
+                  <option value="">?</option>
+                  {Array.from({length: 9}, (_, i) => (
+                    <option key={i + 1} value={i + 1}>{i + 1}</option>
+                  ))}
+                </select>
+                <span>こ</span>
               </div>
 
               {/* 送信ボタン */}
@@ -189,13 +175,13 @@ export default function Problem6() {
                 <button
                   onClick={handleSubmit}
                   disabled={!isAnswered}
-                  className={`px-12 py-4 rounded-lg text-xl font-bold transition-colors shadow-md ${
-                    isAnswered
-                      ? 'bg-green-500 hover:bg-green-600 text-white'
-                      : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                  }`}
+                  className="transition-transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                 >
-                  かいとうする！
+                  <img
+                    src="/image/next.png"
+                    alt="かいとう"
+                    className="h-16 w-auto"
+                  />
                 </button>
               </div>
             </div>

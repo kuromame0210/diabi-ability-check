@@ -14,7 +14,10 @@
       "Bash(npm run build:*)",
       "Bash(git commit:*)",
       "Bash(npx tsc:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(npx next lint:*)",
+      "Bash(find:*)",
+      "Bash(grep:*)"
     ],
     "deny": [],
     "ask": []

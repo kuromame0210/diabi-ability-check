@@ -45,8 +45,8 @@ export interface UserData {
     cognition: number;
   };
   analysis: {
-    strongest: Array<{name: string; icon: string}>;
-    weakest: {name: string; icon: string};
+    strongest: Array<{name: string; nameHiragana: string; icon: string}>;
+    weakest: {name: string; nameHiragana: string; icon: string};
   };
   timestamps: {
     start: string;
@@ -68,6 +68,6 @@ export interface Problem2Pattern {
 }
 
 export interface AbilityAnalysis {
-  strongest: Array<{name: string; icon: string}>;
-  weakest: {name: string; icon: string};
+  strongest: Array<{name: string; nameHiragana: string; icon: string}>;
+  weakest: {name: string; nameHiragana: string; icon: string};
 }

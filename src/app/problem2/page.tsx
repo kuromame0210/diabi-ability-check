@@ -160,9 +160,9 @@ export default function Problem2() {
                   </div>
 
                   {/* 数字表示エリア */}
-                  <div className="border-2 border-gray-400 p-2 text-center flex-grow">
-                    <div className="text-xl font-bold tracking-wider text-gray-800 font-mono whitespace-nowrap">
-                      {pattern.numbers.join('  ')}
+                  <div className="border-2 border-gray-400 p-3 text-center flex-grow">
+                    <div className="text-2xl font-bold tracking-wider text-gray-800 font-mono whitespace-nowrap">
+                      {pattern.numbers.join('   ')}
                     </div>
                   </div>
 

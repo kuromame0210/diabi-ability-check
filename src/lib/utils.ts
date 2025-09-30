@@ -1,4 +1,4 @@
-import { ABILITY_NAMES, ABILITY_ICONS, PROBLEM1_ANSWERS, PROBLEM2_PATTERNS } from './constants';
+import { ABILITY_NAMES, ABILITY_NAMES_HIRAGANA, ABILITY_ICONS, PROBLEM1_ANSWERS, PROBLEM2_PATTERNS } from './constants';
 import { AbilityAnalysis, UserData } from '@/types';
 
 // 問題1の採点
@@ -157,10 +157,12 @@ export function analyzeAbilities(abilities: UserData['abilities']): AbilityAnaly
   const strongestNames = allHigh
     ? entries.map(([key]) => ({
         name: ABILITY_NAMES[key as keyof typeof ABILITY_NAMES],
+        nameHiragana: ABILITY_NAMES_HIRAGANA[key as keyof typeof ABILITY_NAMES_HIRAGANA],
         icon: ABILITY_ICONS[key as keyof typeof ABILITY_ICONS]
       }))
     : strongestEntries.map(([key]) => ({
         name: ABILITY_NAMES[key as keyof typeof ABILITY_NAMES],
+        nameHiragana: ABILITY_NAMES_HIRAGANA[key as keyof typeof ABILITY_NAMES_HIRAGANA],
         icon: ABILITY_ICONS[key as keyof typeof ABILITY_ICONS]
       }));
 
@@ -168,6 +170,7 @@ export function analyzeAbilities(abilities: UserData['abilities']): AbilityAnaly
     strongest: strongestNames,
     weakest: {
       name: ABILITY_NAMES[weakestEntry![0] as keyof typeof ABILITY_NAMES],
+      nameHiragana: ABILITY_NAMES_HIRAGANA[weakestEntry![0] as keyof typeof ABILITY_NAMES_HIRAGANA],
       icon: ABILITY_ICONS[weakestEntry![0] as keyof typeof ABILITY_ICONS]
     }
   };

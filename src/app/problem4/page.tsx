@@ -8,66 +8,61 @@ import ProblemTitle from '../../components/ProblemTitle';
 
 /**
  * Problem4 Main Problem Page (もんだい４)
- * 
+ *
  * SYSTEM ARCHITECTURE NOTES:
- * - 問題4の本問ページ（3段階構成の3段階目）
- * - ドット数カウント問題・5問セット・30秒制限
- * - 問題2と同じタイマー制御パターン
- * 
- * PROBLEM TYPE: Dot Counting Main Problem (ドット数カウント本問)
+ * - 問題4の本問ページ（3段階×5問の順次表示）
+ * - ドット数カウント問題・5問セット
+ * - 各問題で3段階フロー：カウントダウン→表示→入力
+ *
+ * PROBLEM TYPE: Dot Counting Sequential Display (ドット数カウント順次表示)
  * - 画像5枚: mondai1.png ～ mondai5.png
  * - 各画像のドット数を入力
- * - 制限時間: 30秒
- * 
- * TIMER IMPLEMENTATION:
- * - 制限時間: 30秒（問題2と同じ）
- * - 5問全体で30秒（1問あたり6秒計算）
- * - 時間切れ時は自動送信
- * 
+ * - 3段階フロー：3秒カウント→1秒表示→入力
+ *
+ * 3-STAGE FLOW PER QUESTION:
+ * 1. COUNTDOWN (3秒): 大きな数字でカウントダウン
+ * 2. DISPLAY (1秒): 画像表示
+ * 3. INPUT: 回答入力（制限時間なし）
+ *
+ * SEQUENTIAL PROCESSING:
+ * - currentQuestion: 0-4の問題インデックス
+ * - stage: 'countdown' | 'display' | 'input'
+ * - 5問完了後に結果画面へ遷移
+ *
  * DATA STRUCTURE:
  * - answers: 配列形式（['','','','','']）
- * - 問題2と同じ形式で統一
  * - 数値入力（文字列で管理、送信時に数値変換）
- * 
+ *
  * UI/UX DESIGN:
- * - Card + Background統一パターン
- * - ProblemTitle左寄せ統一
- * - 5問同時表示（スクロール対応）
- * - 各問題にナンバリング表示
- * - 数値入力フィールド使用
- * 
+ * - 1問ずつの順次表示
+ * - 問題番号の明確表示
+ * - カウントダウンは大きな数字で表示
+ *
  * DATA PERSISTENCE:
  * - localStorage['problem4Answers']: 配列形式でJSON保存
  * - localStorage['problem4Time']: タイムスタンプ保存
- * - 結果ページで使用される
- * 
+ *
  * ROUTING FLOW:
  * - 前: problem4-example（問題4例題）
- * - 次: result（結果ページ）※暫定、後で問題5に変更予定
- * 
- * DESIGN CONSISTENCY NOTES:
- * - タイマー表示: 問題1・2と同じスタイル（右上、赤背景）
- * - 入力フィールド: 数値入力専用
- * - ボタン: 統一スタイル（完答時のみ有効化）
- * 
- * SCORING NOTES:
- * - 正解数による段階的採点を想定
- * - 5問満点、3問以上で部分点のパターン予想
- * - 具体的な採点ロジックは後で実装
+ * - 次: problem5-explanation（問題5説明）
  */
 
-// 制限時間（秒）
-const TIMER_DURATION = 30;
+type Stage = 'countdown' | 'display' | 'input';
 
 export default function Problem4() {
-  // TIMER STATE:
-  // - 問題4は30秒制限（問題2と同じ制限時間）
-  const [timeLeft, setTimeLeft] = useState(TIMER_DURATION);
-  
+  // SEQUENTIAL QUESTION STATE:
+  const [currentQuestion, setCurrentQuestion] = useState(0); // 0-4の問題番号
+  const [stage, setStage] = useState<Stage>('countdown');
+  const [countdownNumber, setCountdownNumber] = useState(3);
+
   // ANSWER STATE:
   // - 配列形式: 5問分の回答を配列で管理
-  // - 初期値: 空文字列5つの配列
   const [answers, setAnswers] = useState<string[]>(['', '', '', '', '']);
+  const [currentAnswer, setCurrentAnswer] = useState('');
+
+  // TIMER STATE:
+  const [timeLeft, setTimeLeft] = useState(30); // 30秒制限
+
   const router = useRouter();
 
   // 問題画像のパス配列
@@ -79,144 +74,206 @@ export default function Problem4() {
     '/image/4/mondai5.png'
   ];
 
-  // DATA SUBMISSION HANDLER:
-  // - 配列形式の回答データを数値配列に変換
-  // - 結果ページでの計算処理に対応
-  const handleSubmit = useCallback(() => {
-    // ANSWER DATA PROCESSING:
-    // - 文字列配列 → 数値配列変換
-    // - 未回答は0にフォールバック
-    const numericAnswers = answers.map(answer => parseInt(answer) || 0);
 
-    // LOCAL STORAGE PERSISTENCE:
-    // - JSON配列形式で保存
-    // - タイムスタンプも同時保存
-    localStorage.setItem('problem4Answers', JSON.stringify(numericAnswers));
-    localStorage.setItem('problem4Time', new Date().toISOString());
+  // STAGE PROGRESSION HANDLER:
+  const proceedToNextStage = useCallback(() => {
+    if (stage === 'countdown') {
+      setStage('display');
+    } else if (stage === 'display') {
+      setStage('input');
+    } else if (stage === 'input') {
+      // Save current answer
+      const newAnswers = [...answers];
+      newAnswers[currentQuestion] = currentAnswer;
+      setAnswers(newAnswers);
+      setCurrentAnswer('');
 
-    // ROUTING TO PROBLEM5:
-    // 問題4完了後は問題5説明ページへ
-    router.push('/problem5-explanation');
-  }, [answers, router]);
-
-  // TIMER CALLBACK WRAPPER:
-  const handleFinish = useCallback(() => {
-    handleSubmit();
-  }, [handleSubmit]);
+      // Move to next question or finish
+      if (currentQuestion < 4) {
+        setCurrentQuestion(currentQuestion + 1);
+        setStage('countdown');
+        setCountdownNumber(3);
+      } else {
+        // All questions completed
+        const finalAnswers = [...newAnswers];
+        const numericAnswers = finalAnswers.map(answer => parseInt(answer) || 0);
+        localStorage.setItem('problem4Answers', JSON.stringify(numericAnswers));
+        localStorage.setItem('problem4Time', new Date().toISOString());
+        router.push('/problem5-explanation');
+      }
+    }
+  }, [stage, currentQuestion, answers, currentAnswer, router]);
 
   // TIMER EFFECT:
-  // - 問題2と同じパターン
   useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev <= 1) {
-          // TIME UP: 自動送信
-          handleFinish();
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
+    let timer: NodeJS.Timeout;
 
-    // CLEANUP: メモリリーク防止
-    return () => clearInterval(timer);
-  }, [handleFinish]);
+    if (stage === 'countdown') {
+      timer = setInterval(() => {
+        setCountdownNumber((prev) => {
+          if (prev <= 1) {
+            setStage('display');
+            return 3;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    } else if (stage === 'display') {
+      timer = setTimeout(() => {
+        setStage('input');
+        setTimeLeft(30); // 30秒にリセット
+      }, 1000);
+    } else if (stage === 'input') {
+      timer = setInterval(() => {
+        setTimeLeft((prev) => {
+          if (prev <= 1) {
+            // 時間切れ: 現在の回答を保存して次の問題へ
+            const newAnswers = [...answers];
+            newAnswers[currentQuestion] = currentAnswer;
+            setAnswers(newAnswers);
+            setCurrentAnswer('');
+
+            if (currentQuestion < 4) {
+              setCurrentQuestion(currentQuestion + 1);
+              setStage('countdown');
+              setCountdownNumber(3);
+            } else {
+              // 5問完了: 結果保存して遷移
+              const finalAnswers = [...newAnswers];
+              const numericAnswers = finalAnswers.map(answer => parseInt(answer) || 0);
+              localStorage.setItem('problem4Answers', JSON.stringify(numericAnswers));
+              localStorage.setItem('problem4Time', new Date().toISOString());
+              router.push('/problem5-explanation');
+            }
+            return 30;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+
+    return () => {
+      if (timer) clearInterval(timer);
+      if (timer) clearTimeout(timer);
+    };
+  }, [stage, currentQuestion, answers, currentAnswer, router]);
 
   // INPUT CHANGE HANDLER:
-  // - 配列インデックスベースの更新
+  // - 現在の問題の回答を更新
   // - セレクトボックス形式（1-8の範囲）
-  const handleInputChange = (index: number, value: string) => {
-    const newAnswers = [...answers];
-    newAnswers[index] = value;
-    setAnswers(newAnswers);
+  const handleInputChange = (value: string) => {
+    setCurrentAnswer(value);
   };
 
-  // COMPLETION VALIDATION:
-  // - 全5問に回答があるかチェック
-  // - 送信ボタンの有効/無効制御
-  const isAllAnswered = answers.every(answer => answer.trim() !== '');
 
   return (
     <div className="min-h-screen bg-white flex items-center justify-center p-4 relative" style={{backgroundImage: 'url(/image/main_bg.png)', backgroundSize: 'cover', backgroundPosition: 'center'}}>
       <div className="absolute inset-0 opacity-20" style={{backgroundColor: '#A3A3A3'}}></div>
 
       <Card>
-        <div className="overflow-y-auto h-full">
-          {/* 
-            COMPONENTIZATION NOTE - PROBLEM4 PAGE:
-            ProblemTitleコンポーネントを使用してタイトル部分を共通化
-            問題2・3と同じパターンで統一性を保持
-          */}
-          <ProblemTitle
-            title="もんだい４"
-            instruction="ドット（●＝くろまる）のかずをこたえてください"
-            additionalInfo={`のこり: ${timeLeft}びょう`}
-          />
+        <div className="h-full flex flex-col">
 
-          {/* 5問を横並び表示（2行×3列レイアウト） */}
-          <div className="grid grid-cols-3 gap-4 max-w-6xl mx-auto">
-            {problemImages.map((imagePath, index) => (
-              <div key={index} className="border-2 border-gray-300 p-3 bg-white rounded-lg">
-                <div className="flex flex-col items-center space-y-3">
-                  {/* 問題番号 */}
-                  <div className="text-center">
-                    <h3 className="text-lg font-bold text-gray-800">
-                      {index + 1}
-                    </h3>
-                  </div>
+          {stage === 'countdown' && (
+            <>
+              {/* STAGE 1: カウントダウン */}
+              <ProblemTitle
+                title={`もんだい４ (${currentQuestion + 1}/5)`}
+                instruction="ドット（●＝くろまる）のかずをこたえてください"
+              />
 
-                  {/* 画像表示エリア */}
-                  <div className="flex justify-center">
-                    <div className="border-2 border-gray-400 p-2 bg-white rounded-lg">
-                      <Image
-                        src={imagePath}
-                        alt={`問題${index + 1}`}
-                        width={150}
-                        height={150}
-                        className="object-contain rounded-lg"
-                      />
-                    </div>
-                  </div>
-
-                  {/* 回答エリア */}
-                  <div className="flex flex-col items-center space-y-2">
-                    <label className="text-sm font-bold text-gray-800">ドットのかず</label>
-                    <select
-                      value={answers[index]}
-                      onChange={(e) => handleInputChange(index, e.target.value)}
-                      className="w-16 h-10 text-xl text-center border-3 border-yellow-300 rounded-2xl focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition-all font-bold bg-white shadow-inner"
-                    >
-                      <option value="">?</option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                      <option value="5">5</option>
-                      <option value="6">6</option>
-                      <option value="7">7</option>
-                      <option value="8">8</option>
-                    </select>
+              <div className="flex-1 flex items-center justify-center">
+                <div className="text-center">
+                  <div className="text-[12rem] font-bold text-black mb-4">
+                    {countdownNumber}
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
+            </>
+          )}
 
-          {/* 送信ボタン */}
-          <div className="text-center mt-6">
-            <button
-              onClick={handleSubmit}
-              disabled={!isAllAnswered}
-              className={`px-12 py-4 rounded-lg text-xl font-bold transition-colors shadow-md ${
-                isAllAnswered
-                  ? 'bg-green-500 hover:bg-green-600 text-white'
-                  : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-              }`}
-            >
-              かいとうする！
-            </button>
-          </div>
+          {stage === 'display' && (
+            <>
+              {/* STAGE 2: 画像表示 */}
+              <ProblemTitle
+                title={`もんだい４ (${currentQuestion + 1}/5)`}
+                instruction="ドット（●＝くろまる）のかずをおぼえてください"
+              />
 
+              <div className="flex-1 flex items-center justify-center">
+                <div className="text-center">
+                  <div className="border-2 border-gray-400 p-4 bg-white rounded-lg">
+                    <Image
+                      src={problemImages[currentQuestion]}
+                      alt={`問題${currentQuestion + 1}`}
+                      width={300}
+                      height={300}
+                      className="object-contain rounded-lg"
+                    />
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+
+          {stage === 'input' && (
+            <>
+              {/* STAGE 3: 回答入力 */}
+              <ProblemTitle
+                title={`もんだい４ (${currentQuestion + 1}/5)`}
+                instruction="ドット（●＝くろまる）のかずをこたえてください"
+                additionalInfo={`のこり: ${timeLeft}びょう`}
+              />
+
+              <div className="flex-1 flex flex-col items-center justify-center">
+                <div className="text-center space-y-6">
+                  <div className="text-xl font-bold text-gray-800">ドットのかず</div>
+                  <select
+                    value={currentAnswer}
+                    onChange={(e) => handleInputChange(e.target.value)}
+                    className="w-20 h-16 text-3xl text-center border-3 border-yellow-300 rounded-2xl focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition-all font-bold bg-white shadow-inner"
+                  >
+                    <option value="">?</option>
+                    {[1, 2, 3, 4, 5, 6, 7, 8].map(num => (
+                      <option key={num} value={num}>{num}</option>
+                    ))}
+                  </select>
+
+                  <div className="mt-6">
+                    <button
+                      onClick={() => {
+                        // 手動で次の問題へ
+                        const newAnswers = [...answers];
+                        newAnswers[currentQuestion] = currentAnswer;
+                        setAnswers(newAnswers);
+                        setCurrentAnswer('');
+
+                        if (currentQuestion < 4) {
+                          setCurrentQuestion(currentQuestion + 1);
+                          setStage('countdown');
+                          setCountdownNumber(3);
+                        } else {
+                          // 5問完了
+                          const finalAnswers = [...newAnswers];
+                          const numericAnswers = finalAnswers.map(answer => parseInt(answer) || 0);
+                          localStorage.setItem('problem4Answers', JSON.stringify(numericAnswers));
+                          localStorage.setItem('problem4Time', new Date().toISOString());
+                          router.push('/problem5-explanation');
+                        }
+                      }}
+                      disabled={!currentAnswer}
+                      className="transition-transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                    >
+                      <img
+                        src="/image/next.png"
+                        alt={currentQuestion < 4 ? 'つぎへ' : 'かんりょう'}
+                        className="h-16 w-auto"
+                      />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </Card>
     </div>

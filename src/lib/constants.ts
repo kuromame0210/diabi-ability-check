@@ -19,12 +19,20 @@ export const PROBLEM2_PATTERNS: Problem2Pattern[] = [
 // タイマー設定（秒）
 export const TIMER_DURATION = 30;
 
-// アビリティ名のマッピング
+// アビリティ名のマッピング（ルビ付き）
 export const ABILITY_NAMES = {
   reading: '読解',
   attention: '集中・注意',
   memory: '記憶',
   cognition: '認知'
+} as const;
+
+// アビリティ名（ひらがな表示用）
+export const ABILITY_NAMES_HIRAGANA = {
+  reading: 'どっかい',
+  attention: 'しゅうちゅう・ちゅうい',
+  memory: 'きおく',
+  cognition: 'にんち'
 } as const;
 
 // アビリティアイコンのマッピング

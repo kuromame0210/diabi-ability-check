@@ -116,7 +116,7 @@ export default function Problem5() {
   const isAnswered = answer.trim() !== '';
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center p-4 relative" style={{backgroundImage: 'url(/image/main_bg.png)', backgroundSize: 'cover', backgroundPosition: 'center'}}>
+    <div className="min-h-screen bg-white flex items-center justify-center p-4 relative" style={{backgroundImage: 'url(/image/main_bg.png)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat'}}>
       <div className="absolute inset-0 opacity-20" style={{backgroundColor: '#A3A3A3'}}></div>
 
       <Card>
@@ -141,8 +141,8 @@ export default function Problem5() {
                 <Image
                   src="/image/mondai5.png"
                   alt="問題5"
-                  width={400}
-                  height={300}
+                  width={500}
+                  height={400}
                   className="object-contain rounded-lg"
                 />
               </div>
@@ -166,13 +166,13 @@ export default function Problem5() {
                 <button
                   onClick={handleSubmit}
                   disabled={!isAnswered}
-                  className={`px-12 py-4 rounded-lg text-xl font-bold transition-colors shadow-md ${
-                    isAnswered
-                      ? 'bg-green-500 hover:bg-green-600 text-white'
-                      : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                  }`}
+                  className="transition-transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                 >
-                  かいとうする！
+                  <img
+                    src="/image/next.png"
+                    alt="かいとう"
+                    className="h-16 w-auto"
+                  />
                 </button>
               </div>
             </div>

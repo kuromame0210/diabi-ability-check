@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import Card from '../../components/Card';
 import ProblemTitle from '../../components/ProblemTitle';
 
@@ -65,14 +66,21 @@ export default function Problem8Explanation() {
 
           {/* 説明内容エリア */}
           <div className="flex items-center justify-center h-3/4">
-            <div className="max-w-4xl">
+            <div className="max-w-5xl w-full px-4">
               <div className="space-y-8 text-center">
-                <div className="text-3xl font-bold text-gray-800 leading-relaxed">
-                  ４つの へんに いくつずつ
-                  <br />
-                  ボールが はいったかを
-                  <br />
-                  こたえてください
+                <div className="text-3xl font-bold text-gray-800 leading-relaxed whitespace-nowrap">
+                  ４つの へんに いくつずつ ボールが はいったかを こたえてください
+                </div>
+
+                {/* 画像表示 */}
+                <div className="flex justify-center mt-8">
+                  <Image
+                    src="/image/image (18).png"
+                    alt="問題8説明"
+                    width={600}
+                    height={450}
+                    className="object-contain"
+                  />
                 </div>
 
               </div>

@@ -88,16 +88,6 @@ export default function Problem3Example() {
           }
           return prev - 1;
         });
-      } else if (stage === 'input') {
-        // STAGE 3: 入力時間（30秒）
-        setTimeLeft((prev) => {
-          if (prev <= 1) {
-            // TIME UP: 自動的に結果表示段階へ
-            setStage('result');
-            return 0;
-          }
-          return prev - 1;
-        });
       }
     }, 1000);
 
@@ -187,7 +177,8 @@ export default function Problem3Example() {
               {/* STAGE 1: 見本表示 */}
               <ProblemTitle
                 title="れんしゅう３"
-                instruction="いかのみほんを10びょうかんおぼえてください"
+                instruction="みほんをおぼえてください"
+                additionalInfo={`のこり: ${timeLeft}びょう`}
               />
               
               <div className="flex-1 flex items-center justify-center">
@@ -225,7 +216,6 @@ export default function Problem3Example() {
               <ProblemTitle
                 title="にゅうりょく"
                 instruction="おぼえたとおりににゅうりょくしてください"
-                additionalInfo={`のこり: ${timeLeft}びょう`}
               />
               
               <div className="flex-1 flex flex-col">

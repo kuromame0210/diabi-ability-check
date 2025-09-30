@@ -226,21 +226,21 @@ export default function Problem3() {
       <div className="absolute inset-0 opacity-20" style={{backgroundColor: '#A3A3A3'}}></div>
 
       <Card>
-        <div className="h-full flex flex-col">
-          
+        <div className="h-full flex flex-col overflow-y-auto" style={{scrollbarWidth: 'thin'}}>
+
           {stage === 'display' && (
             <>
               {/* STAGE 1: 見本表示 */}
               <ProblemTitle
                 title="もんだい３"
-                instruction="いかのみほんを10びょうかんおぼえてください"
+                instruction="みほんをおぼえてください"
                 additionalInfo={`のこり: ${timeLeft}びょう`}
               />
-              
-              <div className="flex-1 flex items-center justify-center">
-                <div className="text-center">
-                  <div className="mb-6">
-                    <div className="text-3xl font-bold text-black mb-4">みほん</div>
+
+              <div className="flex-1 flex items-center justify-center min-h-0">
+                <div className="text-center py-4">
+                  <div className="mb-4">
+                    <div className="text-xl font-bold text-blue-600 mb-4">みほん</div>
                     {renderGrid(MAIN_PATTERN, true)}
                   </div>
                 </div>
@@ -277,8 +277,8 @@ export default function Problem3() {
               
               <div className="flex-1 flex flex-col">
                   {/* 入力グリッド */}
-                  <div className="text-center mb-4">
-                    <div className="text-lg font-bold text-gray-800 mb-3">
+                  <div className="text-center mb-6">
+                    <div className="text-lg font-bold text-gray-800 mb-4">
                       ますをせんたくしてから、もじをせんたくしてください
                       <br />
                       <span className="text-sm font-normal text-red-600">

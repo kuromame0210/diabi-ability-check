@@ -68,32 +68,23 @@ export default function Problem3Explanation() {
           <div className="flex items-center justify-center h-3/4">
             <div className="max-w-4xl">
               <div className="space-y-8 text-center">
-                
+
                 <div className="text-3xl font-bold text-gray-800 leading-relaxed">
-                  ひょうにかいてあるもじやきごうを
-                  <br />
-                  おぼえてかいとうらんのおなじばしょにかきます。
+                  ひょうにかいてある もじやきごうをおぼえて<br />
+                  かいとうらんの おなじばしょにかきます。
                 </div>
-                
-                <div className="mt-12 text-center">
-                  <div className="text-xl font-bold text-blue-600 leading-relaxed">
-                    みほんは10びょうひょうじされます。
-                    <br />
-                    まず10びょうかんでみほんをおぼえてください。
+
+                <div className="mt-12 flex justify-center">
+                  <div className="text-xl font-bold text-blue-600 leading-relaxed text-left">
+                    ・みほんを10びょうで おぼえます<br />
+                    ・５びょう まちます<br />
+                    ・ひょうに こたえを かきます
                   </div>
                 </div>
-                
-                <div className="mt-8 text-center">
-                  <div className="text-xl font-bold text-blue-600 leading-relaxed">
-                    そのあと5びょうかうんとしたあと
-                    <br />
-                    ひょうにかきこんでください。
-                  </div>
-                </div>
-                
-                <div className="mt-8 text-center">
+
+                <div className="mt-8">
                   <div className="text-xl font-bold text-red-600 leading-relaxed">
-                    かきこむじかんは30びょうです。
+                    （こたえるじかん：30びょう）
                   </div>
                 </div>
               </div>
