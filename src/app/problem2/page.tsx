@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { TIMER_DURATION, PROBLEM2_PATTERNS } from '@/lib/constants';
 import Card from '../../components/Card';
 import ProblemTitle from '../../components/ProblemTitle';
+import AnswerButton from '../../components/AnswerButton';
+import NumberDisplay from '../../components/NumberDisplay';
 
 /**
  * Problem 2 Page (もんだい２)
@@ -139,7 +141,7 @@ export default function Problem2() {
           */}
           <ProblemTitle
             title="もんだい２"
-            instruction="０からきゅうまでのすうじのうち、ひとつだけたりないすうじをみつけてください"
+            instruction="０から９までの すうじのうち、ひとつだけ たりないすうじを こたえてください。"
             additionalInfo={`のこり: ${timeLeft}びょう`}
           />
 
@@ -148,63 +150,53 @@ export default function Problem2() {
           </p>
 
           {/* 5問を同時表示 */}
-          <div className="space-y-1">
+          <div className="space-y-4 max-w-5xl mx-auto">
             {PROBLEM2_PATTERNS.map((pattern, index) => (
-              <div key={index} className="border-2 border-gray-300 p-2 mb-1">
-                <div className="flex gap-4 items-center">
-                  {/* 問題番号 */}
-                  <div className="text-center flex-shrink-0">
-                    <h3 className="text-xl font-bold text-gray-800 mb-1">
-                      {index + 1}
-                    </h3>
-                  </div>
+              <div key={index} className="flex gap-8 items-center justify-center">
+                {/* 問題番号 */}
+                <div className="text-center flex-shrink-0">
+                  <h3 className="text-3xl font-bold text-gray-800">
+                    {index + 1}
+                  </h3>
+                </div>
 
-                  {/* 数字表示エリア */}
-                  <div className="border-2 border-gray-400 p-3 text-center flex-grow">
-                    <div className="text-2xl font-bold tracking-wider text-gray-800 font-mono whitespace-nowrap">
-                      {pattern.numbers.join('   ')}
-                    </div>
-                  </div>
+                {/* 数字表示エリア */}
+                <div className="flex justify-center items-center">
+                  <NumberDisplay numbers={pattern.numbers.join('')} />
+                </div>
 
-                  {/* 回答エリア */}
-                  <div className="flex items-center space-x-3 flex-shrink-0">
-                    <label className="text-base font-bold text-gray-800">こたえ:</label>
-                    <select
-                      value={answers[index]}
-                      onChange={(e) => handleInputChange(index, e.target.value)}
-                      className="w-14 h-10 text-xl text-center border-3 border-yellow-300 rounded-2xl focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition-all font-bold bg-white shadow-inner"
-                    >
-                      <option value="">?</option>
-                      <option value="0">0</option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                      <option value="5">5</option>
-                      <option value="6">6</option>
-                      <option value="7">7</option>
-                      <option value="8">8</option>
-                      <option value="9">9</option>
-                    </select>
-                  </div>
+                {/* 回答エリア */}
+                <div className="flex items-center space-x-2 flex-shrink-0">
+                  <label className="text-2xl font-bold text-gray-800">こたえ:</label>
+                  <select
+                    value={answers[index]}
+                    onChange={(e) => handleInputChange(index, e.target.value)}
+                    className="w-16 h-12 text-2xl text-center border-3 border-yellow-300 rounded-2xl focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition-all font-bold bg-white shadow-inner"
+                  >
+                    <option value="">?</option>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                  </select>
                 </div>
               </div>
             ))}
           </div>
 
           {/* 送信ボタン */}
-          <div className="text-center mt-3">
-            <button
+          <div className="text-center mt-2">
+            <AnswerButton
               onClick={handleSubmit}
               disabled={!isAllAnswered}
-              className={`px-8 py-3 rounded-lg text-lg font-bold transition-colors shadow-md ${
-                isAllAnswered
-                  ? 'bg-green-500 hover:bg-green-600 text-white'
-                  : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-              }`}
-            >
-              かいとうする！
-            </button>
+              className="px-8 py-2 text-lg"
+            />
           </div>
 
         </div>

@@ -59,9 +59,9 @@ export default function RadarChart({ abilities }: RadarChartProps) {
     maintainAspectRatio: false,
     layout: {
       padding: {
-        top: 50,
+        top: 85,
         right: 50,
-        bottom: 80,
+        bottom: 95,
         left: 50
       }
     },
@@ -123,7 +123,7 @@ export default function RadarChart({ abilities }: RadarChartProps) {
       {/* カスタムラベル（アイコン付き） */}
       <div className="absolute inset-0 pointer-events-none">
         {/* 上（12時方向）: 読解 */}
-        <div className="absolute top-2 left-1/2 transform -translate-x-1/2 flex flex-col items-center">
+        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 flex flex-col items-center">
           <img src={ABILITY_ICONS.reading} alt="読解" className="w-8 h-8 mb-1" />
           <span className="text-sm font-bold text-gray-700">どっかい</span>
           <span className="text-xs text-gray-500">(読解)</span>

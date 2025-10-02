@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Card from '../../components/Card';
 import ProblemTitle from '../../components/ProblemTitle';
+import AnswerButton from '../../components/AnswerButton';
 
 /**
  * Problem6 Main Problem Page (もんだい６)
@@ -153,9 +154,9 @@ export default function Problem6() {
             </div>
 
             {/* 回答選択エリア - インライン形式 */}
-            <div className="flex flex-col items-center space-y-4 pb-2">
+            <div className="flex items-center justify-between gap-12 px-8 pb-2">
               {/* インライン文章形式の回答欄 */}
-              <div className="flex items-center justify-center space-x-3 text-2xl font-bold text-gray-800">
+              <div className="flex items-center space-x-3 text-2xl font-bold text-gray-800">
                 <span>おなじかたちで おなじおおきさの ずけい</span>
                 <select
                   value={answer}
@@ -170,19 +171,15 @@ export default function Problem6() {
                 <span>こ</span>
               </div>
 
-              {/* 送信ボタン */}
-              <div className="text-center mt-2">
-                <button
+              {/* こたえるボタン */}
+              <div>
+                <AnswerButton
                   onClick={handleSubmit}
                   disabled={!isAnswered}
-                  className="transition-transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-                >
-                  <img
-                    src="/image/next.png"
-                    alt="かいとう"
-                    className="h-16 w-auto"
-                  />
-                </button>
+                  type="text"
+                  text="こたえる"
+                  className="px-8 py-3 text-xl"
+                />
               </div>
             </div>
 

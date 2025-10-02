@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import Card from '../../components/Card';
 import ProblemTitle from '../../components/ProblemTitle';
+import ExplanationContent from '../../components/ExplanationContent';
 
 /**
  * Problem3 Explanation Page (やりかた３)
@@ -65,41 +66,26 @@ export default function Problem3Explanation() {
           />
 
           {/* 説明内容エリア */}
-          <div className="flex items-center justify-center h-3/4">
-            <div className="max-w-4xl">
-              <div className="space-y-8 text-center">
+          <ExplanationContent onNext={handleNext}>
+            <div className="text-3xl font-bold text-gray-800 leading-relaxed">
+              ひょうにかいてある もじやきごうをおぼえて<br />
+              かいとうらんの おなじばしょにかきます。
+            </div>
 
-                <div className="text-3xl font-bold text-gray-800 leading-relaxed">
-                  ひょうにかいてある もじやきごうをおぼえて<br />
-                  かいとうらんの おなじばしょにかきます。
-                </div>
-
-                <div className="mt-12 flex justify-center">
-                  <div className="text-xl font-bold text-blue-600 leading-relaxed text-left">
-                    ・みほんを10びょうで おぼえます<br />
-                    ・５びょう まちます<br />
-                    ・ひょうに こたえを かきます
-                  </div>
-                </div>
-
-                <div className="mt-8">
-                  <div className="text-xl font-bold text-red-600 leading-relaxed">
-                    （こたえるじかん：30びょう）
-                  </div>
-                </div>
+            <div className="mt-12 flex justify-center">
+              <div className="text-2xl font-bold text-blue-600 leading-relaxed text-left">
+                ・みほんを10びょうで おぼえます<br />
+                ・５びょう まちます<br />
+                ・ひょうに こたえを かきます
               </div>
             </div>
-          </div>
 
-          {/* 次へボタン */}
-          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
-            <button
-              onClick={handleNext}
-              className="transition-transform hover:scale-105"
-            >
-              <img src="/image/next.png" alt="れいだいへ" className="h-16 w-auto" />
-            </button>
-          </div>
+            <div className="mt-8">
+              <div className="text-2xl font-bold text-blue-600 leading-relaxed">
+                （こたえるじかん：30びょう）
+              </div>
+            </div>
+          </ExplanationContent>
         </div>
       </Card>
     </div>

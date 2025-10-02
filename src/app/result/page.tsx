@@ -336,7 +336,11 @@ export default function Result() {
                   <div className="border border-gray-300 p-3 text-center">
                     <h4 className="text-lg font-bold text-gray-800 mb-2">とくい分野</h4>
                     <div className="text-lg font-bold text-green-600">
-                      {userData.analysis.strongest.length === 4 ? (
+                      {userData.analysis.strongest.length === 0 ? (
+                        <div className="flex items-center justify-center gap-2">
+                          <span className="text-gray-500">-</span>
+                        </div>
+                      ) : userData.analysis.strongest.length === 4 ? (
                         <div className="flex items-center justify-center gap-2">
                           <span>すべての分野が得意です！</span>
                         </div>
@@ -344,11 +348,10 @@ export default function Result() {
                         userData.analysis.strongest.map((field, index) => (
                           <div key={index} className="flex items-center justify-center gap-2 mb-1">
                             <img src={field.icon} alt={field.name} className="w-6 h-6" />
-                            <span>
-                              <ruby>
-                                {field.name}<rt style={{fontSize: '0.5em'}}>{field.nameHiragana}</rt>
-                              </ruby>
-                              が得意です！
+                            <span className="flex flex-col">
+                              <span className="text-base">{field.name}</span>
+                              <span className="text-xs text-gray-500">({field.nameHiragana})</span>
+                              <span className="text-sm">が得意です！</span>
                             </span>
                           </div>
                         ))
@@ -359,11 +362,10 @@ export default function Result() {
                     <h4 className="text-lg font-bold text-gray-800 mb-2">のびしろ</h4>
                     <div className="text-lg font-bold text-blue-600 flex items-center justify-center gap-2">
                       <img src={userData.analysis.weakest.icon} alt="のびしろ" className="w-6 h-6" />
-                      <span>
-                        <ruby>
-                          {userData.analysis.weakest.name}<rt style={{fontSize: '0.5em'}}>{userData.analysis.weakest.nameHiragana}</rt>
-                        </ruby>
-                        をもっと伸ばしましょう
+                      <span className="flex flex-col">
+                        <span className="text-base">{userData.analysis.weakest.name}</span>
+                        <span className="text-xs text-gray-500">({userData.analysis.weakest.nameHiragana})</span>
+                        <span className="text-sm">をもっと伸ばしましょう</span>
                       </span>
                     </div>
                   </div>
@@ -391,11 +393,11 @@ export default function Result() {
             </div>
 
             {/* 右側: アビリティグラフ */}
-            <div className="flex-1 border-2 border-gray-300 p-4 min-h-[600px]">
+            <div className="flex-1 border-2 border-gray-300 p-4 min-h-[450px]">
               <h3 className="text-xl font-bold text-gray-800 pb-4 mb-4 border-b border-gray-200 text-center">
                 📈 アビリティグラフ
               </h3>
-              <div className="mt-2 h-[500px]">
+              <div className="mt-2 h-[380px]">
                 <RadarChart abilities={userData.abilities} />
               </div>
             </div>
@@ -430,20 +432,20 @@ export default function Result() {
                     <div key={key} className="bg-white border-2 border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
                       <div className="text-center mb-3">
                         <h4 className="text-lg font-bold text-gray-800">もんだい{problemNum}</h4>
-                        <div className="text-2xl font-bold text-blue-600 my-2">
+                        <div className="text-2xl font-bold text-blue-600 my-3">
                           {score}/2.5てん
                         </div>
 
                         {/* アビリティ表示 */}
                         {problemAbilities?.primary && (
-                          <div className="flex items-center justify-center gap-2 mb-2">
+                          <div className="flex items-center justify-center gap-2 mb-3">
                             <img src={problemAbilities.primary.icon} alt={problemAbilities.primary.name} className="w-5 h-5" />
                             <span className="text-sm font-medium text-gray-600">{problemAbilities.primary.name}</span>
                           </div>
                         )}
 
                         {/* 得点バー */}
-                        <div className="w-full bg-gray-200 rounded-full h-2 mb-3">
+                        <div className="w-full bg-gray-200 rounded-full h-2 mb-4 mt-3">
                           <div
                             className={`h-2 rounded-full transition-all ${
                               score === 2.5 ? 'bg-green-500' :
@@ -454,8 +456,8 @@ export default function Result() {
                         </div>
                       </div>
 
-                      {/* 回答データ */}
-                      <div className="bg-gray-50 rounded p-3">
+                      {/* 回答データ - 非表示 */}
+                      <div className="bg-gray-50 rounded p-3 hidden">
                         <div className="text-xs font-semibold text-gray-600 mb-2">こたえ:</div>
                         <div className="text-sm text-gray-800">
                           {typeof answer === 'object' ? (
@@ -512,20 +514,21 @@ export default function Result() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* アビリティスコア */}
                 <div className="bg-white border-2 border-gray-200 rounded-lg p-4">
-                  <h4 className="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">
+                  <h4 className="text-lg font-bold text-gray-800 mb-3 flex items-center justify-center gap-2">
                     🎯 アビリティスコア
                   </h4>
                   <div className="space-y-3">
-                    {Object.entries(userData.abilities).map(([ability, score]) => {
+                    {['reading', 'memory', 'cognition', 'attention'].map((ability) => {
+                      const score = userData.abilities[ability as keyof typeof userData.abilities];
                       const abilityNames = {
                         reading: '読解',
-                        attention: '集中・注意',
+                        attention: '集中',
                         memory: '記憶',
                         cognition: '認知'
                       };
                       const abilityNamesHiragana = {
                         reading: 'どっかい',
-                        attention: 'しゅうちゅう・ちゅうい',
+                        attention: 'しゅうちゅう',
                         memory: 'きおく',
                         cognition: 'にんち'
                       };
@@ -534,10 +537,9 @@ export default function Result() {
 
                       return (
                         <div key={ability} className="flex items-center justify-between">
-                          <span className="font-medium text-gray-700">
-                            <ruby>
-                              {abilityName}<rt style={{fontSize: '0.5em'}}>{abilityHiragana}</rt>
-                            </ruby>:
+                          <span className="font-medium text-gray-700 flex flex-col">
+                            <span className="text-base">{abilityName}</span>
+                            <span className="text-xs text-gray-500">({abilityHiragana})</span>
                           </span>
                           <div className="flex items-center gap-2">
                             <div className="w-20 bg-gray-200 rounded-full h-2">
@@ -558,7 +560,7 @@ export default function Result() {
 
                 {/* 合計スコア */}
                 <div className="bg-white border-2 border-gray-200 rounded-lg p-4">
-                  <h4 className="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">
+                  <h4 className="text-lg font-bold text-gray-800 mb-3 flex items-center justify-center gap-2">
                     📈 スコアサマリー
                   </h4>
                   <div className="text-center">

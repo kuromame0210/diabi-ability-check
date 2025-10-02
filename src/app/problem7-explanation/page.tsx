@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import Card from '../../components/Card';
 import ProblemTitle from '../../components/ProblemTitle';
+import ExplanationContent from '../../components/ExplanationContent';
 
 /**
  * Problem7 Explanation Page (やりかた７)
@@ -64,28 +65,15 @@ export default function Problem7Explanation() {
           />
 
           {/* 説明内容エリア */}
-          <div className="flex items-center justify-center h-3/4">
-            <div className="max-w-4xl">
-              <div className="space-y-8 text-center">
-                <div className="text-3xl font-bold text-gray-800 leading-relaxed">
-                  それぞれの マークのかずを
-                  <br />
-                  かぞえて かいてください
-                </div>
-
-              </div>
+          <ExplanationContent onNext={handleNext}>
+            <div className="text-3xl font-bold text-gray-800 leading-relaxed">
+              それぞれの きごうのかずを かぞえて こたえてください。
             </div>
-          </div>
 
-          {/* 次へボタン */}
-          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
-            <button
-              onClick={handleNext}
-              className="transition-transform hover:scale-105"
-            >
-              <img src="/image/next.png" alt="もんだいへ" className="h-16 w-auto" />
-            </button>
-          </div>
+            <div className="text-2xl font-bold text-blue-600 leading-relaxed">
+              （こたえるじかん：30びょう）
+            </div>
+          </ExplanationContent>
         </div>
       </Card>
     </div>

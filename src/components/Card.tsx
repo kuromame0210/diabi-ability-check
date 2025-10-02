@@ -20,13 +20,13 @@ export default function Card({ children, className = '' }: CardProps) {
         backgroundPosition: 'center'
       }}
     >
-      <div 
-        className="absolute" 
+      <div
+        className="absolute"
         style={{
-          top: '20px',
-          left: '20px',
-          right: '20px',
-          bottom: '20px',
+          top: '35px',
+          left: '35px',
+          right: '35px',
+          bottom: '35px',
           backgroundImage: 'url(/image/border-orange.png)',
           backgroundSize: '100% 100%',
           backgroundRepeat: 'no-repeat',
@@ -36,10 +36,10 @@ export default function Card({ children, className = '' }: CardProps) {
       <div
         className="absolute z-20 px-6 overflow-y-auto"
         style={{
-          top: '40px',
-          left: '40px',
-          right: '40px',
-          bottom: '40px'
+          top: '60px',
+          left: '60px',
+          right: '60px',
+          bottom: '60px'
         }}
       >
         {children}

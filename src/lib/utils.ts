@@ -143,28 +143,46 @@ export function calculateAbilities(problem1Score: number, problem2Score: number,
 
 // アビリティ分析
 export function analyzeAbilities(abilities: UserData['abilities']): AbilityAnalysis {
-  const entries = Object.entries(abilities);
-  const maxValue = Math.max(...entries.map(([, value]) => value));
+  // 順番を統一: どっかい、きおく、認知、集中
+  const orderedKeys = ['reading', 'memory', 'cognition', 'attention'] as const;
+  const entries = orderedKeys.map(key => [key, abilities[key]] as [string, number]);
+
+  // 全部0点かチェック（全分野が0.5以下）
+  const allZero = entries.every(([, value]) => value <= 0.5);
+
+  // 全部低得点かチェック（全分野が2.5以下）
+  const allLow = entries.every(([, value]) => value <= 2.5);
+
+  // 3点以上の分野を取得（3.0以上）
+  const strongEntries = entries.filter(([, value]) => value >= 3.0);
+
+  // 得意分野の決定
+  let strongestNames: Array<{name: string; nameHiragana: string; icon: string}>;
+
+  if (allZero || allLow) {
+    // 全部0点または全部低得点の場合は得意分野なし
+    strongestNames = [];
+  } else if (strongEntries.length > 0) {
+    // 3点以上の分野があれば、それらを得意分野とする
+    strongestNames = strongEntries.map(([key]) => ({
+      name: ABILITY_NAMES[key as keyof typeof ABILITY_NAMES],
+      nameHiragana: ABILITY_NAMES_HIRAGANA[key as keyof typeof ABILITY_NAMES_HIRAGANA],
+      icon: ABILITY_ICONS[key as keyof typeof ABILITY_ICONS]
+    }));
+  } else {
+    // それ以外の場合は最高値の分野を得意とする
+    const maxValue = Math.max(...entries.map(([, value]) => value));
+    const maxEntries = entries.filter(([, value]) => Math.abs(value - maxValue) < 0.1);
+    strongestNames = maxEntries.map(([key]) => ({
+      name: ABILITY_NAMES[key as keyof typeof ABILITY_NAMES],
+      nameHiragana: ABILITY_NAMES_HIRAGANA[key as keyof typeof ABILITY_NAMES_HIRAGANA],
+      icon: ABILITY_ICONS[key as keyof typeof ABILITY_ICONS]
+    }));
+  }
+
+  // のびしろの決定（最低値の分野）
   const minValue = Math.min(...entries.map(([, value]) => value));
-
-  // 最高値と同じ値を持つ全ての分野を取得
-  const strongestEntries = entries.filter(([, value]) => Math.abs(value - maxValue) < 0.1);
   const weakestEntry = entries.find(([, value]) => Math.abs(value - minValue) < 0.1);
-
-  // 全問正解の場合（全分野が4.5以上）は全分野を得意とする
-  const allHigh = entries.every(([, value]) => value >= 4.5);
-
-  const strongestNames = allHigh
-    ? entries.map(([key]) => ({
-        name: ABILITY_NAMES[key as keyof typeof ABILITY_NAMES],
-        nameHiragana: ABILITY_NAMES_HIRAGANA[key as keyof typeof ABILITY_NAMES_HIRAGANA],
-        icon: ABILITY_ICONS[key as keyof typeof ABILITY_ICONS]
-      }))
-    : strongestEntries.map(([key]) => ({
-        name: ABILITY_NAMES[key as keyof typeof ABILITY_NAMES],
-        nameHiragana: ABILITY_NAMES_HIRAGANA[key as keyof typeof ABILITY_NAMES_HIRAGANA],
-        icon: ABILITY_ICONS[key as keyof typeof ABILITY_ICONS]
-      }));
 
   return {
     strongest: strongestNames,

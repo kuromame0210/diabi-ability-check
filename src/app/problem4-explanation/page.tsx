@@ -1,8 +1,10 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import Card from '../../components/Card';
 import ProblemTitle from '../../components/ProblemTitle';
+import ExplanationContent from '../../components/ExplanationContent';
 
 /**
  * Problem4 Explanation Page (やりかた４)
@@ -41,11 +43,11 @@ export default function Problem4Explanation() {
   const router = useRouter();
 
   // ROUTING LOGIC:
-  // 説明完了後は例題ページへ（3段階構成の2段階目）
+  // 説明完了後は問題4本問へ（練習なし）
   // - データ保存は不要（説明ページのため）
   const handleNext = () => {
-    // 問題4の例題ページに遷移
-    router.push('/problem4-example');
+    // 問題4本問に直接遷移
+    router.push('/problem4');
   };
 
   return (
@@ -65,28 +67,33 @@ export default function Problem4Explanation() {
           />
 
           {/* 説明内容エリア */}
-          <div className="flex items-center justify-center h-3/4">
-            <div className="max-w-4xl">
-              <div className="space-y-8 text-center">
-                <div className="text-3xl font-bold text-gray-800 leading-relaxed">
-                  ドット（●＝くろまる）のかずを
-                  <br />
-                  こたえてください
-                </div>
+          <ExplanationContent onNext={handleNext}>
+            <div className="text-3xl font-bold text-gray-800 leading-relaxed">
+              ● のかずを こたえてください。もんだいは ぜんぶで ５もんです。
+            </div>
 
+            <div className="mt-8 flex justify-center">
+              <Image
+                src="/image/4/0reidai.jpg"
+                alt="ドット例題"
+                width={200}
+                height={200}
+                className="object-contain border-4 border-black rounded"
+              />
+            </div>
+
+            <div className="mt-6">
+              <div className="text-2xl font-bold text-red-600">
+                こたえは４
               </div>
             </div>
-          </div>
 
-          {/* 次へボタン */}
-          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
-            <button
-              onClick={handleNext}
-              className="transition-transform hover:scale-105"
-            >
-              <img src="/image/next.png" alt="れいだいへ" className="h-16 w-auto" />
-            </button>
-          </div>
+            <div className="mt-8">
+              <div className="text-2xl font-bold text-blue-600 leading-relaxed">
+                （こたえるじかん：５もんで30びょう）
+              </div>
+            </div>
+          </ExplanationContent>
         </div>
       </Card>
     </div>

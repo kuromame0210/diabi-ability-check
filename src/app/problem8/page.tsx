@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Card from '../../components/Card';
 import ProblemTitle from '../../components/ProblemTitle';
+import AnswerButton from '../../components/AnswerButton';
 
 /**
  * Problem8 Main Problem Page (もんだい８)
@@ -135,16 +136,9 @@ export default function Problem8() {
     <div className="min-h-screen bg-white flex items-center justify-center p-4 relative" style={{backgroundImage: 'url(/image/main_bg.png)', backgroundSize: 'cover', backgroundPosition: 'center'}}>
       <div className="absolute inset-0 opacity-20" style={{backgroundColor: '#A3A3A3'}}></div>
 
-      {/* 固定タイマー表示 */}
-      <div className="fixed top-4 right-4 z-50 bg-white border-2 border-gray-400 rounded-lg px-4 py-2 shadow-lg">
-        <div className="text-lg font-bold text-red-600">
-          のこり: {timeLeft}びょう
-        </div>
-      </div>
-
       <Card>
         <div className="overflow-y-auto h-full">
-          {/* 
+          {/*
             COMPONENTIZATION NOTE - PROBLEM8 PAGE:
             ProblemTitleコンポーネントを使用してタイマー表示統一
             問題1・2・3・4・5・6・7と同じパターンで統一性を保持
@@ -152,177 +146,123 @@ export default function Problem8() {
           <ProblemTitle
             title="もんだい８"
             instruction="４つのへんに ボールが いくつ はいったかを こたえてください。"
+            additionalInfo={`のこり: ${timeLeft}びょう`}
           />
 
-          {/* メインコンテンツエリア */}
-          <div className="flex flex-col space-y-3" style={{height: '75%'}}>
-            
-            {/* 動画エリア */}
-            <div className="flex justify-center flex-1">
-              <div className="border-4 border-gray-400 p-4 bg-white rounded-xl shadow-lg flex items-center">
+          {/* メインコンテンツエリア - 左右レイアウト（2:1） */}
+          <div className="grid lg:grid-cols-3 gap-6 items-start" style={{height: '70%'}}>
+
+            {/* 左: 動画（2/3の幅） */}
+            <div className="lg:col-span-2 flex justify-center h-full">
+              <div className="border-4 border-gray-400 p-4 h-full bg-white rounded-xl shadow-lg w-full">
                 <video
                   src="/image/media1.mp4"
-                  width={400}
-                  height={280}
                   controls
                   autoPlay
-                  className="object-contain rounded-lg"
+                  muted
+                  className="w-full h-full object-contain rounded-lg"
                 >
                   お使いのブラウザは動画の再生に対応していません。
                 </video>
               </div>
             </div>
 
-            {/* 回答入力エリア */}
-            <div className="flex justify-center">
-              <div className="grid grid-cols-4 gap-3 max-w-4xl w-full">
-                {/* 黄色パレットの選択 */}
-                <div className="border-2 border-gray-300 p-3 rounded-lg" style={{backgroundColor: '#FFF59D'}}>
-                  <div className="text-center space-y-2">
-                    <div className="flex items-center justify-center space-x-2 mb-2">
-                      <span className="text-xl font-bold text-gray-800">A</span>
-                      <span className="text-lg font-bold text-gray-800">きいろ</span>
-                    </div>
-                    <div className="flex items-center justify-center space-x-2 mb-2">
-                      <div className={`w-12 h-8 text-lg text-center border-2 border-yellow-300 rounded-lg flex items-center justify-center font-bold ${
-                        answers.yellow ? 'bg-yellow-200' : 'bg-white'
-                      }`}>
-                        {answers.yellow || '?'}
-                      </div>
-                      <span className="text-sm font-bold text-gray-800">こ</span>
-                    </div>
-                    <div className="grid grid-cols-4 gap-1">
-                      {Array.from({length: 11}, (_, i) => (
-                        <button
-                          key={i}
-                          onClick={() => handleSelectionChange('yellow', i.toString())}
-                          className={`w-10 h-8 text-sm font-bold rounded transition-colors ${
-                            answers.yellow === i.toString()
-                              ? 'bg-yellow-600 text-white'
-                              : 'bg-gray-100 hover:bg-gray-200'
-                          }`}
-                        >
-                          {i}
-                        </button>
+            {/* 右: 回答エリア（1/3の幅） */}
+            <div className="lg:col-span-1 h-full flex flex-col justify-end">
+              <div className="space-y-4 max-w-sm mx-auto lg:mx-0 border-gray-400 px-6 rounded-xl bg-gray-50">
+                {/* 黄色の回答 */}
+                <div className="flex items-center justify-between p-4 border-2 border-gray-300 mb-4 rounded-lg" style={{backgroundColor: '#FFF59D'}}>
+                  <div className="flex items-center space-x-3">
+                    <span className="text-2xl font-bold text-gray-800">A</span>
+                    <span className="text-xl font-bold text-gray-800">きいろ</span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <select
+                      value={answers.yellow}
+                      onChange={(e) => handleSelectionChange('yellow', e.target.value)}
+                      className="w-20 h-16 text-2xl text-center border-2 border-gray-400 rounded-2xl focus:outline-none focus:border-gray-600 focus:ring-2 focus:ring-yellow-200 transition-all font-bold shadow-inner bg-white"
+                    >
+                      <option value="">?</option>
+                      {Array.from({length: 10}, (_, i) => (
+                        <option key={i} value={i}>{i}</option>
                       ))}
-                    </div>
+                    </select>
+                    <span className="text-xl font-bold text-gray-800">こ</span>
                   </div>
                 </div>
 
-                {/* 緑パレットの選択 */}
-                <div className="border-2 border-gray-300 p-3 rounded-lg" style={{backgroundColor: '#C8E6C9'}}>
-                  <div className="text-center space-y-2">
-                    <div className="flex items-center justify-center space-x-2 mb-2">
-                      <span className="text-xl font-bold text-gray-800">B</span>
-                      <span className="text-lg font-bold text-gray-800">みどり</span>
-                    </div>
-                    <div className="flex items-center justify-center space-x-2 mb-2">
-                      <div className={`w-12 h-8 text-lg text-center border-2 border-green-300 rounded-lg flex items-center justify-center font-bold ${
-                        answers.green ? 'bg-green-200' : 'bg-white'
-                      }`}>
-                        {answers.green || '?'}
-                      </div>
-                      <span className="text-sm font-bold text-gray-800">こ</span>
-                    </div>
-                    <div className="grid grid-cols-4 gap-1">
-                      {Array.from({length: 11}, (_, i) => (
-                        <button
-                          key={i}
-                          onClick={() => handleSelectionChange('green', i.toString())}
-                          className={`w-10 h-8 text-sm font-bold rounded transition-colors ${
-                            answers.green === i.toString()
-                              ? 'bg-green-600 text-white'
-                              : 'bg-gray-100 hover:bg-gray-200'
-                          }`}
-                        >
-                          {i}
-                        </button>
+                {/* 緑の回答 */}
+                <div className="flex items-center justify-between p-4 border-2 border-gray-300 mb-4 rounded-lg" style={{backgroundColor: '#C8E6C9'}}>
+                  <div className="flex items-center space-x-3">
+                    <span className="text-2xl font-bold text-gray-800">B</span>
+                    <span className="text-xl font-bold text-gray-800">みどり</span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <select
+                      value={answers.green}
+                      onChange={(e) => handleSelectionChange('green', e.target.value)}
+                      className="w-20 h-16 text-2xl text-center border-2 border-gray-400 rounded-2xl focus:outline-none focus:border-gray-600 focus:ring-2 focus:ring-yellow-200 transition-all font-bold shadow-inner bg-white"
+                    >
+                      <option value="">?</option>
+                      {Array.from({length: 10}, (_, i) => (
+                        <option key={i} value={i}>{i}</option>
                       ))}
-                    </div>
+                    </select>
+                    <span className="text-xl font-bold text-gray-800">こ</span>
                   </div>
                 </div>
 
-                {/* 青パレットの選択 */}
-                <div className="border-2 border-gray-300 p-3 rounded-lg" style={{backgroundColor: '#BBDEFB'}}>
-                  <div className="text-center space-y-2">
-                    <div className="flex items-center justify-center space-x-2 mb-2">
-                      <span className="text-xl font-bold text-gray-800">C</span>
-                      <span className="text-lg font-bold text-gray-800">あお</span>
-                    </div>
-                    <div className="flex items-center justify-center space-x-2 mb-2">
-                      <div className={`w-12 h-8 text-lg text-center border-2 border-blue-300 rounded-lg flex items-center justify-center font-bold ${
-                        answers.blue ? 'bg-blue-200' : 'bg-white'
-                      }`}>
-                        {answers.blue || '?'}
-                      </div>
-                      <span className="text-sm font-bold text-gray-800">こ</span>
-                    </div>
-                    <div className="grid grid-cols-4 gap-1">
-                      {Array.from({length: 11}, (_, i) => (
-                        <button
-                          key={i}
-                          onClick={() => handleSelectionChange('blue', i.toString())}
-                          className={`w-10 h-8 text-sm font-bold rounded transition-colors ${
-                            answers.blue === i.toString()
-                              ? 'bg-blue-600 text-white'
-                              : 'bg-gray-100 hover:bg-gray-200'
-                          }`}
-                        >
-                          {i}
-                        </button>
+                {/* 青の回答 */}
+                <div className="flex items-center justify-between p-4 border-2 border-gray-300 mb-4 rounded-lg" style={{backgroundColor: '#BBDEFB'}}>
+                  <div className="flex items-center space-x-3">
+                    <span className="text-2xl font-bold text-gray-800">C</span>
+                    <span className="text-xl font-bold text-gray-800">あお</span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <select
+                      value={answers.blue}
+                      onChange={(e) => handleSelectionChange('blue', e.target.value)}
+                      className="w-20 h-16 text-2xl text-center border-2 border-gray-400 rounded-2xl focus:outline-none focus:border-gray-600 focus:ring-2 focus:ring-yellow-200 transition-all font-bold shadow-inner bg-white"
+                    >
+                      <option value="">?</option>
+                      {Array.from({length: 10}, (_, i) => (
+                        <option key={i} value={i}>{i}</option>
                       ))}
-                    </div>
+                    </select>
+                    <span className="text-xl font-bold text-gray-800">こ</span>
                   </div>
                 </div>
 
-                {/* 水色パレットの選択 */}
-                <div className="border-2 border-gray-300 p-3 rounded-lg" style={{backgroundColor: '#B2EBF2'}}>
-                  <div className="text-center space-y-2">
-                    <div className="flex items-center justify-center space-x-2 mb-2">
-                      <span className="text-xl font-bold text-gray-800">D</span>
-                      <span className="text-lg font-bold text-gray-800">みずいろ</span>
-                    </div>
-                    <div className="flex items-center justify-center space-x-2 mb-2">
-                      <div className={`w-12 h-8 text-lg text-center border-2 border-cyan-300 rounded-lg flex items-center justify-center font-bold ${
-                        answers.cyan ? 'bg-cyan-200' : 'bg-white'
-                      }`}>
-                        {answers.cyan || '?'}
-                      </div>
-                      <span className="text-sm font-bold text-gray-800">こ</span>
-                    </div>
-                    <div className="grid grid-cols-4 gap-1">
-                      {Array.from({length: 11}, (_, i) => (
-                        <button
-                          key={i}
-                          onClick={() => handleSelectionChange('cyan', i.toString())}
-                          className={`w-10 h-8 text-sm font-bold rounded transition-colors ${
-                            answers.cyan === i.toString()
-                              ? 'bg-cyan-600 text-white'
-                              : 'bg-gray-100 hover:bg-gray-200'
-                          }`}
-                        >
-                          {i}
-                        </button>
-                      ))}
-                    </div>
+                {/* 水色の回答 */}
+                <div className="flex items-center justify-between p-4 border-2 border-gray-300 mb-4 rounded-lg" style={{backgroundColor: '#B2EBF2'}}>
+                  <div className="flex items-center space-x-3">
+                    <span className="text-2xl font-bold text-gray-800">D</span>
+                    <span className="text-xl font-bold text-gray-800">みずいろ</span>
                   </div>
+                  <div className="flex items-center space-x-3">
+                    <select
+                      value={answers.cyan}
+                      onChange={(e) => handleSelectionChange('cyan', e.target.value)}
+                      className="w-20 h-16 text-2xl text-center border-2 border-gray-400 rounded-2xl focus:outline-none focus:border-gray-600 focus:ring-2 focus:ring-yellow-200 transition-all font-bold shadow-inner bg-white"
+                    >
+                      <option value="">?</option>
+                      {Array.from({length: 10}, (_, i) => (
+                        <option key={i} value={i}>{i}</option>
+                      ))}
+                    </select>
+                    <span className="text-xl font-bold text-gray-800">こ</span>
+                  </div>
+                </div>
+
+                {/* 送信ボタン */}
+                <div className="text-center mt-6">
+                  <AnswerButton
+                    onClick={handleSubmit}
+                    disabled={!isAllAnswered}
+                    className="px-10 py-4"
+                  />
                 </div>
               </div>
-            </div>
-
-            {/* 送信ボタン */}
-            <div className="text-center">
-              <button
-                onClick={handleSubmit}
-                disabled={!isAllAnswered}
-                className={`px-12 py-4 rounded-lg text-xl font-bold transition-colors shadow-md ${
-                  isAllAnswered
-                    ? 'bg-green-500 hover:bg-green-600 text-white'
-                    : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                }`}
-              >
-                かいとうする！
-              </button>
             </div>
 
           </div>

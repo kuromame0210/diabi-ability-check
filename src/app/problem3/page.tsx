@@ -271,7 +271,7 @@ export default function Problem3() {
               {/* STAGE 3: 入力段階 */}
               <ProblemTitle
                 title="にゅうりょく"
-                instruction="おぼえたとおりににゅうりょくしてください"
+                instruction="みほんとおなじ ひょうをつくってください"
                 additionalInfo={`のこり: ${timeLeft}びょう`}
               />
               
@@ -279,20 +279,18 @@ export default function Problem3() {
                   {/* 入力グリッド */}
                   <div className="text-center mb-6">
                     <div className="text-lg font-bold text-gray-800 mb-4">
-                      ますをせんたくしてから、もじをせんたくしてください
-                      <br />
-                      <span className="text-sm font-normal text-red-600">
-                        ※まちがえたときは、わくをえらんで
-                        <img src="/image/torikeshi.png" alt="とりけしボタン" className="w-8 h-8 inline mx-1" />
-                        をおします
-                      </span>
+                      わくをえらんでから、もじをえらびます
                     </div>
                     {renderGrid(answers)}
                   </div>
 
                   {/* 入力候補 */}
                   <div className="text-center">
-                    <div className="text-lg font-bold text-gray-800 mb-3">にゅうりょくこうほ</div>
+                    <div className="text-lg font-bold text-red-600 mb-3">
+                      ※まちがえたときは、わくをえらんで
+                      <img src="/image/torikeshi.png" alt="とりけしボタン" className="w-8 h-8 inline mx-1" />
+                      ボタンをおします
+                    </div>
                     <div className="space-y-1">
                       {/* 数字候補（1行目） */}
                       <div className="flex gap-2 justify-center items-center">

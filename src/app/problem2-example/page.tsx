@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Card from '../../components/Card';
 import ProblemTitle from '../../components/ProblemTitle';
+import AnswerButton from '../../components/AnswerButton';
+import NumberDisplay from '../../components/NumberDisplay';
 
 /**
  * Problem2 Example Page (れいだい２)
@@ -107,7 +109,7 @@ export default function Problem2Example() {
           */}
           <ProblemTitle
             title="れんしゅう２"
-            instruction="０からきゅうまでのすうじのうち、ひとつだけたりないすうじをみつけてください"
+            instruction="０から９までの すうじのうち、ひとつだけ たりないすうじを こたえてください。"
           />
 
           {/* 問題と回答エリアを上下に配置 */}
@@ -115,12 +117,7 @@ export default function Problem2Example() {
             {/* 上: 数字表示エリア */}
             <div className="flex justify-center">
               <div className="text-center">
-                <div className="text-lg font-bold text-gray-800 mb-4">
-                  すうじ：
-                </div>
-                <div className="text-4xl font-bold font-mono text-gray-800 tracking-widest whitespace-nowrap border-2 border-black p-6 bg-white rounded-lg">
-                  {exampleNumbers.split('').join('  ')}
-                </div>
+                <NumberDisplay numbers={exampleNumbers} />
               </div>
             </div>
 
@@ -174,12 +171,10 @@ export default function Problem2Example() {
                 {/* 答えるボタン（最下部） */}
                 {!showAnswer && (
                   <div className="text-center mt-6">
-                    <button
+                    <AnswerButton
                       onClick={handleShowAnswer}
-                      className="px-8 py-4 rounded-lg text-2xl font-bold transition-colors shadow-md bg-orange-500 hover:bg-orange-600 text-white border-2 border-orange-600"
-                    >
-                      こたえる
-                    </button>
+                      className="px-8 py-4 text-2xl"
+                    />
                   </div>
                 )}
               </div>

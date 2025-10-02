@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Card from '../../components/Card';
 import ProblemTitle from '../../components/ProblemTitle';
+import AnswerButton from '../../components/AnswerButton';
 import { EXAMPLE_PATTERN, INPUT_CANDIDATES, PROBLEM3_TIMERS } from '../../config/problem3-patterns';
 
 /**
@@ -215,27 +216,25 @@ export default function Problem3Example() {
               {/* STAGE 3: 入力段階 */}
               <ProblemTitle
                 title="にゅうりょく"
-                instruction="おぼえたとおりににゅうりょくしてください"
+                instruction="みほんとおなじ ひょうをつくってください"
               />
               
               <div className="flex-1 flex flex-col">
                 {/* 入力グリッド */}
                 <div className="text-center mb-6">
                   <div className="text-lg font-bold text-gray-800 mb-4">
-                    ますをせんたくしてから、もじをせんたくしてください
-                    <br />
-                    <span className="text-sm font-normal text-red-600">
-                      ※まちがえたときは、わくをえらんで
-                      <img src="/image/torikeshi.png" alt="とりけしボタン" className="w-8 h-8 inline mx-1" />
-                      をおします
-                    </span>
+                    わくをえらんでから、もじをえらびます
                   </div>
                   {renderGrid(answers)}
                 </div>
 
                 {/* 入力候補 */}
                 <div className="text-center">
-                  <div className="text-lg font-bold text-gray-800 mb-4">にゅうりょくこうほ</div>
+                  <div className="text-lg font-bold text-red-600 mb-4">
+                    ※まちがえたときは、わくをえらんで
+                    <img src="/image/torikeshi.png" alt="とりけしボタン" className="w-8 h-8 inline mx-1" />
+                    ボタンをおします
+                  </div>
                   <div className="space-y-2">
                     {/* 数字候補（1行目） */}
                     <div className="flex gap-2 justify-center items-center">
@@ -274,12 +273,10 @@ export default function Problem3Example() {
                           className={`w-12 h-12 ${selectedCell >= 0 ? 'opacity-100' : 'opacity-50'} ${selectedCell < 0 ? 'cursor-not-allowed' : 'cursor-pointer'}`}
                         />
                       </button>
-                      <button
+                      <AnswerButton
                         onClick={() => setStage('result')}
-                        className="px-6 py-3 rounded-lg text-xl font-bold transition-colors shadow-md bg-orange-500 hover:bg-orange-600 text-white border-2 border-orange-600"
-                      >
-                        かいとう
-                      </button>
+                        className="px-6 py-3"
+                      />
                     </div>
                   </div>
                 </div>

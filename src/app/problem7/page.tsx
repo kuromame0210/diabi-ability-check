@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Card from '../../components/Card';
 import ProblemTitle from '../../components/ProblemTitle';
+import SymbolAnswerBox from '../../components/SymbolAnswerBox';
+import AnswerButton from '../../components/AnswerButton';
 
 /**
  * Problem7 Main Problem Page (もんだい７)
@@ -147,88 +149,67 @@ export default function Problem7() {
             additionalInfo={`のこり: ${timeLeft}びょう`}
           />
 
-          {/* メインコンテンツエリア */}
-          <div className="flex flex-col space-y-4">
+          {/* メインコンテンツエリア - 左右レイアウト（2:1） */}
+          <div className="grid lg:grid-cols-3 gap-6 items-start" style={{height: '70%'}}>
 
-            {/* 問題画像エリア */}
-            <div className="flex justify-center">
+            {/* 左: 問題画像（2/3の幅） */}
+            <div className="lg:col-span-2 flex justify-center items-center h-full">
               <div className="border-4 border-gray-400 p-3 bg-white rounded-xl shadow-lg">
                 <Image
                   src="/image/mondai7.png"
                   alt="問題7"
-                  width={400}
-                  height={280}
+                  width={800}
+                  height={600}
                   className="object-contain rounded-lg"
+                  style={{maxHeight: '55vh', width: 'auto'}}
                 />
               </div>
             </div>
 
-            {/* 回答選択エリアと送信ボタン */}
-            <div className="flex items-center justify-center max-w-4xl mx-auto bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-2xl shadow-lg border border-gray-200">
-              {/* 回答選択エリア - 横並び */}
-              <div className="flex space-x-6">
-                {/* ○（白丸）の選択 */}
-                <div className="flex flex-col items-center space-y-3 bg-white p-4 rounded-xl shadow-sm">
-                  <div className="w-12 h-12 flex items-center justify-center text-6xl font-bold text-gray-700">○</div>
-                  <select
-                    value={answers.circle}
-                    onChange={(e) => handleSelectionChange('circle', e.target.value)}
-                    className="w-20 h-12 text-xl text-center border-2 border-blue-300 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all font-bold bg-white shadow-sm"
-                  >
-                    <option value="">?</option>
-                    {Array.from({length: 15}, (_, i) => (
-                      <option key={i} value={i}>{i}</option>
-                    ))}
-                  </select>
-                  <span className="text-lg font-bold text-gray-700">こ</span>
-                </div>
+            {/* 右: 回答エリア（1/3の幅） */}
+            <div className="lg:col-span-1 h-full flex flex-col justify-end">
+              <div className="space-y-4 max-w-sm mx-auto lg:mx-0 border-gray-400 px-6 rounded-xl bg-gray-50">
+                {/* ○（白丸）の回答 */}
+                <SymbolAnswerBox
+                  symbol="○"
+                  label=""
+                  value={answers.circle}
+                  onChange={(value) => handleSelectionChange('circle', value)}
+                  symbolClassName="text-6xl"
+                  maxOptions={10}
+                  unit="こ"
+                />
 
-                {/* ◎（二重丸）の選択 */}
-                <div className="flex flex-col items-center space-y-3 bg-white p-4 rounded-xl shadow-sm">
-                  <div className="w-12 h-12 flex items-center justify-center text-3xl font-bold text-gray-700 pt-0.5">◎</div>
-                  <select
-                    value={answers.doubleCircle}
-                    onChange={(e) => handleSelectionChange('doubleCircle', e.target.value)}
-                    className="w-20 h-12 text-xl text-center border-2 border-blue-300 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all font-bold bg-white shadow-sm"
-                  >
-                    <option value="">?</option>
-                    {Array.from({length: 15}, (_, i) => (
-                      <option key={i} value={i}>{i}</option>
-                    ))}
-                  </select>
-                  <span className="text-lg font-bold text-gray-700">こ</span>
-                </div>
+                {/* ◎（二重丸）の回答 */}
+                <SymbolAnswerBox
+                  symbol="◎"
+                  label=""
+                  value={answers.doubleCircle}
+                  onChange={(value) => handleSelectionChange('doubleCircle', value)}
+                  symbolClassName="text-5xl"
+                  maxOptions={10}
+                  unit="こ"
+                />
 
-                {/* ●（黒丸）の選択 */}
-                <div className="flex flex-col items-center space-y-3 bg-white p-4 rounded-xl shadow-sm">
-                  <div className="w-12 h-12 flex items-center justify-center text-6xl font-bold text-gray-700">●</div>
-                  <select
-                    value={answers.filledCircle}
-                    onChange={(e) => handleSelectionChange('filledCircle', e.target.value)}
-                    className="w-20 h-12 text-xl text-center border-2 border-blue-300 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all font-bold bg-white shadow-sm"
-                  >
-                    <option value="">?</option>
-                    {Array.from({length: 15}, (_, i) => (
-                      <option key={i} value={i}>{i}</option>
-                    ))}
-                  </select>
-                  <span className="text-lg font-bold text-gray-700">こ</span>
-                </div>
-              </div>
+                {/* ●（黒丸）の回答 */}
+                <SymbolAnswerBox
+                  symbol="●"
+                  label=""
+                  value={answers.filledCircle}
+                  onChange={(value) => handleSelectionChange('filledCircle', value)}
+                  symbolClassName="text-6xl"
+                  maxOptions={10}
+                  unit="こ"
+                />
 
-              {/* 送信ボタン */}
-              <div className="ml-8">
-                <button
-                  onClick={handleSubmit}
-                  disabled={!isAllAnswered}
-                  className="transition-transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-                >
-                  <img
-                    src="/image/next.png"
-                    alt="かいとう"
-                    className="h-16 w-auto"
+                {/* 送信ボタン */}
+                <div className="text-center mt-6">
+                  <AnswerButton
+                    onClick={handleSubmit}
+                    disabled={!isAllAnswered}
+                    className="px-10 py-4"
                   />
-                </button>
+                </div>
               </div>
             </div>
 

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Card from '../../components/Card';
 import ProblemTitle from '../../components/ProblemTitle';
+import AnswerButton from '../../components/AnswerButton';
 
 /**
  * Problem5 Main Problem Page (もんだい５)
@@ -128,22 +129,22 @@ export default function Problem5() {
           */}
           <ProblemTitle
             title="もんだい５"
-            instruction="なんというもじがかいてあるかをこたえてください"
+            instruction=""
             additionalInfo={`のこり: ${timeLeft}びょう`}
           />
 
           {/* メインコンテンツエリア */}
           <div className="flex flex-col items-center justify-center space-y-8" style={{height: '70%'}}>
-            
+
             {/* 問題画像エリア */}
-            <div className="flex justify-center">
-              <div className="border-4 border-gray-400 p-4 bg-white rounded-xl shadow-lg">
+            <div className="flex justify-center h-full">
+              <div className="border-4 border-gray-400 p-4 bg-white rounded-xl shadow-lg h-full flex items-center">
                 <Image
                   src="/image/mondai5.png"
                   alt="問題5"
-                  width={500}
-                  height={400}
-                  className="object-contain rounded-lg"
+                  width={800}
+                  height={600}
+                  className="object-contain rounded-lg max-h-full w-auto"
                 />
               </div>
             </div>
@@ -161,19 +162,15 @@ export default function Problem5() {
                 />
               </div>
 
-              {/* 送信ボタン */}
+              {/* こたえるボタン */}
               <div className="text-center">
-                <button
+                <AnswerButton
                   onClick={handleSubmit}
                   disabled={!isAnswered}
-                  className="transition-transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-                >
-                  <img
-                    src="/image/next.png"
-                    alt="かいとう"
-                    className="h-16 w-auto"
-                  />
-                </button>
+                  type="text"
+                  text="こたえる"
+                  className="px-10 py-4 text-2xl"
+                />
               </div>
             </div>
 

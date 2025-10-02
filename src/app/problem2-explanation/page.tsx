@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import Card from '../../components/Card';
 import ProblemTitle from '../../components/ProblemTitle';
+import ExplanationContent from '../../components/ExplanationContent';
 
 /**
  * Problem2 Explanation Page (やりかたがめん)
@@ -71,39 +72,24 @@ export default function Problem2Explanation() {
           />
 
           {/* 説明内容エリア */}
-          <div className="flex items-center justify-center h-3/4">
-            <div className="max-w-4xl">
-              <div className="space-y-8 text-center">
-                <div className="text-3xl font-bold text-gray-800 leading-relaxed">0から9までの数字がならんでいます。
-                  <br />
-                  ひとつだけたりない数字をこたえてください
-                </div>
-                
-                <div className="mt-12 text-center">
-                  <div className="text-base font-bold text-red-600 leading-relaxed">
-                    ※ゆびですうじをなぞらずめだけでみつけてください
-                  </div>
-                </div>
-                
+          <ExplanationContent onNext={handleNext}>
+            <div className="text-3xl font-bold text-gray-800 leading-relaxed">０から９までの すうじが ならんでいます。
+              <br />
+              ひとつだけ たりないすうじを こたえてください。
+            </div>
 
-                <div className="mt-8 text-center">
-                  <div className="text-xl font-bold text-blue-600 leading-relaxed">
-                    せいげんじかんは5もんで30びょうかんです
-                  </div>
-                </div>
+            <div className="mt-12 text-center">
+              <div className="text-xl font-bold text-red-600 leading-relaxed">
+                ※ゆびで すうじを なぞらずに、めだけでみつけてください
               </div>
             </div>
-          </div>
 
-          {/* 次へボタン */}
-          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
-            <button
-              onClick={handleNext}
-              className="transition-transform hover:scale-105"
-            >
-              <img src="/image/next.png" alt="れいだいへ" className="h-16 w-auto" />
-            </button>
-          </div>
+            <div className="mt-8 text-center">
+              <div className="text-xl font-bold text-blue-600 leading-relaxed">
+                （こたえるじかん：５もんで30びょう）
+              </div>
+            </div>
+          </ExplanationContent>
         </div>
       </Card>
     </div>

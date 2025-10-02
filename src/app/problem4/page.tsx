@@ -60,18 +60,18 @@ export default function Problem4() {
   const [answers, setAnswers] = useState<string[]>(['', '', '', '', '']);
   const [currentAnswer, setCurrentAnswer] = useState('');
 
-  // TIMER STATE:
-  const [timeLeft, setTimeLeft] = useState(30); // 30秒制限
+  // TIMER STATE: 各問題ごとに30秒
+  const [timeLeft, setTimeLeft] = useState(30); // 各問題ごとに30秒制限
 
   const router = useRouter();
 
   // 問題画像のパス配列
   const problemImages = [
-    '/image/4/mondai1.png',
-    '/image/4/mondai2.png',
-    '/image/4/mondai3.png',
-    '/image/4/mondai4.png',
-    '/image/4/mondai5.png'
+    '/image/4/1.jpg',
+    '/image/4/2.jpg',
+    '/image/4/3.jpg',
+    '/image/4/4.jpg',
+    '/image/4/5.jpg'
   ];
 
 
@@ -93,6 +93,7 @@ export default function Problem4() {
         setCurrentQuestion(currentQuestion + 1);
         setStage('countdown');
         setCountdownNumber(3);
+        setTimeLeft(30); // 次の問題用にタイマーリセット
       } else {
         // All questions completed
         const finalAnswers = [...newAnswers];
@@ -104,7 +105,43 @@ export default function Problem4() {
     }
   }, [stage, currentQuestion, answers, currentAnswer, router]);
 
-  // TIMER EFFECT:
+  // TIMER EFFECT: 各問題ごとのタイマー（inputステージでのみカウントダウン）
+  useEffect(() => {
+    if (stage !== 'input') return;
+
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          // 時間切れ: 現在の回答を保存して次の問題へ
+          const newAnswers = [...answers];
+          newAnswers[currentQuestion] = currentAnswer;
+          setAnswers(newAnswers);
+          setCurrentAnswer('');
+
+          if (currentQuestion < 4) {
+            // 次の問題へ
+            setCurrentQuestion(currentQuestion + 1);
+            setStage('countdown');
+            setCountdownNumber(3);
+            setTimeLeft(30); // タイマーリセット
+          } else {
+            // 5問完了
+            const finalAnswers = [...newAnswers];
+            const numericAnswers = finalAnswers.map(answer => parseInt(answer) || 0);
+            localStorage.setItem('problem4Answers', JSON.stringify(numericAnswers));
+            localStorage.setItem('problem4Time', new Date().toISOString());
+            router.push('/problem5-explanation');
+          }
+          return 30;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [stage, answers, currentAnswer, currentQuestion, router]);
+
+  // STAGE TIMER EFFECT:
   useEffect(() => {
     let timer: NodeJS.Timeout;
 
@@ -121,34 +158,6 @@ export default function Problem4() {
     } else if (stage === 'display') {
       timer = setTimeout(() => {
         setStage('input');
-        setTimeLeft(30); // 30秒にリセット
-      }, 1000);
-    } else if (stage === 'input') {
-      timer = setInterval(() => {
-        setTimeLeft((prev) => {
-          if (prev <= 1) {
-            // 時間切れ: 現在の回答を保存して次の問題へ
-            const newAnswers = [...answers];
-            newAnswers[currentQuestion] = currentAnswer;
-            setAnswers(newAnswers);
-            setCurrentAnswer('');
-
-            if (currentQuestion < 4) {
-              setCurrentQuestion(currentQuestion + 1);
-              setStage('countdown');
-              setCountdownNumber(3);
-            } else {
-              // 5問完了: 結果保存して遷移
-              const finalAnswers = [...newAnswers];
-              const numericAnswers = finalAnswers.map(answer => parseInt(answer) || 0);
-              localStorage.setItem('problem4Answers', JSON.stringify(numericAnswers));
-              localStorage.setItem('problem4Time', new Date().toISOString());
-              router.push('/problem5-explanation');
-            }
-            return 30;
-          }
-          return prev - 1;
-        });
       }, 1000);
     }
 
@@ -156,7 +165,7 @@ export default function Problem4() {
       if (timer) clearInterval(timer);
       if (timer) clearTimeout(timer);
     };
-  }, [stage, currentQuestion, answers, currentAnswer, router]);
+  }, [stage]);
 
   // INPUT CHANGE HANDLER:
   // - 現在の問題の回答を更新
@@ -178,7 +187,8 @@ export default function Problem4() {
               {/* STAGE 1: カウントダウン */}
               <ProblemTitle
                 title={`もんだい４ (${currentQuestion + 1}/5)`}
-                instruction="ドット（●＝くろまる）のかずをこたえてください"
+                instruction="● のかずを こたえてください。もんだいは ぜんぶで ５もんです。"
+                additionalInfo={`のこり: ${timeLeft}びょう`}
               />
 
               <div className="flex-1 flex items-center justify-center">
@@ -193,21 +203,17 @@ export default function Problem4() {
 
           {stage === 'display' && (
             <>
-              {/* STAGE 2: 画像表示 */}
-              <ProblemTitle
-                title={`もんだい４ (${currentQuestion + 1}/5)`}
-                instruction="ドット（●＝くろまる）のかずをおぼえてください"
-              />
+              {/* STAGE 2: 画像表示（タイトルなし） */}
 
-              <div className="flex-1 flex items-center justify-center">
-                <div className="text-center">
-                  <div className="border-2 border-gray-400 p-4 bg-white rounded-lg">
+              <div className="flex-1 flex items-center justify-center bg-gray-100">
+                <div className="text-center h-full w-full flex items-center justify-center">
+                  <div className="border-2 border-gray-400 p-4 bg-gray-100 rounded-lg max-h-full max-w-full">
                     <Image
                       src={problemImages[currentQuestion]}
                       alt={`問題${currentQuestion + 1}`}
-                      width={300}
-                      height={300}
-                      className="object-contain rounded-lg"
+                      width={800}
+                      height={800}
+                      className="object-contain rounded-lg max-h-[70vh] max-w-full w-auto h-auto"
                     />
                   </div>
                 </div>
@@ -220,13 +226,13 @@ export default function Problem4() {
               {/* STAGE 3: 回答入力 */}
               <ProblemTitle
                 title={`もんだい４ (${currentQuestion + 1}/5)`}
-                instruction="ドット（●＝くろまる）のかずをこたえてください"
+                instruction="● のかずを こたえてください。もんだいは ぜんぶで ５もんです。"
                 additionalInfo={`のこり: ${timeLeft}びょう`}
               />
 
               <div className="flex-1 flex flex-col items-center justify-center">
                 <div className="text-center space-y-6">
-                  <div className="text-xl font-bold text-gray-800">ドットのかず</div>
+                  <div className="text-xl font-bold text-gray-800">●のかず</div>
                   <select
                     value={currentAnswer}
                     onChange={(e) => handleInputChange(e.target.value)}
@@ -251,6 +257,7 @@ export default function Problem4() {
                           setCurrentQuestion(currentQuestion + 1);
                           setStage('countdown');
                           setCountdownNumber(3);
+                          setTimeLeft(30); // 次の問題用にタイマーリセット
                         } else {
                           // 5問完了
                           const finalAnswers = [...newAnswers];

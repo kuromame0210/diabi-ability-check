@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Card from '../../components/Card';
 import ProblemTitle from '../../components/ProblemTitle';
+import AnswerButton from '../../components/AnswerButton';
 
 /**
  * Problem4 Example Page (れいだい４)
@@ -91,7 +92,7 @@ export default function Problem4Example() {
           */}
           <ProblemTitle
             title="れんしゅう４"
-            instruction="ドット（●＝くろまる）のかずをこたえてください"
+            instruction="● のかずを こたえてください。もんだいは ぜんぶで ５もんです。"
           />
 
           {/* 画像と回答エリアを横並び */}
@@ -100,7 +101,7 @@ export default function Problem4Example() {
             <div className="flex justify-center h-full">
               <div className="border-gray-400 p-4 h-full">
                 <Image
-                  src="/image/4/reidai.png"
+                  src="/image/4/0reidai.jpg"
                   alt="例題4"
                   width={400}
                   height={600}
@@ -157,12 +158,10 @@ export default function Problem4Example() {
                 {/* 答えるボタン（最下部） */}
                 {!showAnswers && (
                   <div className="text-center mt-6">
-                    <button
+                    <AnswerButton
                       onClick={handleShowAnswers}
-                      className="px-6 py-3 rounded-lg text-lg font-bold transition-colors shadow-md bg-orange-500 hover:bg-orange-600 text-white"
-                    >
-                      こたえる
-                    </button>
+                      className="px-6 py-3 text-lg"
+                    />
                   </div>
                 )}
               </div>
