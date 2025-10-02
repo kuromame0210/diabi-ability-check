@@ -91,7 +91,7 @@ export default function ProblemTitle({ title, instruction, additionalInfo }: Pro
       
       {/* 説明文 */}
       {instruction && (
-        <p className="text-2xl text-gray-800 mb-1 text-center font-bold py-2">
+        <p className="text-3xl text-gray-800 mb-1 text-center font-bold py-2">
           {instruction}
         </p>
       )}

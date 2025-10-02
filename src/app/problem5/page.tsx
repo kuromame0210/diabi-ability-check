@@ -142,8 +142,8 @@ export default function Problem5() {
                 <Image
                   src="/image/mondai5.png"
                   alt="問題5"
-                  width={800}
-                  height={600}
+                  width={1600}
+                  height={1200}
                   className="object-contain rounded-lg max-h-full w-auto"
                 />
               </div>

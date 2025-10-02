@@ -105,6 +105,7 @@ export default function Problem4Example() {
                   alt="例題4"
                   width={400}
                   height={600}
+                  priority
                   className="w-full h-full object-contain rounded-xl"
                 />
               </div>

@@ -6,6 +6,17 @@ import Image from 'next/image';
 import Card from '../../components/Card';
 import ProblemTitle from '../../components/ProblemTitle';
 
+// 画像プリロード用の関数
+const preloadImages = (imageUrls: string[]) => {
+  imageUrls.forEach((url) => {
+    const link = document.createElement('link');
+    link.rel = 'preload';
+    link.as = 'image';
+    link.href = url;
+    document.head.appendChild(link);
+  });
+};
+
 /**
  * Problem4 Main Problem Page (もんだい４)
  *
@@ -74,6 +85,11 @@ export default function Problem4() {
     '/image/4/5.jpg'
   ];
 
+  // 画像プリロード処理
+  useEffect(() => {
+    preloadImages(problemImages);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // STAGE PROGRESSION HANDLER:
   const proceedToNextStage = useCallback(() => {
@@ -213,6 +229,7 @@ export default function Problem4() {
                       alt={`問題${currentQuestion + 1}`}
                       width={800}
                       height={800}
+                      priority
                       className="object-contain rounded-lg max-h-[70vh] max-w-full w-auto h-auto"
                     />
                   </div>
@@ -232,7 +249,7 @@ export default function Problem4() {
 
               <div className="flex-1 flex flex-col items-center justify-center">
                 <div className="text-center space-y-6">
-                  <div className="text-xl font-bold text-gray-800">●のかず</div>
+                  <div className="text-4xl font-bold text-gray-800">●のかず</div>
                   <select
                     value={currentAnswer}
                     onChange={(e) => handleInputChange(e.target.value)}
