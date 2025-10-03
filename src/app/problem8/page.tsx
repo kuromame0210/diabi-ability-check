@@ -157,7 +157,6 @@ export default function Problem8() {
               <div className="border-4 border-gray-400 p-4 h-full bg-white rounded-xl shadow-lg w-full">
                 <video
                   src="/image/media1.mp4"
-                  controls
                   autoPlay
                   muted
                   className="w-full h-full object-contain rounded-lg"
