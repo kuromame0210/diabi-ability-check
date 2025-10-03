@@ -79,10 +79,9 @@ export default function Example() {
   // ANSWER REVEAL FUNCTIONALITY:
   // 「こたえる」ボタン押下時の処理
   // - 正解を表示状態に切り替え
-  // - 選択状態も正解に更新（視覚的フィードバック）
+  // - 入力値はそのまま保持（ユーザーの回答を残す）
   const handleShowAnswers = () => {
     setShowAnswers(true);
-    setAnswers(correctAnswers);
   };
 
   // INPUT CHANGE HANDLER:

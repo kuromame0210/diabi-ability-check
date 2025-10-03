@@ -80,10 +80,9 @@ export default function Problem2Example() {
 
   // ANSWER REVEAL FUNCTIONALITY:
   // 問題1例題と同じパターン
-  // - 正解表示 + 選択状態更新
+  // - 正解表示のみ（入力値はそのまま保持）
   const handleShowAnswer = () => {
     setShowAnswer(true);
-    setAnswer(correctAnswer);
   };
 
   // INPUT CHANGE HANDLER:

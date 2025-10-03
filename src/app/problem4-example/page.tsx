@@ -52,6 +52,7 @@ export default function Problem4Example() {
   // - showAnswers: 正解表示状態（false: 入力中, true: 正解表示中）
   const [answer, setAnswer] = useState<string>('');
   const [showAnswers, setShowAnswers] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
   const router = useRouter();
 
   // CORRECT ANSWER DEFINITION:
@@ -100,13 +101,21 @@ export default function Problem4Example() {
             {/* 左: 問題画像 */}
             <div className="flex justify-center h-full">
               <div className="border-gray-400 p-4 h-full">
+                {!imageLoaded && (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <div className="text-center">
+                      <div className="animate-spin rounded-full h-12 w-12 border-b-4 border-blue-500"></div>
+                    </div>
+                  </div>
+                )}
                 <Image
                   src="/image/4/0reidai.jpg"
                   alt="例題4"
                   width={400}
                   height={600}
                   priority
-                  className="w-full h-full object-contain rounded-xl"
+                  className={`w-full h-full object-contain rounded-xl ${!imageLoaded ? 'hidden' : ''}`}
+                  onLoad={() => setImageLoaded(true)}
                 />
               </div>
             </div>
