@@ -73,9 +73,9 @@ export function scoreProblem6(answer: number): number {
 
 // 問題7の採点
 export function scoreProblem7(answers: { circle: number; doubleCircle: number; filledCircle: number }): number {
-  // 問題7の正解（マークの数：○=8個、◎=7個、●=8個）
+  // 問題7の正解（マークの数：○=9個、◎=7個、●=8個）
   const correctAnswers = {
-    circle: 8,        // ○（白丸）
+    circle: 9,        // ○（白丸）
     doubleCircle: 7,  // ◎（二重丸）
     filledCircle: 8   // ●（黒丸）
   };

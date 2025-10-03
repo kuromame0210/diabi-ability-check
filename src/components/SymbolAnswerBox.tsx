@@ -43,7 +43,7 @@ export default function SymbolAnswerBox({
         >
           <option value="">?</option>
           {Array.from({length: maxOptions}, (_, i) => (
-            <option key={i} value={i}>{i}</option>
+            <option key={i} value={i + 1}>{i + 1}</option>
           ))}
         </select>
         {unit && <span className="text-xl font-bold text-gray-800">{unit}</span>}
