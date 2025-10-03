@@ -6,19 +6,6 @@ import Image from 'next/image';
 import Card from '../../components/Card';
 import ProblemTitle from '../../components/ProblemTitle';
 
-// 画像プリロード用の関数（読み込み完了を待つ）
-const preloadImages = (imageUrls: string[]): Promise<void> => {
-  const promises = imageUrls.map((url) => {
-    return new Promise<void>((resolve, reject) => {
-      const img = new window.Image();
-      img.onload = () => resolve();
-      img.onerror = () => reject();
-      img.src = url;
-    });
-  });
-  return Promise.all(promises).then(() => {});
-};
-
 /**
  * Problem4 Main Problem Page (もんだい４)
  *
@@ -76,8 +63,8 @@ export default function Problem4() {
   // TIMER STATE: 各問題ごとに30秒
   const [timeLeft, setTimeLeft] = useState(30); // 各問題ごとに30秒制限
 
-  // 画像読み込み状態
-  const [imagesLoaded, setImagesLoaded] = useState(false);
+  // 画像読み込み状態（5枚すべて）
+  const [imagesLoaded, setImagesLoaded] = useState<boolean[]>([false, false, false, false, false]);
 
   const router = useRouter();
 
@@ -90,16 +77,8 @@ export default function Problem4() {
     '/image/4/5.jpg'
   ];
 
-  // 画像プリロード処理（読み込み完了を待つ）
-  useEffect(() => {
-    preloadImages(problemImages).then(() => {
-      setImagesLoaded(true);
-    }).catch(() => {
-      // エラーでも続行
-      setImagesLoaded(true);
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // すべての画像が読み込まれたかチェック
+  const allImagesLoaded = imagesLoaded.every(loaded => loaded);
 
   // STAGE PROGRESSION HANDLER:
   const proceedToNextStage = useCallback(() => {
@@ -170,7 +149,7 @@ export default function Problem4() {
   // STAGE TIMER EFFECT:
   useEffect(() => {
     // 画像読み込み完了まで待つ
-    if (!imagesLoaded) return;
+    if (!allImagesLoaded) return;
 
     let timer: NodeJS.Timeout;
 
@@ -194,7 +173,7 @@ export default function Problem4() {
       if (timer) clearInterval(timer);
       if (timer) clearTimeout(timer);
     };
-  }, [stage, imagesLoaded]);
+  }, [stage, allImagesLoaded]);
 
   // INPUT CHANGE HANDLER:
   // - 現在の問題の回答を更新
@@ -205,7 +184,7 @@ export default function Problem4() {
 
 
   // 画像読み込み中はローディング表示
-  if (!imagesLoaded) {
+  if (!allImagesLoaded) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center p-4 relative" style={{backgroundImage: 'url(/image/main_bg.png)', backgroundSize: 'cover', backgroundPosition: 'center'}}>
         <div className="absolute inset-0 opacity-20" style={{backgroundColor: '#A3A3A3'}}></div>
@@ -219,6 +198,26 @@ export default function Problem4() {
             </div>
           </div>
         </Card>
+        {/* すべての画像を非表示で事前レンダリング */}
+        <div className="hidden">
+          {problemImages.map((src, index) => (
+            <Image
+              key={src}
+              src={src}
+              alt={`問題${index + 1}`}
+              width={800}
+              height={800}
+              priority
+              onLoad={() => {
+                setImagesLoaded(prev => {
+                  const newLoaded = [...prev];
+                  newLoaded[index] = true;
+                  return newLoaded;
+                });
+              }}
+            />
+          ))}
+        </div>
       </div>
     );
   }
@@ -256,14 +255,20 @@ export default function Problem4() {
               <div className="flex-1 flex items-center justify-center bg-gray-100">
                 <div className="text-center h-full w-full flex items-center justify-center">
                   <div className="border-2 border-gray-400 p-4 bg-gray-100 rounded-lg max-h-full max-w-full">
-                    <Image
-                      src={problemImages[currentQuestion]}
-                      alt={`問題${currentQuestion + 1}`}
-                      width={800}
-                      height={800}
-                      priority
-                      className="object-contain rounded-lg max-h-[70vh] max-w-full w-auto h-auto"
-                    />
+                    {/* すべての画像をレンダリングし、currentQuestionに応じて表示 */}
+                    {problemImages.map((src, index) => (
+                      <Image
+                        key={src}
+                        src={src}
+                        alt={`問題${index + 1}`}
+                        width={800}
+                        height={800}
+                        priority
+                        className={`object-contain rounded-lg max-h-[70vh] max-w-full w-auto h-auto ${
+                          index === currentQuestion ? '' : 'hidden'
+                        }`}
+                      />
+                    ))}
                   </div>
                 </div>
               </div>
