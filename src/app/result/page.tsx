@@ -536,8 +536,8 @@ export default function Result() {
                       const abilityHiragana = abilityNamesHiragana[ability as keyof typeof abilityNamesHiragana];
 
                       return (
-                        <div key={ability} className="flex items-center justify-between">
-                          <span className="font-medium text-gray-700 flex flex-col">
+                        <div key={ability} className="flex items-center gap-4">
+                          <span className="font-medium text-gray-700 flex flex-col w-32">
                             <span className="text-base">{abilityName}</span>
                             <span className="text-xs text-gray-500">({abilityHiragana})</span>
                           </span>
