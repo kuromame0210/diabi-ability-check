@@ -1,11 +1,9 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useRef } from 'react';
 import Card from '../../components/Card';
 import ProblemTitle from '../../components/ProblemTitle';
 import ExplanationContent from '../../components/ExplanationContent';
-import ScrollIndicator from '../../components/ScrollIndicator';
 
 /**
  * Problem3 Explanation Page (やりかた３)
@@ -42,7 +40,6 @@ import ScrollIndicator from '../../components/ScrollIndicator';
 
 export default function Problem3Explanation() {
   const router = useRouter();
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   // ROUTING LOGIC:
   // 説明完了後は例題ページへ（3段階構成の2段階目）
@@ -57,25 +54,15 @@ export default function Problem3Explanation() {
       <div className="absolute inset-0 opacity-20" style={{backgroundColor: '#A3A3A3'}}></div>
 
       <Card>
-        <div
-          ref={scrollContainerRef}
-          className="h-full overflow-y-auto relative"
-          style={{
-            scrollbarWidth: 'auto',
-            scrollbarColor: '#9ca3af #e5e7eb'
-          }}
-        >
-          {/*
-            COMPONENTIZATION NOTE - PROBLEM3 EXPLANATION PAGE:
-            ProblemTitleコンポーネントを使用してタイトル部分を共通化
-            問題2説明ページと同じパターンで統一性を保持
-          */}
-          <ProblemTitle
-            title="もんだい３のやりかた"
-            instruction=""
-          />
-
-          <ScrollIndicator containerRef={scrollContainerRef} />
+        {/*
+          COMPONENTIZATION NOTE - PROBLEM3 EXPLANATION PAGE:
+          ProblemTitleコンポーネントを使用してタイトル部分を共通化
+          問題2説明ページと同じパターンで統一性を保持
+        */}
+        <ProblemTitle
+          title="もんだい３のやりかた"
+          instruction=""
+        />
 
           {/* 説明内容エリア */}
           <ExplanationContent onNext={handleNext}>
@@ -102,7 +89,6 @@ export default function Problem3Explanation() {
               </div>
             </div>
           </ExplanationContent>
-        </div>
       </Card>
     </div>
   );

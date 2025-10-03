@@ -137,14 +137,14 @@ export default function Problem5() {
           <div className="flex flex-col items-center justify-center space-y-8" style={{height: '70%'}}>
 
             {/* 問題画像エリア */}
-            <div className="flex justify-center h-full">
-              <div className="border-4 border-gray-400 p-4 bg-white rounded-xl shadow-lg h-full flex items-center">
+            <div className="flex justify-center h-full w-full">
+              <div className="border-4 border-gray-400 p-4 bg-white rounded-xl shadow-lg h-full w-full flex items-center justify-center">
                 <Image
                   src="/image/mondai5.png"
                   alt="問題5"
                   width={1600}
                   height={1200}
-                  className="object-contain rounded-lg max-h-full w-auto"
+                  className="object-contain rounded-lg max-h-full max-w-full"
                 />
               </div>
             </div>

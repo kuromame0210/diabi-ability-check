@@ -55,46 +55,44 @@ export default function Problem4Explanation() {
       <div className="absolute inset-0 opacity-20" style={{backgroundColor: '#A3A3A3'}}></div>
 
       <Card>
-        <div className="h-full overflow-y-auto relative" style={{scrollbarWidth: 'thin'}}>
-          {/* 
-            COMPONENTIZATION NOTE - PROBLEM4 EXPLANATION PAGE:
-            ProblemTitleコンポーネントを使用してタイトル部分を共通化
-            問題2・3説明ページと同じパターンで統一性を保持
-          */}
-          <ProblemTitle
-            title="もんだい４のやりかた"
-            instruction=""
-          />
+        {/*
+          COMPONENTIZATION NOTE - PROBLEM4 EXPLANATION PAGE:
+          ProblemTitleコンポーネントを使用してタイトル部分を共通化
+          問題2・3説明ページと同じパターンで統一性を保持
+        */}
+        <ProblemTitle
+          title="もんだい４のやりかた"
+          instruction=""
+        />
 
-          {/* 説明内容エリア */}
-          <ExplanationContent onNext={handleNext}>
+        {/* 説明内容エリア */}
+        <ExplanationContent onNext={handleNext}>
             <div className="text-3xl font-bold text-gray-800 leading-relaxed">
               ● のかずを こたえてください。もんだいは ぜんぶで ５もんです。
             </div>
 
-            <div className="mt-8 flex justify-center">
+            <div className="mt-4 flex justify-center">
               <Image
                 src="/image/4/0reidai.jpg"
                 alt="ドット例題"
-                width={200}
-                height={200}
+                width={400}
+                height={400}
                 className="object-contain border-4 border-black rounded"
               />
             </div>
 
-            <div className="mt-6">
-              <div className="text-2xl font-bold text-red-600">
+            <div className="mt-4">
+              <div className="text-4xl font-bold text-red-600">
                 こたえは４
               </div>
             </div>
 
-            <div className="mt-8">
+            <div className="mt-4">
               <div className="text-2xl font-bold text-blue-600 leading-relaxed">
                 （こたえるじかん：５もんで30びょう）
               </div>
             </div>
           </ExplanationContent>
-        </div>
       </Card>
     </div>
   );
