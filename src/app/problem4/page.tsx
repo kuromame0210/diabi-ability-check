@@ -10,7 +10,7 @@ import ProblemTitle from '../../components/ProblemTitle';
 const preloadImages = (imageUrls: string[]): Promise<void> => {
   const promises = imageUrls.map((url) => {
     return new Promise<void>((resolve, reject) => {
-      const img = new Image();
+      const img = new window.Image();
       img.onload = () => resolve();
       img.onerror = () => reject();
       img.src = url;
