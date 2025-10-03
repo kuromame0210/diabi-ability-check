@@ -1,9 +1,11 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { useRef } from 'react';
 import Card from '../../components/Card';
 import ProblemTitle from '../../components/ProblemTitle';
 import ExplanationContent from '../../components/ExplanationContent';
+import ScrollIndicator from '../../components/ScrollIndicator';
 
 /**
  * Problem3 Explanation Page (やりかた３)
@@ -40,6 +42,7 @@ import ExplanationContent from '../../components/ExplanationContent';
 
 export default function Problem3Explanation() {
   const router = useRouter();
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   // ROUTING LOGIC:
   // 説明完了後は例題ページへ（3段階構成の2段階目）
@@ -54,8 +57,15 @@ export default function Problem3Explanation() {
       <div className="absolute inset-0 opacity-20" style={{backgroundColor: '#A3A3A3'}}></div>
 
       <Card>
-        <div className="h-full overflow-y-auto relative" style={{scrollbarWidth: 'thin'}}>
-          {/* 
+        <div
+          ref={scrollContainerRef}
+          className="h-full overflow-y-auto relative"
+          style={{
+            scrollbarWidth: 'auto',
+            scrollbarColor: '#9ca3af #e5e7eb'
+          }}
+        >
+          {/*
             COMPONENTIZATION NOTE - PROBLEM3 EXPLANATION PAGE:
             ProblemTitleコンポーネントを使用してタイトル部分を共通化
             問題2説明ページと同じパターンで統一性を保持
@@ -65,24 +75,30 @@ export default function Problem3Explanation() {
             instruction=""
           />
 
+          <ScrollIndicator containerRef={scrollContainerRef} />
+
           {/* 説明内容エリア */}
           <ExplanationContent onNext={handleNext}>
             <div className="text-3xl font-bold text-gray-800 leading-relaxed">
-              ひょうにかいてある もじやきごうをおぼえて<br />
-              かいとうらんの おなじばしょにかきます。
+              ひょうにかいてあるすうじやきごうをおぼえて、おなじひょうをつくります。
             </div>
 
-            <div className="mt-12 flex justify-center">
-              <div className="text-2xl font-bold text-blue-600 leading-relaxed text-left">
-                ・みほんを10びょうで おぼえます<br />
-                ・５びょう まちます<br />
-                ・ひょうに こたえを かきます
+            <div className="mt-4">
+              <div className="text-2xl font-bold text-blue-600 leading-relaxed">
+                １０びょうでみほんのひょうをおぼえてください。<br />
+                そのあと５びょうごにこたえのがめんで、みほんとおなじひょうをつくってください。
               </div>
             </div>
 
-            <div className="mt-8">
-              <div className="text-2xl font-bold text-blue-600 leading-relaxed">
-                （こたえるじかん：30びょう）
+            <div className="mt-6 flex justify-center">
+              <img src="/image/wakumihon.png" alt="見本例" className="max-w-2xl w-full" />
+            </div>
+
+            <div className="mt-4">
+              <div className="text-2xl font-bold text-gray-800 leading-relaxed">
+                まちがえたときは、わくをえらんで
+                <img src="/image/torikesi.png" alt="取り消しボタン" className="inline h-16 mx-2" />
+                をおします。
               </div>
             </div>
           </ExplanationContent>
