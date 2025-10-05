@@ -89,7 +89,7 @@ export default function Problem4Explanation() {
 
             <div className="mt-4">
               <div className="text-2xl font-bold text-blue-600 leading-relaxed">
-                （こたえるじかん：５もんで30びょう）
+                （こたえるじかん：30びょう）
               </div>
             </div>
           </ExplanationContent>

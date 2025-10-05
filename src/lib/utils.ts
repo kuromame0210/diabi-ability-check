@@ -147,50 +147,62 @@ export function analyzeAbilities(abilities: UserData['abilities']): AbilityAnaly
   const orderedKeys = ['reading', 'memory', 'cognition', 'attention'] as const;
   const entries = orderedKeys.map(key => [key, abilities[key]] as [string, number]);
 
-  // 全部0点かチェック（全分野が0.5以下）
-  const allZero = entries.every(([, value]) => value <= 0.5);
+  // 最大値と最小値を取得
+  const maxValue = Math.max(...entries.map(([, value]) => value));
+  const minValue = Math.min(...entries.map(([, value]) => value));
 
-  // 全部低得点かチェック（全分野が2.5以下）
-  const allLow = entries.every(([, value]) => value <= 2.5);
+  // 全て同点かチェック（差が0.1以下）
+  const allSame = Math.abs(maxValue - minValue) < 0.1;
 
-  // 3点以上の分野を取得（3.0以上）
-  const strongEntries = entries.filter(([, value]) => value >= 3.0);
-
-  // 得意分野の決定
   let strongestNames: Array<{name: string; nameHiragana: string; icon: string}>;
+  let weakestNames: Array<{name: string; nameHiragana: string; icon: string}>;
 
-  if (allZero || allLow) {
-    // 全部0点または全部低得点の場合は得意分野なし
-    strongestNames = [];
-  } else if (strongEntries.length > 0) {
-    // 3点以上の分野があれば、それらを得意分野とする
-    strongestNames = strongEntries.map(([key]) => ({
-      name: ABILITY_NAMES[key as keyof typeof ABILITY_NAMES],
-      nameHiragana: ABILITY_NAMES_HIRAGANA[key as keyof typeof ABILITY_NAMES_HIRAGANA],
-      icon: ABILITY_ICONS[key as keyof typeof ABILITY_ICONS]
-    }));
+  if (allSame) {
+    // 全て同点の場合
+    if (maxValue < 3.0) {
+      // 全てが3点未満で同点の場合：全てを「のびしろ」
+      strongestNames = [];
+      weakestNames = entries.map(([key]) => ({
+        name: ABILITY_NAMES[key as keyof typeof ABILITY_NAMES],
+        nameHiragana: ABILITY_NAMES_HIRAGANA[key as keyof typeof ABILITY_NAMES_HIRAGANA],
+        icon: ABILITY_ICONS[key as keyof typeof ABILITY_ICONS]
+      }));
+    } else {
+      // 全てが3点以上で同点の場合：全てを「とくい」
+      strongestNames = entries.map(([key]) => ({
+        name: ABILITY_NAMES[key as keyof typeof ABILITY_NAMES],
+        nameHiragana: ABILITY_NAMES_HIRAGANA[key as keyof typeof ABILITY_NAMES_HIRAGANA],
+        icon: ABILITY_ICONS[key as keyof typeof ABILITY_ICONS]
+      }));
+      weakestNames = [];
+    }
   } else {
-    // それ以外の場合は最高値の分野を得意とする
-    const maxValue = Math.max(...entries.map(([, value]) => value));
+    // 点数に差がある場合
+    // 最も得点が高い項目：とくい（同点の場合、複数可）
     const maxEntries = entries.filter(([, value]) => Math.abs(value - maxValue) < 0.1);
     strongestNames = maxEntries.map(([key]) => ({
       name: ABILITY_NAMES[key as keyof typeof ABILITY_NAMES],
       nameHiragana: ABILITY_NAMES_HIRAGANA[key as keyof typeof ABILITY_NAMES_HIRAGANA],
       icon: ABILITY_ICONS[key as keyof typeof ABILITY_ICONS]
     }));
-  }
 
-  // のびしろの決定（最低値の分野）
-  const minValue = Math.min(...entries.map(([, value]) => value));
-  const weakestEntry = entries.find(([, value]) => Math.abs(value - minValue) < 0.1);
+    // 最も点数が低い項目：のびしろ（同点の場合、複数可）
+    const minEntries = entries.filter(([, value]) => Math.abs(value - minValue) < 0.1);
+    weakestNames = minEntries.map(([key]) => ({
+      name: ABILITY_NAMES[key as keyof typeof ABILITY_NAMES],
+      nameHiragana: ABILITY_NAMES_HIRAGANA[key as keyof typeof ABILITY_NAMES_HIRAGANA],
+      icon: ABILITY_ICONS[key as keyof typeof ABILITY_ICONS]
+    }));
+  }
 
   return {
     strongest: strongestNames,
-    weakest: {
-      name: ABILITY_NAMES[weakestEntry![0] as keyof typeof ABILITY_NAMES],
-      nameHiragana: ABILITY_NAMES_HIRAGANA[weakestEntry![0] as keyof typeof ABILITY_NAMES_HIRAGANA],
-      icon: ABILITY_ICONS[weakestEntry![0] as keyof typeof ABILITY_ICONS]
-    }
+    weakest: weakestNames.length > 0 ? weakestNames[0] : {
+      name: ABILITY_NAMES[entries[0][0] as keyof typeof ABILITY_NAMES],
+      nameHiragana: ABILITY_NAMES_HIRAGANA[entries[0][0] as keyof typeof ABILITY_NAMES_HIRAGANA],
+      icon: ABILITY_ICONS[entries[0][0] as keyof typeof ABILITY_ICONS]
+    },
+    weakestAll: weakestNames
   };
 }
 

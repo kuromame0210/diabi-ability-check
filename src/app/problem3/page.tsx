@@ -333,7 +333,7 @@ export default function Problem3() {
                           onClick={handleSubmit}
                           className="px-6 py-3 rounded-lg text-xl font-bold transition-colors shadow-md bg-orange-500 hover:bg-orange-600 text-white border-2 border-orange-600"
                         >
-                          かいとう
+                          こたえる
                         </button>
                       </div>
                     </div>

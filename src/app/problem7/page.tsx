@@ -150,7 +150,7 @@ export default function Problem7() {
           />
 
           {/* メインコンテンツエリア - 左右レイアウト（2:1） */}
-          <div className="grid lg:grid-cols-3 gap-6 items-start" style={{height: '70%'}}>
+          <div className="grid lg:grid-cols-3 gap-6 items-center" style={{height: '70%'}}>
 
             {/* 左: 問題画像（2/3の幅） */}
             <div className="lg:col-span-2 flex justify-center items-center h-full">
@@ -158,10 +158,10 @@ export default function Problem7() {
                 <Image
                   src="/image/mondai7.png"
                   alt="問題7"
-                  width={800}
-                  height={600}
+                  width={900}
+                  height={675}
                   className="object-contain rounded-lg"
-                  style={{maxHeight: '55vh', width: 'auto'}}
+                  style={{maxHeight: '60vh', width: 'auto'}}
                 />
               </div>
             </div>

@@ -331,7 +331,7 @@ export default function Result() {
 
               {/* アビリティ分析 */}
               <div className="space-y-3">
-                <h3 className="text-xl font-bold text-gray-800 text-center">きみのとくちょう</h3>
+                <h3 className="text-xl font-bold text-gray-800 text-center">あなたのとくちょう</h3>
                 <div className="space-y-3">
                   <div className="border border-gray-300 p-3 text-center">
                     <h4 className="text-lg font-bold text-gray-800 mb-2">とくい分野</h4>
@@ -342,16 +342,15 @@ export default function Result() {
                         </div>
                       ) : userData.analysis.strongest.length === 4 ? (
                         <div className="flex items-center justify-center gap-2">
-                          <span>すべての分野が得意です！</span>
+                          <span>すべての分野</span>
                         </div>
                       ) : (
                         userData.analysis.strongest.map((field, index) => (
-                          <div key={index} className="flex items-center justify-center gap-2 mb-1">
-                            <img src={field.icon} alt={field.name} className="w-6 h-6" />
+                          <div key={index} className="flex items-center justify-center gap-3 mb-2">
+                            <img src={field.icon} alt={field.name} className="w-12 h-12" />
                             <span className="flex flex-col">
-                              <span className="text-base">{field.name}</span>
-                              <span className="text-xs text-gray-500">({field.nameHiragana})</span>
-                              <span className="text-sm">が得意です！</span>
+                              <span className="text-2xl">{field.name}</span>
+                              <span className="text-base text-gray-500">({field.nameHiragana})</span>
                             </span>
                           </div>
                         ))
@@ -360,13 +359,26 @@ export default function Result() {
                   </div>
                   <div className="border border-gray-300 p-3 text-center">
                     <h4 className="text-lg font-bold text-gray-800 mb-2">のびしろ</h4>
-                    <div className="text-lg font-bold text-blue-600 flex items-center justify-center gap-2">
-                      <img src={userData.analysis.weakest.icon} alt="のびしろ" className="w-6 h-6" />
-                      <span className="flex flex-col">
-                        <span className="text-base">{userData.analysis.weakest.name}</span>
-                        <span className="text-xs text-gray-500">({userData.analysis.weakest.nameHiragana})</span>
-                        <span className="text-sm">をもっと伸ばしましょう</span>
-                      </span>
+                    <div className="text-lg font-bold text-blue-600">
+                      {userData.analysis.weakestAll.length === 0 ? (
+                        <div className="flex items-center justify-center gap-2">
+                          <span className="text-gray-500">-</span>
+                        </div>
+                      ) : userData.analysis.weakestAll.length === 4 ? (
+                        <div className="flex items-center justify-center gap-2">
+                          <span>すべての分野</span>
+                        </div>
+                      ) : (
+                        userData.analysis.weakestAll.map((field, index) => (
+                          <div key={index} className="flex items-center justify-center gap-3 mb-2">
+                            <img src={field.icon} alt={field.name} className="w-12 h-12" />
+                            <span className="flex flex-col">
+                              <span className="text-2xl">{field.name}</span>
+                              <span className="text-base text-gray-500">({field.nameHiragana})</span>
+                            </span>
+                          </div>
+                        ))
+                      )}
                     </div>
                   </div>
                 </div>
