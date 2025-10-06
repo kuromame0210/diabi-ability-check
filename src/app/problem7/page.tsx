@@ -161,7 +161,7 @@ export default function Problem7() {
                   width={900}
                   height={675}
                   className="object-contain rounded-lg"
-                  style={{maxHeight: '60vh', width: 'auto'}}
+                  style={{maxHeight: '60vh'}}
                 />
               </div>
             </div>
