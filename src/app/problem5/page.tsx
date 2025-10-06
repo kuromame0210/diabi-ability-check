@@ -134,17 +134,18 @@ export default function Problem5() {
           />
 
           {/* メインコンテンツエリア */}
-          <div className="flex flex-col items-center justify-center space-y-8 w-full" style={{height: '70%'}}>
+          <div className="flex flex-col items-center space-y-4 w-full">
 
             {/* 問題画像エリア */}
-            <div className="flex justify-center h-full w-full">
-              <div className="border-2 border-gray-400 p-2 bg-white rounded-xl shadow-lg h-full w-full flex items-center justify-center" style={{maxWidth: '80%'}}>
+            <div className="flex justify-center w-full">
+              <div className="border-2 border-gray-400 p-2 bg-white rounded-xl shadow-lg flex items-center justify-center" style={{maxWidth: '100%'}}>
                 <Image
                   src="/image/mondai5.png"
                   alt="問題5"
-                  width={1600}
-                  height={1200}
-                  className="object-contain rounded-lg max-h-full max-w-full"
+                  width={1000}
+                  height={700}
+                  className="object-contain rounded-lg"
+                  style={{maxHeight: '50vh'}}
                 />
               </div>
             </div>
