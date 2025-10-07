@@ -117,27 +117,18 @@ export function scoreProblem8(answers: { yellow: number; green: number; blue: nu
 
 // アビリティスコア計算（8問題対応）
 export function calculateAbilities(problem1Score: number, problem2Score: number, problem3Score: number = 0, problem4Score: number = 0, problem5Score: number = 0, problem6Score: number = 0, problem7Score: number = 0, problem8Score: number = 0) {
-  const base1 = problem1Score / 2.5;
-  const base2 = problem2Score / 2.5;
-  const base3 = problem3Score / 2.5;
-  const base4 = problem4Score / 2.5;
-  const base5 = problem5Score / 2.5;
-  const base6 = problem6Score / 2.5;
-  const base7 = problem7Score / 2.5;
-  const base8 = problem8Score / 2.5;
-
   return {
-    // 読解: 問題1,2が主体（各50%）
-    reading: Math.min(5, Math.max(0, (base1 * 0.5 + base2 * 0.5) * 5 + (Math.random() - 0.5) * 0.1)),
+    // 読解: 問題1 + 問題2（最大5点）
+    reading: problem1Score + problem2Score,
 
-    // 集中・注意: 問題7,8が主体（各50%）
-    attention: Math.min(5, Math.max(0, (base7 * 0.5 + base8 * 0.5) * 5 + (Math.random() - 0.5) * 0.1)),
+    // 集中・注意: 問題7 + 問題8（最大5点）
+    attention: problem7Score + problem8Score,
 
-    // 記憶: 問題3,4が主体（各50%）
-    memory: Math.min(5, Math.max(0, (base3 * 0.5 + base4 * 0.5) * 5 + (Math.random() - 0.5) * 0.1)),
+    // 記憶: 問題3 + 問題4（最大5点）
+    memory: problem3Score + problem4Score,
 
-    // 認知: 問題5,6が主体（各50%）
-    cognition: Math.min(5, Math.max(0, (base5 * 0.5 + base6 * 0.5) * 5 + (Math.random() - 0.5) * 0.1))
+    // 認知: 問題5 + 問題6（最大5点）
+    cognition: problem5Score + problem6Score
   };
 }
 
